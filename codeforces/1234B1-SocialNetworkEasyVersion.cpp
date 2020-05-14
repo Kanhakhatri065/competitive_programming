@@ -50,23 +50,41 @@ void solve() {
     vll v(n, 0);
     forIn(v, n);
 
-    vll store;
+    vll u(k, 0);
+
     for0(n) {
-        if(i - v[i] + 1 != 0) {
-            store.pb(i - v[i] + 1);
+        if(find(all(u), v[i]) != u.end()) {
+            continue;
+        } else {
+            for(ll i = k - 2;i >= 0;i--) {
+                u[i + 1] = u[i];
+            }
+            u[0] = v[i];
         }
     }
 
-    vpnt(store);
+    ll count = 0;
+    for0(k) {
+        if(u[i] == 0) {
+            break;
+        } else {
+            count++;
+        }
+    }
+
+    pf(count);
+    for0(k) {
+        if(u[i] == 0) {
+            break;
+        } else {
+            cout << u[i] << " ";
+        }
+    }
+    cout << endl;
 }
 
 int main() {
     FAST_IO
-    ll testcases;
-    sc(testcases);
-
-    while(testcases--) {
-        solve();
-    }
+    solve();
     return 0;
 }

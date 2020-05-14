@@ -42,95 +42,21 @@ typedef vector<pair<ll,ll>>vpll;
 void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
-bool isSorted(ll arr[], ll n) {
-    for(ll i = 0;i < n;i++) {
-        if(arr[i] != i + 1) {
-            return false;
-        }
-    }
-
-    return true;
-}
-
-ll minSwaps(ll arr[], ll n) { 
-    pll arrPos[n]; 
-    for0(n) { 
-        arrPos[i].first = arr[i]; 
-        arrPos[i].second = i; 
-    } 
-  
-    sort(arrPos, arrPos + n); 
-    
-    vector<bool> vis(n, false); 
-  
-    ll ans = 0; 
-  
-    for0(n) { 
-        if (vis[i] || arrPos[i].second == i) { 
-            continue; 
-        }
-
-        ll cycle_size = 0; 
-        ll j = i; 
-        while (!vis[j]) { 
-            vis[j] = 1; 
-  
-            j = arrPos[j].second; 
-            cycle_size++; 
-        } 
-  
-        if (cycle_size > 0) 
-        { 
-            ans += (cycle_size - 1); 
-        } 
-    } 
-  
-    return ans; 
-} 
-
-
 void solve() {
-    ll n, m;
+    ll n;
     sc(n);
-    sc(m);
 
-    ll arr1[n];
-    forIn(arr1, n);
+    ll total = 0;
+    
+    if(n % 2 == 0) {
+        total = pow(2, (n / 2));
+    } 
 
-    ll arr2[m][2];
-    for0(m) {
-        sc(arr2[i][0]);
-        sc(arr2[i][1]);
-    }
-
-    int flag = 0;
-
-    for0(m) {
-        swapll(&arr1[arr2[i][0] - 1], &arr1[arr2[i][1] - 1]);
-        if(isSorted(arr1, n)) {
-            flag = 1;
-            break;
-        }
-    }
-
-    ll count = 0;
-    if(flag) {
-        pf(count);
-    } else {
-        count = minSwaps(arr1, n);
-        pf(count);
-    }
-
+    pf(total);
 }
 
 int main() {
     FAST_IO
-    ll testcases;
-    sc(testcases);
-
-    while(testcases--) {
-        solve();
-    }
-
+    solve();
     return 0;
 }

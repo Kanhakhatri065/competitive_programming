@@ -42,97 +42,28 @@ typedef vector<pair<ll,ll>>vpll;
 void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
-
-string decimalToBinary(ll n) {
-    string bin = "";
-    for(ll i = 0;n > 0;i++) {
-        if(n % 2 == 0) {
-            bin += '0';
-        } else {
-            bin += '1';
-        }
-        n /= 2;
-    }
-
-    reverse(all(bin));
-
-    return bin;
-}
-
-ll binaryToDecimal(string bin) {
-    ll n = 0;
-    ll base = 1;
-    for(ll i = bin.size() - 1;i >= 0;i--) {
-        if(bin[i] == '1') {
-            n += base;
-        }
-        base *= 2;
-    }
-
-    return n;
-}
-
-ull largestNum(ull n) 
-{ 
-  
-    ull num = 0; 
-  
-    for (int i = 0; i <= 64; i++) { 
-        int x = (1 << i); 
-  
-        if ((x - 1) <= n) {
-            num = (1 << i) - 1; 
-        } else {
-            break;
-        }
-    } 
-  
-    return num; 
-} 
-  
-
 void solve() {
-    ull x, y, l, r;
-    sc(x);
-    sc(y);
-    sc(l);
-    sc(r);
+    ll n, k;
+    sc(n);
+    sc(k);
 
-    string binary_z(decimalToBinary(r).size(), '1');
-    ull z = 0;
+    vll v(n, 0);
+    forIn(v, n);
 
-    int flag = 0;
-    for(ll i = 0;i < binary_z.size();i++) {
-        flag = 0;
-        for(ll j = binary_z.size() - 1;j >= i;j--) {
-            binary_z[j] = '0';
-            z = binaryToDecimal(binary_z);
-            if(z <= r) {
-                flag = 1;
-                break;
-            }
-            binary_z[i] = '1';
+    ll total = 0;
+    for0(n - 1) {
+        if(v[i] + v[i + 1] < k) {
+            total += (k - v[i] - v[i + 1]);
+            v[i + 1] += k - (v[i] + v[i + 1]);
         }
-
-        if(flag == 1) {
-            break;
-        }
-
-        binary_z[i] = '0';
     }
-    
-    z = binaryToDecimal(binary_z);
 
-    pf(z - 1);
+    pf(total);
+    vpnt(v);
 }
 
 int main() {
     FAST_IO
-    ll testcases;
-    sc(testcases);
-
-    while(testcases--) {
-        solve();
-    }
+    solve();
     return 0;
 }

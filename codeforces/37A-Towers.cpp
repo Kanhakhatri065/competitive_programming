@@ -42,74 +42,35 @@ typedef vector<pair<ll,ll>>vpll;
 void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
-vector<string> store;
-
-void subsequence(string str) { 
-    for (int i = 0; i < str.length(); i++) { 
-        for (int j = str.length(); j > i; j--) { 
-            string sub_str = str.substr(i, j); 
-            store.pb(sub_str); 
-  
-            for (int k = 1; k < sub_str.length() - 1; k++) { 
-                string sb = sub_str;   
-                sb.erase(sb.begin() + k); 
-                subsequence(sb); 
-            } 
-        } 
-    } 
-} 
-
 void solve() {
-    string a, b;
-    sc(a);
-    sc(b);
-
-    unordered_map<string, ll> m;
-
     ll n;
     sc(n);
 
-    string temp;
-    ll points;
+    vll v(n, 0);
+
+    forIn(v, n);
+    mll m;
     for0(n) {
-        sc(temp);
-        sc(points);
-
-        m.insert(mp(temp, points));
+        m[v[i]]++;
     }
 
-    string c = a + b;
-    subsequence(c);
+    mll::reverse_iterator it = m.rbegin();
+    ll max_count = it->ss;
+    ll num = it->ff;
 
-    vll store_pleasure;
-    ll total = 0;
-    for(auto it : store) {
-        total = 0;
-        if(!it.empty()) {
-            for(ll i = 0;i < it.length();i++) {
-                for(ll len = 1;i <= n - i;len++) {
-                    if(m.find(it.substr(i, len)) != m.end()) {
-                        total += m.find(it.substr(i, len))->ss;
-                    }
-                }
-            }
+    for(it = m.rbegin();it != m.rend();it++) {
+        if(max_count < it->ss) {
+            max_count = it->ss;
+            num = it->ff;
         }
-
-        store_pleasure.pb(total);
     }
 
-    pf(*max_element(all(store_pleasure)));
-    store_pleasure.clear();
-    store.clear();
+    num = m.size();
+    cout << max_count << " " << num << endl;
 }
 
 int main() {
     FAST_IO
-    ll testcases;
-    sc(testcases);
-
-    while(testcases--) {
-        solve();
-    }
+    solve();
     return 0;
 }
