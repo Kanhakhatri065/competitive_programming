@@ -42,44 +42,113 @@ typedef vector<pair<ll,ll>>vpll;
 void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
+struct Node{
+    ll sum, sumA, size;
+    
+    void init(ll value) {
+        sum = sumA = value;
+        size = 1;
+    }
+
+    void merge(Node L, Node R) {
+        size = L.size + R.size;
+        sum = L.sum + R.sum;
+        sumA = L.sumA + R.sumA + (ll) R.sum * L.size;
+    }
+};
+
 ll x = 1;
 void solve() {
-    ll n, k;
+    ll n, q;
     sc(n);
-    sc(k);
+    sc(q);
 
-    vll v(n, 0);
-    forIn(v, n);
+    vll a(n + 1);
+    for(ll i = 1;i <= n;i++) {
+        sc(a[i]);
 
-    char type;
-    ll l,r;
+        if(i % 2 == 1) {
+            a[i] *= -1;
+        }   
+    }
 
-    ll total_sum = 0;
-    while(k--) {
+    int B = 1;
+    while(B <= n) {
+        B *= 2;
+    }
+
+    vector<Node> tree(2 * B);
+    for0(B) {
+        tree[B + i].init(0);
+    }
+
+    for(ll i = 1;i <= n;i++)  {
+        tree[B + i].init(a[i]);
+    }
+
+    for(ll i = B - 1;i >= 1;i--) {
+        tree[i].merge(tree[2 * i], tree[2 * i + 1]);
+    }
+
+    ll total = 0;
+    while(q--) {
+        char type;
         sc(type);
-        sc(l);
-        sc(r);
 
         if(type == 'U') {
-            v[l - 1] = r;
-        }  else {
-            ll turn = 0;
-            ll sum = 0;
-            ll count = 1;
-            for(ll i = l - 1;i < r;i++) {
-                if(turn % 2 == 0) {
-                    sum += (v[i] * count);
-                } else {
-                    sum -= (v[i] * count);
-                }
-                turn++;
-                count++;
+            ll id, value;
+            sc(id);
+            sc(value);
+
+            if(id % 2 == 1) {
+                value *= -1;
             }
-            total_sum += sum;
+
+            tree[B+id].init(value);
+            for(ll i = (B + id) / 2;i >= 1;i /= 2) {
+                tree[i].merge(tree[2 * i], tree[2 * i + 1]);
+            }
+        } else {
+            ll L, R;
+            sc(L);
+            sc(R);
+
+            bool sign = L % 2;
+            L += B;
+            R += B;
+
+            bool single = (L == R);
+            Node left, right;
+            left = tree[L];
+            right = tree[R];
+
+            while(L + 1 < R) {
+                if(L % 2 == 0) {
+                    left.merge(left, tree[L + 1]);
+                }
+
+                if(R % 2 == 1) {
+                    right.merge(tree[R - 1], right);
+                }
+
+                L /= 2;
+                R /= 2;
+            }
+
+            Node answer = left;
+            if(!single) {
+                answer.merge(left, right);
+            }
+
+            if(sign) {
+                answer.sumA *= -1;
+            }
+
+            total += answer.sumA;
         }
     }
 
-    string out = "Case #" + to_string(x) + ": " + to_string(total_sum);
+    string out = "Case #" + to_string(x) + ": " + to_string(total);
     pf(out);
     x++;
 }

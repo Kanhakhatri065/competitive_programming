@@ -42,38 +42,74 @@ typedef vector<pair<ll,ll>>vpll;
 void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
-bool isPerfectSquare(ll p) {   
-  long double sr = sqrt(p); 
-  
-  return ((sr - floor(sr)) == 0); 
-} 
+const int MAX = 1005;
+char grid[MAX][MAX];
 
 ll x = 1;
 void solve() {
-    ll n;
-    sc(n);
+    ll h, w;
+    sc(h);
+    sc(w);
 
-    ll sum = 0;
-
-    vll v(n, 0);
-    for0(n) {
-        sc(v[i]);
-        sum += abs(v[i]);
+    for(ll i = h - 1;i >= 0;i--) {
+        sc(grid[i]);
     }
 
-    vll count(2 * sum + 1);
-    count[sum]++;
-    ll pref = 0;
-    ll ans = 0;
-    for0(n) {
-        pref += v[i];
-        for(ll j = 0;j * j <= sum + pref;j++) {
-            ans += count[sum + pref - j * j];
+    string s;
+    vector<bool> taken(26);
+    for(ll rep = 0;rep < 26;rep) {
+        vector<bool> ok(26);
+        for(ll row = 0;row < h;row++) {
+            for(ll col = 0;col < w;col++) {
+                if(!taken[grid[row][col] - 'A']) {
+                    ok[grid[row][col] - 'A'] = true;
+                }
+            }
         }
-        count[sum + pref]++;
+
+        for(ll col = 0;col < w;col++) {
+            ll row = 0;
+            while(row < h && taken[grid[row][col] - 'A']) {
+                row;
+            }
+
+            if(row == h) {
+                continue;
+            }
+
+            while(row + 1 < h && grid[row + 1][col] == grid[row][col]) {
+                row++;
+            }
+
+            for(ll i = row + 1;i < h;i++) {
+                ok[grid[i][col] - 'A'] = false;
+            }
+        }
+
+        for(ll i = 0;i < 26;i++) {
+            if(ok[i]) {
+                s += char('A' + i);
+                taken[i] = true;
+            }
+        }
     }
 
-    string out = "Case #" + to_string(x) + ": " + to_string(ans);
+    bool ok = true;
+    for(ll row = 0;row < h;row++) {
+        for(ll col = 0;col < w;col++) {
+            if(!taken[grid[row][col] - 'A']) {
+                ok = false;
+            }
+        }
+    }
+
+    string out = "Case #" + to_string(x) + ": ";
+    if(ok) {
+        out += s;
+    } else {
+        out += "-1";
+    }
+
     pf(out);
     x++;
 }
@@ -86,5 +122,6 @@ int main() {
     while(testcases--) {
         solve();
     }
+
     return 0;
 }

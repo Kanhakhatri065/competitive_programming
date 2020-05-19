@@ -7,7 +7,7 @@ typedef long long ll;typedef unsigned long long ull;
 #define sc(a) cin >> a
 #define pf(a) cout << a << endl
 /*** Loops ***/
-#define f(i, p, num) for(ll i = p; i < num; i++)
+#define for0(num) for(ll i = 0; i < num; i++)
 #define forIn(arr, num) for(ll i = 0; i < num; i++) cin >> arr[i];
 #define vpnt(ans) for(ll i = 0; i < ans.size(); i++) cout << ans[i] << (i + 1 < ans.size() ? ' ' : '\n');
 /*** Define Values ***/
@@ -42,3 +42,51 @@ typedef vector<pair<ll,ll>>vpll;
 void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
+void solve() {
+    ll n;
+    sc(n);
+
+    vll v(n, 0);
+    forIn(v, n);
+
+    ll max_rad = *max_element(all(v));
+    ll max_rad_idx = find(all(v), max_rad) - v.begin();
+
+    int flag = 0;
+    int turn = 0;
+    for0(n - 1) {
+        if(i != max_rad_idx && turn == 0) {
+            if(v[i + 1] > v[i]) {
+                continue;
+            } else {
+                flag = 1;
+                break;
+            }
+        }
+
+        if(i != max_rad_idx && turn == 1) {
+            if(v[i] > v[i + 1]) {
+                continue;
+            } else {
+                flag = 1;
+                break;
+            }
+        }
+
+        if(i == max_rad_idx) {
+            turn = 1;
+        }
+    }
+
+    if(flag) {
+        no;
+    } else {
+        yes;
+    }
+}
+
+int main() {
+    FAST_IO
+    solve();
+    return 0;
+}

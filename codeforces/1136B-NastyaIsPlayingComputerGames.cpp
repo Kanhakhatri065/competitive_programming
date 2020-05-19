@@ -42,3 +42,18 @@ typedef vector<pair<ll,ll>>vpll;
 void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
+void solve() {
+    ll n, k;
+    sc(n);
+    sc(k);
+
+    ll count = 0;
+    count = 3 * n + min(n - k, k - 1);
+    pf(count);
+}
+
+int main() {
+    FAST_IO
+    solve();
+    return 0;
+}

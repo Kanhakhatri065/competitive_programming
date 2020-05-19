@@ -7,7 +7,7 @@ typedef long long ll;typedef unsigned long long ull;
 #define sc(a) cin >> a
 #define pf(a) cout << a << endl
 /*** Loops ***/
-#define f(i, p, num) for(ll i = p; i < num; i++)
+#define for0(num) for(ll i = 0; i < num; i++)
 #define forIn(arr, num) for(ll i = 0; i < num; i++) cin >> arr[i];
 #define vpnt(ans) for(ll i = 0; i < ans.size(); i++) cout << ans[i] << (i + 1 < ans.size() ? ' ' : '\n');
 /*** Define Values ***/
@@ -42,3 +42,28 @@ typedef vector<pair<ll,ll>>vpll;
 void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
+void solve() {
+    ll l, r;
+    sc(l);
+    sc(r);
+
+    vector<pll> v;
+    for(ll i = l;i <= r;i += 2) {
+        v.pb({i, i + 1});
+    }
+
+    if(v.empty()) {
+        no;
+    } else {
+        yes;
+        for(ll i = 0;i < v.size();i++) {
+            cout << v[i].ff << " " << v[i].ss << endl;
+        }
+    }
+}
+
+int main() {
+    FAST_IO
+    solve();
+    return 0;
+}

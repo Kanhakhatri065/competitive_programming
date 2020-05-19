@@ -42,3 +42,28 @@ typedef vector<pair<ll,ll>>vpll;
 void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
+void solve() {
+    string str;
+    sc(str);
+
+    ll count = 0;
+    ll sum = 0;
+
+    while(str.size() > 1) {
+        sum = 0;
+        f(i, 0, str.size()) {
+            sum += (str[i] - '0');
+        }
+
+        str = to_string(sum);
+        count++;
+    }
+
+    pf(count);
+}
+
+int main() {
+    FAST_IO
+    solve();
+    return 0;
+}
