@@ -43,57 +43,48 @@ void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
 void solve() {
-    ll a, b, c, d;
-    sc(b);
-    sc(c);
-    sc(d);
-    a=3;
-    if(b==2){
-      if((c+d)%3==0)
-        cout<<"YES\n";
-      else
-        cout<<"NO\n";
+    ll n, x, y;
+    sc(n);
+    sc(x);
+    sc(y);
+
+    ll contests[n][2];
+    f(i, 0, n) {
+        sc(contests[i][0]);
+        sc(contests[i][1]);
     }
-    else{
-      long long e=(c+d)%10,f=c+d+e;
-      if(e!=0&&e!=5){
-        while(e!=2&&a<b){
-          e=(2*e)%10;
-          f+=e;
-          ++a;
+
+    vll v(x, 0);
+    forIn(v, x);
+
+    vll w(y, 0);
+    forIn(w, y);
+
+    srt(v);
+    srt(w);
+
+    ll ans = LONG_LONG_MAX;
+
+    f(i, 0, n) {
+        auto it1 = upper_bound(all(v), contests[i][0]);
+        auto it2 = lower_bound(all(w), contests[i][1]);
+
+        if(it1 == v.begin()) {
+            continue;
         }
-        if(a<b){
-          long long g=b-a;
-          long long h=g%4,i=g/4;
-          f+=i*20;
-          if(h==3)
-            f+=18;
-          else if(h==2)
-            f+=12;
-          else if(h==1)
-            f+=4;
+        it1--;
+        if(it2 == w.end()) {
+            continue;
         }
-        if(f%3)
-          cout<<"NO\n";
-        else
-          cout<<"YES\n";
-      }
-      else{
-        if(f%3)
-          cout<<"NO\n";
-        else
-          cout<<"YES\n";
-      }
+
+        ans = min(ans, *it2 - *it1 + 1);
     }
+
+    pf(ans);
 }
 
 int main() {
     FAST_IO
-    ll testcases;
-    sc(testcases);
-
-    while(testcases--) {
-        solve();
-    }
+    solve();
     return 0;
 }

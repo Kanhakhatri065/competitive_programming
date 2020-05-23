@@ -43,57 +43,50 @@ void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
 void solve() {
-    ll a, b, c, d;
-    sc(b);
-    sc(c);
-    sc(d);
-    a=3;
-    if(b==2){
-      if((c+d)%3==0)
-        cout<<"YES\n";
-      else
-        cout<<"NO\n";
-    }
-    else{
-      long long e=(c+d)%10,f=c+d+e;
-      if(e!=0&&e!=5){
-        while(e!=2&&a<b){
-          e=(2*e)%10;
-          f+=e;
-          ++a;
+    ll n;
+    sc(n);
+
+    vll v(n, 0);
+    forIn(v, n);
+
+    ll depth = 0, max_depth = 0, depth_loc = 0;
+    ll count = 0, max_count = 0, count_loc = 0;
+    ll bracketstartIndex = 0;
+
+    f(i, 0, n) {
+        if(!depth) {
+            count = 0;
+            bracketstartIndex = i + 1;
         }
-        if(a<b){
-          long long g=b-a;
-          long long h=g%4,i=g/4;
-          f+=i*20;
-          if(h==3)
-            f+=18;
-          else if(h==2)
-            f+=12;
-          else if(h==1)
-            f+=4;
+
+        count++;
+
+        if(v[i] == 1) {
+            depth++;
+        } else {
+            depth--;
         }
-        if(f%3)
-          cout<<"NO\n";
-        else
-          cout<<"YES\n";
-      }
-      else{
-        if(f%3)
-          cout<<"NO\n";
-        else
-          cout<<"YES\n";
-      }
+
+        if(depth > max_depth) {
+            depth_loc = i + 1;
+            max_depth = depth;
+        }
+
+        if(count > max_count) {
+            count_loc = bracketstartIndex;
+            max_count = count;
+        }
     }
+
+    string out = to_string(max_depth) + " " + to_string(depth_loc) + " " + to_string(max_count) + " " + to_string(count_loc);
+    pf(out);
 }
 
 int main() {
     FAST_IO
     ll testcases;
-    sc(testcases);
 
-    while(testcases--) {
-        solve();
-    }
+    solve();
+    
     return 0;
 }

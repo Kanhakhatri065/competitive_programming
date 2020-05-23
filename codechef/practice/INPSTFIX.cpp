@@ -42,49 +42,59 @@ typedef vector<pair<ll,ll>>vpll;
 void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
+int prec(char c) {
+    if(c == '^') {
+        return 3;
+    } else if(c == '*' || c == '/') {
+        return 2;
+    } else if(c == '+' || c == '-') {
+        return 1;
+    }
+
+    return -1;
+}
+
 void solve() {
-    ll a, b, c, d;
-    sc(b);
-    sc(c);
-    sc(d);
-    a=3;
-    if(b==2){
-      if((c+d)%3==0)
-        cout<<"YES\n";
-      else
-        cout<<"NO\n";
-    }
-    else{
-      long long e=(c+d)%10,f=c+d+e;
-      if(e!=0&&e!=5){
-        while(e!=2&&a<b){
-          e=(2*e)%10;
-          f+=e;
-          ++a;
+    ll n;
+    sc(n);
+
+    string str;
+    sc(str);
+
+    stack<char> st;
+    st.push(':');
+    ll len = str.length();
+    string out;
+
+    f(i, 0, len) {
+        if(str[i] >= 'A' && str[i] <= 'Z') {
+            out += str[i];
+        } else if(str[i] == '(') {
+            st.push(str[i]);
+        } else if(str[i] == ')') {
+            while(st.top() != ':' && st.top() != '(') {
+                out += st.top();
+                st.pop();
+            }
+
+            if(st.top() == '(') {
+                st.pop();
+            }
+        } else {
+            while(st.top() != ':' && prec(str[i]) <= prec(st.top())) {
+                out += st.top();
+                st.pop();
+            }
+            st.push(str[i]);
         }
-        if(a<b){
-          long long g=b-a;
-          long long h=g%4,i=g/4;
-          f+=i*20;
-          if(h==3)
-            f+=18;
-          else if(h==2)
-            f+=12;
-          else if(h==1)
-            f+=4;
-        }
-        if(f%3)
-          cout<<"NO\n";
-        else
-          cout<<"YES\n";
-      }
-      else{
-        if(f%3)
-          cout<<"NO\n";
-        else
-          cout<<"YES\n";
-      }
     }
+
+    while(st.top() != ':') {
+        out += st.top();
+        st.pop();
+    }
+
+    pf(out);
 }
 
 int main() {
@@ -95,5 +105,6 @@ int main() {
     while(testcases--) {
         solve();
     }
+
     return 0;
 }

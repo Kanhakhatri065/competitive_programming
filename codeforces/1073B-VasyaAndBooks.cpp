@@ -43,57 +43,45 @@ void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
 void solve() {
-    ll a, b, c, d;
-    sc(b);
-    sc(c);
-    sc(d);
-    a=3;
-    if(b==2){
-      if((c+d)%3==0)
-        cout<<"YES\n";
-      else
-        cout<<"NO\n";
+    ll n;
+    sc(n);
+
+    ll temp;
+
+    qll q;
+    f(i, 0, n) {
+        sc(temp);
+        q.push(temp);
     }
-    else{
-      long long e=(c+d)%10,f=c+d+e;
-      if(e!=0&&e!=5){
-        while(e!=2&&a<b){
-          e=(2*e)%10;
-          f+=e;
-          ++a;
+
+    vll u(n, 0);
+    forIn(u, n);
+
+    vll store;
+    f(i, 0, n) {
+        if(find(q.front(), q.back(), u[i]) == -1) {
+            store.pb(0);
+        } else {
+            ll ans = 0;
+            while(true) {
+                ans++;
+                if(q.front() == u[i]) {
+                    q.pop();
+                    break;
+                }
+
+                q.pop();
+            }
+
+            store.pb(ans);
         }
-        if(a<b){
-          long long g=b-a;
-          long long h=g%4,i=g/4;
-          f+=i*20;
-          if(h==3)
-            f+=18;
-          else if(h==2)
-            f+=12;
-          else if(h==1)
-            f+=4;
-        }
-        if(f%3)
-          cout<<"NO\n";
-        else
-          cout<<"YES\n";
-      }
-      else{
-        if(f%3)
-          cout<<"NO\n";
-        else
-          cout<<"YES\n";
-      }
     }
+
+    vpnt(store);
 }
 
 int main() {
     FAST_IO
-    ll testcases;
-    sc(testcases);
-
-    while(testcases--) {
-        solve();
-    }
+    solve();
     return 0;
 }

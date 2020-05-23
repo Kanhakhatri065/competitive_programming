@@ -43,48 +43,26 @@ void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
 void solve() {
-    ll a, b, c, d;
-    sc(b);
-    sc(c);
+    ll n, k, d;
+    sc(n);
+    sc(k);
     sc(d);
-    a=3;
-    if(b==2){
-      if((c+d)%3==0)
-        cout<<"YES\n";
-      else
-        cout<<"NO\n";
-    }
-    else{
-      long long e=(c+d)%10,f=c+d+e;
-      if(e!=0&&e!=5){
-        while(e!=2&&a<b){
-          e=(2*e)%10;
-          f+=e;
-          ++a;
+
+    vll v(n, 0);
+    forIn(v, n);
+
+    vll store;
+    mll m;
+    for(ll i = 0;i <= n - d;i++) {
+        for(ll j = i;j < i + d;j++) {
+            m[v[j]]++;
         }
-        if(a<b){
-          long long g=b-a;
-          long long h=g%4,i=g/4;
-          f+=i*20;
-          if(h==3)
-            f+=18;
-          else if(h==2)
-            f+=12;
-          else if(h==1)
-            f+=4;
-        }
-        if(f%3)
-          cout<<"NO\n";
-        else
-          cout<<"YES\n";
-      }
-      else{
-        if(f%3)
-          cout<<"NO\n";
-        else
-          cout<<"YES\n";
-      }
+
+        store.pb(m.size());
+        m.clear();
     }
+
+    pf(*min_element(all(store)));
 }
 
 int main() {
@@ -95,5 +73,6 @@ int main() {
     while(testcases--) {
         solve();
     }
+
     return 0;
 }

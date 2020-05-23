@@ -42,58 +42,72 @@ typedef vector<pair<ll,ll>>vpll;
 void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
+ll lefti[300005], righti[300005];
+stack<ll> left_stack, right_stack;
+
 void solve() {
-    ll a, b, c, d;
-    sc(b);
-    sc(c);
-    sc(d);
-    a=3;
-    if(b==2){
-      if((c+d)%3==0)
-        cout<<"YES\n";
-      else
-        cout<<"NO\n";
+    ll n;
+    sc(n);
+
+    vector<pll> points(n);
+    f(i, 0, n) {
+        sc(points[i].ff);
+        sc(points[i].ss);
     }
-    else{
-      long long e=(c+d)%10,f=c+d+e;
-      if(e!=0&&e!=5){
-        while(e!=2&&a<b){
-          e=(2*e)%10;
-          f+=e;
-          ++a;
-        }
-        if(a<b){
-          long long g=b-a;
-          long long h=g%4,i=g/4;
-          f+=i*20;
-          if(h==3)
-            f+=18;
-          else if(h==2)
-            f+=12;
-          else if(h==1)
-            f+=4;
-        }
-        if(f%3)
-          cout<<"NO\n";
+
+    for(int i = 0; i <= 100000; i++)
+        points.push_back({i, 500});
+
+    n += 100001;
+
+    sort(points.begin(), points.end());
+
+    lefti[0] = -1;
+    left_stack.push(0);
+    right_stack.push(n-1);
+    for(int i = 1; i < n; i++){
+
+        while(!left_stack.empty() and (points[left_stack.top()].second >= points[i].second or points[left_stack.top()].second == 0))
+            left_stack.pop();
+        if(left_stack.empty())
+            lefti[i] = -1;
         else
-          cout<<"YES\n";
-      }
-      else{
-        if(f%3)
-          cout<<"NO\n";
-        else
-          cout<<"YES\n";
-      }
+            lefti[i] = left_stack.top();
+        left_stack.push(i);
     }
+
+    righti[n-1] = -1;
+    for(int i = n-2; i >= 0; i--){
+
+        while(!right_stack.empty() and (points[right_stack.top()].second >= points[i].second or points[right_stack.top()].second == 0))
+            right_stack.pop();
+        if(right_stack.empty())
+            righti[i] = -1;
+        else
+            righti[i] = right_stack.top();
+        right_stack.push(i);
+    }
+
+    ll sol = -1;
+    int left_width, right_width;
+    for(int i = 0; i < n; i++){
+        ll height  = points[i].second;
+        if(lefti[i] != -1)
+            left_width = points[lefti[i]].first;
+        else
+            left_width = 0;
+        if(righti[i] != -1)
+            right_width = points[righti[i]].first;
+        else
+            right_width = 100000;
+        sol = max(sol, height*(right_width - left_width));
+    }
+
+    pf(sol);
 }
 
 int main() {
     FAST_IO
-    ll testcases;
-    sc(testcases);
-
-    while(testcases--) {
-        solve();
-    }
+    solve();
     return 0;
 }
