@@ -42,41 +42,32 @@ typedef vector<pair<ll,ll>>vpll;
 void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
-const int N = 2e5 + 8;
-int a[N], b[N];
-
+const double PI = asin(1) * 2;
 void solve() {
     ll n;
     sc(n);
 
-    int lowest = 0;
-    vector<int> index(n + 1);
+    vll v(n, 0);
+    forIn(v, n);
+
+    srtGreat(v);
+
+    ll rr = 0;
     f(i, 0, n) {
-        sc(a[i]);
-        index[a[i]] = i;
+        rr += v[i] * v[i] * (1 - i % 2 * 2);
     }
 
-    f(i, 0, n) {
-        sc(b[i]);
-    }
+    double total_area = PI * rr;
 
-    f(i, 0, n) {
-        int v = b[i];
-        int wi = index[v];
-
-        if(wi < lowest) {
-            cout << 0 << " ";
-        } else {
-            cout << (wi - lowest + 1) << " ";
-            lowest = wi + 1;
-        }
-    }
-
-    cout << endl;
+    pf(total_area);
 }
 
 int main() {
     FAST_IO
+    cout << fixed;
+    cout.precision(10);
+
     solve();
+    
     return 0;
 }

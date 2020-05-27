@@ -42,37 +42,68 @@ typedef vector<pair<ll,ll>>vpll;
 void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
-const int N = 2e5 + 8;
-int a[N], b[N];
-
+const int N = 1e6 + 1;
 void solve() {
-    ll n;
+    ll n, q;
     sc(n);
+    sc(q);
 
-    int lowest = 0;
-    vector<int> index(n + 1);
-    f(i, 0, n) {
+    int a[N];
+    set<int> starts;
+    for(ll i = 1;i <= n;i++) {
         sc(a[i]);
-        index[a[i]] = i;
-    }
-
-    f(i, 0, n) {
-        sc(b[i]);
-    }
-
-    f(i, 0, n) {
-        int v = b[i];
-        int wi = index[v];
-
-        if(wi < lowest) {
-            cout << 0 << " ";
-        } else {
-            cout << (wi - lowest + 1) << " ";
-            lowest = wi + 1;
+        if(a[i] != a[i - 1]) {
+            starts.insert(i);
         }
     }
 
-    cout << endl;
+    ll type, idx, x;
+    while(q--) {
+        sc(type);
+
+        if(type == 1) {
+            sc(idx);
+            sc(x);
+
+            if(idx != n and a[idx + 1] == a[idx] and x != a[idx + 1]) {
+                starts.insert(idx + 1);
+            }
+
+            if(idx != n and a[idx + 1] != a[idx] and x == a[idx + 1]) {
+                starts.erase(idx + 1);
+            }
+
+            if(idx != 1 and a[idx - 1] == a[idx] and x != a[idx - 1]) {
+                starts.insert(idx);
+            }
+
+            if(idx != 1 and a[idx - 1] != a[idx] and x == a[idx - 1]) {
+                starts.erase(idx);
+            }
+            a[idx] = x;
+        } else {
+            sc(idx);
+            auto wow = starts.upper_bound(idx);
+            wow--;
+            int cur = a[*wow];
+            int lst = *wow;
+
+            while(1) {
+                if(wow == starts.begin()) {
+                    break;
+                }
+                wow--;
+                if(cur % a[*wow] == 0) {
+                    cur = a[*wow];
+                    lst = *wow;
+                } else {
+                    break;
+                }
+            }
+
+            pf(lst);
+        }
+    }
 }
 
 int main() {

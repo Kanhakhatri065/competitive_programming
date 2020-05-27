@@ -42,41 +42,39 @@ typedef vector<pair<ll,ll>>vpll;
 void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
-const int N = 2e5 + 8;
-int a[N], b[N];
-
 void solve() {
-    ll n;
-    sc(n);
+    string str;
+    sc(str);
 
-    int lowest = 0;
-    vector<int> index(n + 1);
-    f(i, 0, n) {
-        sc(a[i]);
-        index[a[i]] = i;
-    }
+    if(str.size() % 2 != 0) {
+        pf(0);
+    } else {
+        ll count = 0;
+        ll k = str.size() / 2;
+        f(i, 1, k) {
+            ll j = k - i;
+            string s1 = str.substr(0, i);
+            string s2 = str.substr(i, i);
+            string s3 = str.substr(2 * i, j);
+            string s4 = str.substr(2 * i + j, j);
 
-    f(i, 0, n) {
-        sc(b[i]);
-    }
-
-    f(i, 0, n) {
-        int v = b[i];
-        int wi = index[v];
-
-        if(wi < lowest) {
-            cout << 0 << " ";
-        } else {
-            cout << (wi - lowest + 1) << " ";
-            lowest = wi + 1;
+            if(s1 == s2 && s3 == s4) {
+                count++;
+            }
         }
-    }
 
-    cout << endl;
+        pf(count);
+    }
 }
 
 int main() {
     FAST_IO
-    solve();
+    ll t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+
     return 0;
 }

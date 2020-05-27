@@ -42,41 +42,58 @@ typedef vector<pair<ll,ll>>vpll;
 void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
-const int N = 2e5 + 8;
-int a[N], b[N];
-
 void solve() {
     ll n;
     sc(n);
+    
+    vll odd;
+    vll even;
 
-    int lowest = 0;
-    vector<int> index(n + 1);
+    vll v(n, 0);
     f(i, 0, n) {
-        sc(a[i]);
-        index[a[i]] = i;
-    }
-
-    f(i, 0, n) {
-        sc(b[i]);
-    }
-
-    f(i, 0, n) {
-        int v = b[i];
-        int wi = index[v];
-
-        if(wi < lowest) {
-            cout << 0 << " ";
+        sc(v[i]);
+        if(v[i] % 2) {
+            odd.pb(v[i]);
         } else {
-            cout << (wi - lowest + 1) << " ";
-            lowest = wi + 1;
+            even.pb(v[i]);
         }
     }
 
-    cout << endl;
+    if(odd.empty()) {
+        yes;
+    } else if(even.empty()) {
+        yes;
+    } else {
+        if(even.size() % 2 == 0 && odd.size() % 2 == 0) {
+            yes;
+        } else {
+            int flag = 0;
+            f(i, 0, odd.size()) {
+                f(j, 0, even.size()) {
+                    if(abs(odd[i] - even[j]) == 1) {
+                        flag = 1;
+                        break;
+                    }
+                }
+            }
+
+            if(flag) {
+                yes;
+            } else {
+                no;
+            }
+        }
+    }
 }
 
 int main() {
     FAST_IO
-    solve();
+    ll t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+
     return 0;
 }

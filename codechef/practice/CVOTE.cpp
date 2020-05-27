@@ -42,37 +42,58 @@ typedef vector<pair<ll,ll>>vpll;
 void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
-const int N = 2e5 + 8;
-int a[N], b[N];
-
 void solve() {
-    ll n;
+    ll n, m;
     sc(n);
+    sc(m);
 
-    int lowest = 0;
-    vector<int> index(n + 1);
+    map<string, ll> names;
+    map<string, ll> countries;
+    map<string, string> chefs_countries;
+
+    string name, country;
     f(i, 0, n) {
-        sc(a[i]);
-        index[a[i]] = i;
+        sc(name);
+        sc(country);
+        chefs_countries[name] = country;
     }
 
-    f(i, 0, n) {
-        sc(b[i]);
+    f(i, 0, m) {
+        sc(name);
+        names[name]++;
+        countries[chefs_countries[name]]++;
     }
 
-    f(i, 0, n) {
-        int v = b[i];
-        int wi = index[v];
-
-        if(wi < lowest) {
-            cout << 0 << " ";
-        } else {
-            cout << (wi - lowest + 1) << " ";
-            lowest = wi + 1;
+    map<string, ll>::iterator it = countries.begin();
+    ll max_count = it->ss;
+    country = it->ff;
+    for(auto i : countries) {
+        if(max_count < i.ss) {
+            max_count = i.ss;
+            country = i.ff;
+        } else if(max_count == i.ss) {
+            if(i.ff < country) {
+                country = i.ff;
+            }
         }
     }
 
-    cout << endl;
+    it = names.begin();
+    max_count = it->ss;
+    name = it->ff;
+    for(auto i : names) {
+        if(max_count < i.ss) {
+            max_count = i.ss;
+            name = i.ff;
+        } else if(max_count == i.ss) {
+            if(i.ff < name) {
+                name = i.ff;
+            }
+        }
+    }
+
+    pf(country);
+    pf(name);
 }
 
 int main() {

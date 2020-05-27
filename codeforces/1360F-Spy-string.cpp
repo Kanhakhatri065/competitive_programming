@@ -1,3 +1,4 @@
+
 /*** I came, I saw, I conquered. ***/
 #include <bits/stdc++.h>
 using namespace std;
@@ -42,41 +43,74 @@ typedef vector<pair<ll,ll>>vpll;
 void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
-const int N = 2e5 + 8;
-int a[N], b[N];
-
 void solve() {
-    ll n;
+    ll n, m;
     sc(n);
+    sc(m);
 
-    int lowest = 0;
-    vector<int> index(n + 1);
+    vector<string> v(n);
+    forIn(v, n);
+
+    int flag = 0;
+    ll count = 0;
+
+    string a = v[0];
     f(i, 0, n) {
-        sc(a[i]);
-        index[a[i]] = i;
-    }
-
-    f(i, 0, n) {
-        sc(b[i]);
-    }
-
-    f(i, 0, n) {
-        int v = b[i];
-        int wi = index[v];
-
-        if(wi < lowest) {
-            cout << 0 << " ";
-        } else {
-            cout << (wi - lowest + 1) << " ";
-            lowest = wi + 1;
+        if(a == v[i]) {
+            count++;
         }
     }
 
-    cout << endl;
+    string ans = a;
+
+    if(count == n) {
+        flag = 1;
+    } else {
+        string copy = a;
+        f(i, 0, m) {
+            a = copy;
+            f(j, 0, 26) {
+                count = 0;
+                string new_str = a;
+                new_str[i] = j + 'a';
+                f(k, 0, n) {
+                    int differ = 0;
+                    f(l, 0, m) {
+                        if(v[k][l] != new_str[l]) {
+                            differ++;
+                        }
+
+                    }
+                    
+                    if(differ <= 1) {
+                        count++;
+                    }
+                }
+
+                if(count == n) {
+                    ans = new_str;
+                    flag = 1;
+                    break;
+                }
+            }
+        }
+    }
+
+    if(flag) {
+        pf(ans);
+    } else {
+        pf(-1);
+    }
 }
 
 int main() {
     FAST_IO
-    solve();
+    ll t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+
     return 0;
 }

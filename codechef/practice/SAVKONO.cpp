@@ -42,41 +42,59 @@ typedef vector<pair<ll,ll>>vpll;
 void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
-const int N = 2e5 + 8;
-int a[N], b[N];
-
 void solve() {
-    ll n;
+    ll n, z;
     sc(n);
+    sc(z);
 
-    int lowest = 0;
-    vector<int> index(n + 1);
+    vll v(n, 0);
+    forIn(v, n);
+
+    mll m;
     f(i, 0, n) {
-        sc(a[i]);
-        index[a[i]] = i;
+        m[v[i]]++;
     }
 
-    f(i, 0, n) {
-        sc(b[i]);
-    }
+    int flag = 0;
+    ll count = 0;
+    while(z > 0) {
+        auto it = m.rbegin();
+        ll power = it->ff;
+        
+        if(power == 0) {
+            break;
+        }
 
-    f(i, 0, n) {
-        int v = b[i];
-        int wi = index[v];
+        z -= power;
+        m[power]--;
+        count++;
 
-        if(wi < lowest) {
-            cout << 0 << " ";
-        } else {
-            cout << (wi - lowest + 1) << " ";
-            lowest = wi + 1;
+        if(m[power] == 0) {
+            m.erase(power);
+        }
+        power /= 2;
+        m[power]++;
+
+        if(z <= 0) {
+            flag = 1;
+            break;
         }
     }
-
-    cout << endl;
+    if(flag) {
+        pf(count);
+    } else {
+        pf("Evacuate");
+    }
 }
 
 int main() {
     FAST_IO
-    solve();
+    ll testcases;
+    sc(testcases);
+
+    while(testcases--) {
+        solve();
+    }
+
     return 0;
 }

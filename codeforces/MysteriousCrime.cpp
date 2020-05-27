@@ -42,37 +42,68 @@ typedef vector<pair<ll,ll>>vpll;
 void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
-const int N = 2e5 + 8;
-int a[N], b[N];
+bool isSubArray(vll A, vll B, ll n, ll m) 
+{ 
+    ll i = 0, j = 0; 
+  
+    while (i < n && j < m) { 
+  
+         
+        if (A[i] == B[j]) { 
+            i++; 
+            j++; 
+  
+            if (j == m) {
+                return true; 
+            }
+        } 
+        
+        else { 
+            i = i - j + 1; 
+            j = 0; 
+        } 
+    } 
+  
+    return false; 
+} 
 
 void solve() {
-    ll n;
+    ll n, m;
     sc(n);
+    sc(m);
 
-    int lowest = 0;
-    vector<int> index(n + 1);
-    f(i, 0, n) {
-        sc(a[i]);
-        index[a[i]] = i;
-    }
-
-    f(i, 0, n) {
-        sc(b[i]);
-    }
-
-    f(i, 0, n) {
-        int v = b[i];
-        int wi = index[v];
-
-        if(wi < lowest) {
-            cout << 0 << " ";
-        } else {
-            cout << (wi - lowest + 1) << " ";
-            lowest = wi + 1;
+    vll v[m];
+    ll temp;
+    f(i, 0, m) {
+        f(j, 0, n) {
+            sc(temp);
+            v[i].pb(temp);
         }
     }
 
-    cout << endl;
+    ll count = n;
+    ll temp_count = 0;
+    f(i, 0, n) {
+        vll v_temp;
+        v_temp.pb(v[0][i]);
+        f(j, i + 1, n) {
+            v_temp.pb(v[0][j]);
+
+            temp_count = 0;
+            f(k, 1, m) {
+                if(isSubArray(v[k], v_temp, v[k].size(), v_temp.size())) {
+                    temp_count++;
+                }
+            }
+
+            if(temp_count == m - 1) {
+                count++;
+            }
+        }
+        v_temp.clear();
+    }
+
+    pf(count);
 }
 
 int main() {

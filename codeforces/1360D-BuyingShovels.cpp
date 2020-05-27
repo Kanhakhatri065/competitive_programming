@@ -1,3 +1,4 @@
+
 /*** I came, I saw, I conquered. ***/
 #include <bits/stdc++.h>
 using namespace std;
@@ -42,41 +43,52 @@ typedef vector<pair<ll,ll>>vpll;
 void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
-const int N = 2e5 + 8;
-int a[N], b[N];
+ll factors(ll n, ll k) {
+    ll m = LONG_LONG_MIN;
+    for(ll i = 1;i <= sqrt(n);i++) {
+        if(n % i == 0) {
+            if(n / i == i) {
+                if(i <= k) {
+                    m = max(m, i);
+                }
+            } else {
+                if(i <= k) {
+                    m = max(m, i);
+                }
 
-void solve() {
-    ll n;
-    sc(n);
-
-    int lowest = 0;
-    vector<int> index(n + 1);
-    f(i, 0, n) {
-        sc(a[i]);
-        index[a[i]] = i;
-    }
-
-    f(i, 0, n) {
-        sc(b[i]);
-    }
-
-    f(i, 0, n) {
-        int v = b[i];
-        int wi = index[v];
-
-        if(wi < lowest) {
-            cout << 0 << " ";
-        } else {
-            cout << (wi - lowest + 1) << " ";
-            lowest = wi + 1;
+                if(n / i <= k) {
+                    m = max(m, n / i);
+                }
+            }
         }
     }
 
-    cout << endl;
+    return m;
 }
-
+    
+    
+void solve() {
+    ll n, k;
+    sc(n);
+    sc(k);
+    
+    if(k >= n) {
+        pf(1);
+    } else if(k == 1) {
+        pf(n);
+    } else {
+        pf(n / factors(n, k));
+    }
+}
+    
 int main() {
     FAST_IO
-    solve();
+    ll t;
+    sc(t);
+    
+    while(t--) {
+        solve();
+    }
+    
     return 0;
 }

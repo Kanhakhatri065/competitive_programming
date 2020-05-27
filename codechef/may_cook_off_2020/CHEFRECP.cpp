@@ -42,41 +42,68 @@ typedef vector<pair<ll,ll>>vpll;
 void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
-const int N = 2e5 + 8;
-int a[N], b[N];
-
 void solve() {
     ll n;
     sc(n);
 
-    int lowest = 0;
-    vector<int> index(n + 1);
-    f(i, 0, n) {
-        sc(a[i]);
-        index[a[i]] = i;
-    }
+    vll v(n, 0);
+    forIn(v, n);
 
-    f(i, 0, n) {
-        sc(b[i]);
-    }
+    int flag = 1;
+    mll ingredients;
+    mll usage;
 
-    f(i, 0, n) {
-        int v = b[i];
-        int wi = index[v];
+    ll prev = v[0];
+    ll count = 1;
 
-        if(wi < lowest) {
-            cout << 0 << " ";
+    f(i, 1, n) {
+        if(v[i] == prev) {
+            count++;
+            if(i == n - 1) {
+                if(usage.find(count) != usage.end()) {
+                    flag = 0;
+                    break;
+                }
+            }
+        } else if(usage.find(count) != usage.end()) {
+            flag = 0;
+            break;
         } else {
-            cout << (wi - lowest + 1) << " ";
-            lowest = wi + 1;
-        }
+            ingredients[prev] = count;
+            usage[count] = 1;
+
+            if(ingredients.find(v[i]) != ingredients.end()) {
+                flag = 0;
+                break;
+            } else {
+                count = 1;
+                prev = v[i];
+
+                if(i == n - 1) {
+                    if(usage.find(count) != usage.end()) {
+                        flag = 0;
+                        break;
+                    }
+                }
+            }
+        }        
     }
 
-    cout << endl;
+    if(flag) {
+        yes;
+    } else {
+        no;
+    }
 }
 
 int main() {
     FAST_IO
-    solve();
+    ll t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+
     return 0;
 }

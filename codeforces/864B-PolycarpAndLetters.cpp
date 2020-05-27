@@ -42,37 +42,55 @@ typedef vector<pair<ll,ll>>vpll;
 void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
-const int N = 2e5 + 8;
-int a[N], b[N];
+ll dist(string t) {
+    int fr[26] = {0};
+
+    f(i, 0, t.length()) {
+        ++fr[t[i] - 'a'];
+    }
+
+    ll ret = 0;
+    f(i, 0, 26) {
+        if(fr[i] != 0) {
+            ++ret;
+        }
+    }
+
+    return ret;
+}
 
 void solve() {
     ll n;
     sc(n);
 
-    int lowest = 0;
-    vector<int> index(n + 1);
-    f(i, 0, n) {
-        sc(a[i]);
-        index[a[i]] = i;
-    }
+    string str;
+    sc(str);
+
+    string temp = "";
+    vector<string> all;
 
     f(i, 0, n) {
-        sc(b[i]);
-    }
-
-    f(i, 0, n) {
-        int v = b[i];
-        int wi = index[v];
-
-        if(wi < lowest) {
-            cout << 0 << " ";
+        if(islower(str[i])) {
+            temp += str[i];
         } else {
-            cout << (wi - lowest + 1) << " ";
-            lowest = wi + 1;
+            if(!temp.empty()) {
+                all.pb(temp);
+            }
+
+            temp = "";
         }
     }
 
-    cout << endl;
+    if(!temp.empty()) {
+        all.pb(temp);
+    }
+
+    ll res = 0;
+    f(i, 0, all.size()) {
+        res = max(res, dist(all[i]));
+    }
+
+    pf(res);
 }
 
 int main() {
