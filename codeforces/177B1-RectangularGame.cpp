@@ -42,35 +42,42 @@ typedef vector<pair<ll,ll>>vpll;
 void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
-void solve() {
-    ll n, k;
-    sc(n);
-    sc(k);
-
-    string s = "";
-    f(i, 0, n) {
-        s += 'a';
-    }
-
-    ll y = (-1 + sqrt(1 + 8 * k)) / 2;
-    if(y * (y + 1) == 2 * k) {
-        y -= 1;
+vll v;
+void primeFactors(ll n) {
+    while(n % 2 == 0) {
+        v.pb(2);
+        n /= 2;
     }
     
-    ll z = k - (y * (y + 1)) / 2;
-    s[n - 2 - y] = 'b';
-    s[n - z] = 'b';
-    pf(s);
+    for(ll i = 3;i <= sqrt(n);i += 2) {
+        while(n % i == 0) {
+            v.pb(i);
+            n /= i;
+        }
+    }
+
+    if(n > 2) {
+        v.pb(n);
+    }
+}
+
+void solve() {
+    ll n;
+    sc(n);
+
+    ll ans = n;
+    primeFactors(n);
+
+    f(i, 0, v.size()) {
+        ans += n / v[i];
+        n /= v[i];
+    }
+
+    pf(ans);
 }
 
 int main() {
     FAST_IO
-    ll t;
-    sc(t);
-    
-    while(t--) {
-        solve();
-    }
-
+    solve();
     return 0;
 }

@@ -43,34 +43,46 @@ void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
 void solve() {
-    ll n, k;
+    ll n;
     sc(n);
-    sc(k);
 
-    string s = "";
+    vll speed(n);
+    vll ram(n);
+    vll hdd(n);
+    vll cost(n);
+
+    ll idx = -1;
+    ll min_cost = LONG_LONG_MAX;
     f(i, 0, n) {
-        s += 'a';
+        sc(speed[i]);
+        sc(ram[i]);
+        sc(hdd[i]);
+        sc(cost[i]);
     }
 
-    ll y = (-1 + sqrt(1 + 8 * k)) / 2;
-    if(y * (y + 1) == 2 * k) {
-        y -= 1;
+    vector<bool> bad(n, false);
+    f(i, 0, n) {
+        f(j, 0, n) {
+            if(speed[i] < speed[j] && ram[i] < ram[j] && hdd[i] < hdd[j]) {
+                bad[i] = true;
+            }
+        }
     }
-    
-    ll z = k - (y * (y + 1)) / 2;
-    s[n - 2 - y] = 'b';
-    s[n - z] = 'b';
-    pf(s);
+
+    f(i, 0, n) {
+        if(!bad[i]) {
+            if(cost[i] < min_cost) {
+                idx = i;
+                min_cost = cost[i];
+            }
+        }
+    }
+
+    pf(idx + 1);
 }
 
 int main() {
     FAST_IO
-    ll t;
-    sc(t);
-    
-    while(t--) {
-        solve();
-    }
-
+    solve();
     return 0;
 }

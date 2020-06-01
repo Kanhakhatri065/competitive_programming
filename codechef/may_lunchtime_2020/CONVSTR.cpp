@@ -43,31 +43,60 @@ void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
 void solve() {
-    ll n, k;
+    ll n;
     sc(n);
-    sc(k);
 
-    string s = "";
+    string a, b;
+    sc(a);
+    sc(b);
+
     f(i, 0, n) {
-        s += 'a';
+        if(a[i] < b[i]) {
+            pf(-1);
+            return;
+        }
     }
 
-    ll y = (-1 + sqrt(1 + 8 * k)) / 2;
-    if(y * (y + 1) == 2 * k) {
-        y -= 1;
+    unordered_map<char, vll> mp;
+    map<char, vll, greater<char>> mod;
+
+    f(i, 0, n) {
+        mp[a[i]].pb(i);
     }
-    
-    ll z = k - (y * (y + 1)) / 2;
-    s[n - 2 - y] = 'b';
-    s[n - z] = 'b';
-    pf(s);
+
+    f(i, 0, n) {
+        if(a[i] != b[i]) {
+            mod[b[i]].pb(i);
+        }
+    }
+
+    vector<vll> ans;
+    for(auto i : mod) {
+        vll v;
+        if(mp.find(i.ff) == mp.end()) {
+            pf(-1);
+            return;
+        }
+
+        v.pb(mp[i.ff][0]);
+        for(auto j : i.ss) {
+            v.pb(j);
+        }
+        ans.pb(v);
+    }
+
+    pf(ans.size());
+    for(auto it : ans) {
+        cout << it.size() << " ";
+        vpnt(it);
+    }
 }
 
 int main() {
     FAST_IO
     ll t;
     sc(t);
-    
+
     while(t--) {
         solve();
     }

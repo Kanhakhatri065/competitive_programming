@@ -47,30 +47,29 @@ void solve() {
     sc(n);
     sc(k);
 
-    string s = "";
+    vector<pll> v(n);
+    vll store;
+
+    ll a;
     f(i, 0, n) {
-        s += 'a';
+        sc(a);
+        v[i].ff = a;
+        v[i].ss = i + 1;
     }
 
-    ll y = (-1 + sqrt(1 + 8 * k)) / 2;
-    if(y * (y + 1) == 2 * k) {
-        y -= 1;
+    srt(v);
+    f(i, n - k, n) {
+        store.pb(v[i].ss);
     }
-    
-    ll z = k - (y * (y + 1)) / 2;
-    s[n - 2 - y] = 'b';
-    s[n - z] = 'b';
-    pf(s);
+
+    pf(v[n - k].ff);
+    vpnt(store);
 }
 
 int main() {
+    freopen("input.txt","r",stdin);
+    freopen("output.txt","w",stdout);
     FAST_IO
-    ll t;
-    sc(t);
-    
-    while(t--) {
-        solve();
-    }
-
+    solve();
     return 0;
 }

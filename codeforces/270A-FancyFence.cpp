@@ -43,31 +43,29 @@ void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
 void solve() {
-    ll n, k;
-    sc(n);
-    sc(k);
+    ll angle;
+    sc(angle);
 
-    string s = "";
-    f(i, 0, n) {
-        s += 'a';
-    }
-
-    ll y = (-1 + sqrt(1 + 8 * k)) / 2;
-    if(y * (y + 1) == 2 * k) {
-        y -= 1;
-    }
+    double n;
+    int flag = 0;
     
-    ll z = k - (y * (y + 1)) / 2;
-    s[n - 2 - y] = 'b';
-    s[n - z] = 'b';
-    pf(s);
+    n = ((double) 360 / (180 - angle));
+    if(n - floor(n) == 0) {
+        flag = 1;
+    }
+
+    if(flag) {
+        yes;
+    } else {
+        no;
+    }
 }
 
 int main() {
     FAST_IO
     ll t;
     sc(t);
-    
+
     while(t--) {
         solve();
     }

@@ -43,31 +43,34 @@ void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
 void solve() {
-    ll n, k;
+    ll n;
     sc(n);
-    sc(k);
 
-    string s = "";
+    vll a(n);
+    forIn(a, n);
+
+    vll b(n);
+    forIn(b, n);
+
+    ll weird_distance = 0;
+    ll a_dist = 0;
+    ll b_dist = 0;
     f(i, 0, n) {
-        s += 'a';
+        if(a_dist == b_dist && a[i] == b[i]) {
+            weird_distance += a[i];
+        }
+        a_dist += a[i];
+        b_dist += b[i];
     }
 
-    ll y = (-1 + sqrt(1 + 8 * k)) / 2;
-    if(y * (y + 1) == 2 * k) {
-        y -= 1;
-    }
-    
-    ll z = k - (y * (y + 1)) / 2;
-    s[n - 2 - y] = 'b';
-    s[n - z] = 'b';
-    pf(s);
+    pf(weird_distance);
 }
 
 int main() {
     FAST_IO
     ll t;
     sc(t);
-    
+
     while(t--) {
         solve();
     }

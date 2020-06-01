@@ -43,34 +43,27 @@ void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
 void solve() {
-    ll n, k;
+    ll n, m;
     sc(n);
-    sc(k);
+    sc(m);
 
-    string s = "";
+    ll ord[] = {n * 2, 0, n * 2 + 1, 1};
+
+    vll store;
     f(i, 0, n) {
-        s += 'a';
+        ll b = 2 * i;
+        f(j, 0, 4) {
+            if(b + ord[j] < m) {
+                store.pb(b + ord[j] + 1);
+            }
+        }
     }
 
-    ll y = (-1 + sqrt(1 + 8 * k)) / 2;
-    if(y * (y + 1) == 2 * k) {
-        y -= 1;
-    }
-    
-    ll z = k - (y * (y + 1)) / 2;
-    s[n - 2 - y] = 'b';
-    s[n - z] = 'b';
-    pf(s);
+    vpnt(store);
 }
 
 int main() {
     FAST_IO
-    ll t;
-    sc(t);
-    
-    while(t--) {
-        solve();
-    }
-
+    solve();
     return 0;
 }

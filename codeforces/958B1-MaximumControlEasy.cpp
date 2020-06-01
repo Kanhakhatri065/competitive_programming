@@ -42,35 +42,38 @@ typedef vector<pair<ll,ll>>vpll;
 void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
+void add_edge(vll adj[], ll src, ll dest) {
+    adj[src].pb(dest);
+    adj[dest].pb(src);
+}
+
 void solve() {
-    ll n, k;
+    ll n;
     sc(n);
-    sc(k);
 
-    string s = "";
-    f(i, 0, n) {
-        s += 'a';
+    vll adj[n + 1];
+    ll src, dest;
+    f(i, 0, n - 1) {
+        sc(src);
+        sc(dest);
+
+        add_edge(adj, src,dest);
     }
 
-    ll y = (-1 + sqrt(1 + 8 * k)) / 2;
-    if(y * (y + 1) == 2 * k) {
-        y -= 1;
+    ll cnt(0);
+    for(auto it : adj) {
+        if(it.empty() == false) {
+            if(it.size() == 1) {
+                cnt++;
+            }
+        }
     }
-    
-    ll z = k - (y * (y + 1)) / 2;
-    s[n - 2 - y] = 'b';
-    s[n - z] = 'b';
-    pf(s);
+
+    pf(cnt);
 }
 
 int main() {
     FAST_IO
-    ll t;
-    sc(t);
-    
-    while(t--) {
-        solve();
-    }
-
+    solve();
     return 0;
 }

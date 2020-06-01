@@ -43,34 +43,53 @@ void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
 void solve() {
-    ll n, k;
+    ll n, m, p;
     sc(n);
-    sc(k);
+    sc(m);
+    sc(p);
 
-    string s = "";
+    vll v(n);
+    forIn(v, n);
+
+    vll u(m);
+    forIn(u, m);
+
+    mll main_m;
+    f(i, 0, m) {
+        main_m[u[i]]++;
+    }
+
+    vll store;
+    ll count = 0;
+    mll temp_m;
+    ll outer_count = 0;
     f(i, 0, n) {
-        s += 'a';
+        count = 0;
+        temp_m = main_m;
+        outer_count = 0;
+        for(ll j = i;j <= n;j += p) {
+            outer_count++;
+            if(temp_m[v[j]] > 0) {
+                temp_m[v[j]]--;
+                count++;
+            }
+
+            if(outer_count == m) {
+                break;
+            }
+        }
+
+        if(count == m) {
+            store.pb(i + 1);
+        }
     }
 
-    ll y = (-1 + sqrt(1 + 8 * k)) / 2;
-    if(y * (y + 1) == 2 * k) {
-        y -= 1;
-    }
-    
-    ll z = k - (y * (y + 1)) / 2;
-    s[n - 2 - y] = 'b';
-    s[n - z] = 'b';
-    pf(s);
+    pf(store.size());
+    vpnt(store);
 }
 
 int main() {
     FAST_IO
-    ll t;
-    sc(t);
-    
-    while(t--) {
-        solve();
-    }
-
+    solve();
     return 0;
 }

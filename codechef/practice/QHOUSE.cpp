@@ -42,35 +42,59 @@ typedef vector<pair<ll,ll>>vpll;
 void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
+bool q(int y, int x) {
+    string resp;
+    cout << "? " << x << " " << y << endl;
+    fflush(stdout);
+    sc(resp);
+
+    if(resp[0] == 'Y') {
+        return true;
+    }
+
+    return false;
+}
+
+int findx(int y) {
+    int lo = 1, hi = 1000, mi;
+
+    while(lo < hi) {
+        mi = (lo + hi + 1) / 2;
+        if(q(y, mi)) {
+            lo = mi;
+        } else {
+            hi = mi - 1;
+        }
+    }
+
+    return lo;
+}
+
+int findy(int x) {
+    int lo = 1, hi = 1000, mi;
+
+    while(lo < hi) {
+        mi = (lo + hi + 1) / 2;
+        if(q(mi, x)) {
+            lo = mi;
+        } else {
+            hi = mi - 1;
+        }
+    } 
+
+    return lo;
+}
+
 void solve() {
-    ll n, k;
-    sc(n);
-    sc(k);
-
-    string s = "";
-    f(i, 0, n) {
-        s += 'a';
-    }
-
-    ll y = (-1 + sqrt(1 + 8 * k)) / 2;
-    if(y * (y + 1) == 2 * k) {
-        y -= 1;
-    }
-    
-    ll z = k - (y * (y + 1)) / 2;
-    s[n - 2 - y] = 'b';
-    s[n - z] = 'b';
-    pf(s);
+    int hs = findx(0);
+    int ss = 2 * hs;
+    int ht = findx(ss);
+    int th = findy(0) - ss;
+    cout << "! " << (ss * ss + ht * th) << endl;
 }
 
 int main() {
     FAST_IO
-    ll t;
-    sc(t);
-    
-    while(t--) {
-        solve();
-    }
-
+    solve();
     return 0;
 }

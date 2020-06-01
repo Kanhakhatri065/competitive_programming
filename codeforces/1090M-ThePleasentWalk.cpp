@@ -47,30 +47,26 @@ void solve() {
     sc(n);
     sc(k);
 
-    string s = "";
-    f(i, 0, n) {
-        s += 'a';
+    vll v(n);
+    forIn(v, n);
+
+    ll max_count = LONG_LONG_MIN;
+    ll count = 1;
+    f(i, 1, n) {
+        if(v[i] == v[i - 1]) {
+            max_count = max(max_count, count);
+            count = 0;
+        }
+        count++;
     }
 
-    ll y = (-1 + sqrt(1 + 8 * k)) / 2;
-    if(y * (y + 1) == 2 * k) {
-        y -= 1;
-    }
-    
-    ll z = k - (y * (y + 1)) / 2;
-    s[n - 2 - y] = 'b';
-    s[n - z] = 'b';
-    pf(s);
+    max_count = max(max_count, count);
+
+    pf(max_count);
 }
 
 int main() {
     FAST_IO
-    ll t;
-    sc(t);
-    
-    while(t--) {
-        solve();
-    }
-
+    solve();
     return 0;
 }

@@ -43,34 +43,31 @@ void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
 void solve() {
-    ll n, k;
+    ll n;
     sc(n);
-    sc(k);
 
-    string s = "";
+    int s[n];
     f(i, 0, n) {
-        s += 'a';
+        sc(s[i]);
     }
 
-    ll y = (-1 + sqrt(1 + 8 * k)) / 2;
-    if(y * (y + 1) == 2 * k) {
-        y -= 1;
+    sort(s, s + n);
+    ll i = 0, j = n - 1;
+
+    ll cnt = 0;
+    while(i <= j) {
+        int sum = s[j--];
+        while(i <= j && sum + s[i] <= 4) {
+            sum += s[i++];
+        }
+        cnt++;
     }
-    
-    ll z = k - (y * (y + 1)) / 2;
-    s[n - 2 - y] = 'b';
-    s[n - z] = 'b';
-    pf(s);
+
+    pf(cnt);
 }
 
 int main() {
     FAST_IO
-    ll t;
-    sc(t);
-    
-    while(t--) {
-        solve();
-    }
-
+    solve();
     return 0;
 }

@@ -43,34 +43,44 @@ void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
 void solve() {
-    ll n, k;
-    sc(n);
-    sc(k);
+    string xml;
+    sc(xml);
 
-    string s = "";
-    f(i, 0, n) {
-        s += 'a';
+    string t = "";
+    vector<string> v;
+    for(auto i : xml) {
+        t += i;
+        if(i == '>') {
+            v.pb(t);
+            t = "";
+        }
     }
 
-    ll y = (-1 + sqrt(1 + 8 * k)) / 2;
-    if(y * (y + 1) == 2 * k) {
-        y -= 1;
+    v.pb(t);
+
+    ll x = 0;
+    f(i, 0, v.size()) {
+        if(v[i].length() == 4) {
+            x--;
+        }
+        f(j, 0, 2 * x) {
+            cout << " ";
+        }
+
+        if(i < v.size() - 1) {
+            pf(v[i]);
+        } else {
+            cout << v[i];
+        }
+
+        if(v[i].length() == 3) {
+            x++;
+        }
     }
-    
-    ll z = k - (y * (y + 1)) / 2;
-    s[n - 2 - y] = 'b';
-    s[n - z] = 'b';
-    pf(s);
 }
 
 int main() {
     FAST_IO
-    ll t;
-    sc(t);
-    
-    while(t--) {
-        solve();
-    }
-
+    solve();
     return 0;
 }

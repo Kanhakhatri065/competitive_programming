@@ -43,34 +43,65 @@ void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
 void solve() {
-    ll n, k;
+    ll n;
     sc(n);
-    sc(k);
 
-    string s = "";
+    vll store;
+    ll cnt = 0;
+    ll num;
+
+    mll m;
     f(i, 0, n) {
-        s += 'a';
+        sc(num);
+        m[num]++;
+    }
+    mll k;
+    f(i, 0, n - 1) {
+        sc(num);
+        k[num]++;
     }
 
-    ll y = (-1 + sqrt(1 + 8 * k)) / 2;
-    if(y * (y + 1) == 2 * k) {
-        y -= 1;
+    mll p;
+    f(i, 0, n - 2) {
+        sc(num);
+        p[num]++;
     }
-    
-    ll z = k - (y * (y + 1)) / 2;
-    s[n - 2 - y] = 'b';
-    s[n - z] = 'b';
-    pf(s);
+
+    for(auto i : m) {
+        if(k.find(i.ff) == k.end()) {
+            cnt++;
+            store.pb(i.ff);
+            break;
+        } else {
+            if(k[i.ff] != m[i.ff]) {
+                cnt++;
+                store.pb(i.ff);
+                break;
+            }
+        }
+    }
+
+    for(auto i : k) {
+        if(p.find(i.ff) == p.end()) {
+            cnt++;
+            store.pb(i.ff);
+            break;
+        } else {
+            if(p[i.ff] != k[i.ff]) {
+                cnt++;
+                store.pb(i.ff);
+                break;
+            }
+        }
+    }
+
+    f(i, 0, store.size()) {
+        pf(store[i]);
+    }
 }
 
 int main() {
     FAST_IO
-    ll t;
-    sc(t);
-    
-    while(t--) {
-        solve();
-    }
-
+    solve();
     return 0;
 }
