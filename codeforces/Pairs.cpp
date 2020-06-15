@@ -42,40 +42,41 @@ typedef vector<pair<ll,ll>>vpll;
 void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
+ll arr[300005];
 void solve() {
-    ll k;
-    sc(k);
+    ll n, m;
+    sc(n);
+    sc(m);
 
-    string s;
-    sc(s);
-
-    map<char, ll>m;
-    f(i, 0, s.length()) {
-        m[s[i]]++;
+    vector<pll> v(m);
+    f(i, 0, m) {
+        sc(v[i].ff);
+        sc(v[i].ss);
     }
 
-    int flag = 0;
-    for(auto i : m) {
-        if(i.ss % k != 0) {
-            flag = 1;
-            break;
+    vll vec = {v[0].ff, v[0].ss};
+    ll cnt = 0;
+    f(i, 0, vec.size()) {
+        memset(arr, 0, sizeof(arr));
+        cnt = 0;
+        f(j, 0, m) {
+            if(vec[i] == v[j].ff || vec[i] == v[j].ss) {
+                cnt++;
+            } else {
+                arr[v[j].ff]++;
+                arr[v[j].ss]++;
+            }
+
         }
-    }
-
-    if(flag) {
-        pf(-1);
-    } else {
-        string out = "";
-        f(i, 0, k) {
-            for(auto it : m) {
-                f(j, 0, it.ss / k) {
-                    out += it.ff;
-                }
+        f(i, 1, n + 1) {
+            if(cnt + arr[i] == m) {
+                yes;
+                return;
             }
         }
-
-        pf(out);
     }
+
+    no;
 }
 
 int main() {

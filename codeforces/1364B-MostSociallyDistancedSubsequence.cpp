@@ -42,44 +42,34 @@ typedef vector<pair<ll,ll>>vpll;
 void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
+int p[100005];
 void solve() {
-    ll k;
-    sc(k);
+    ll n;
+    sc(n);
 
-    string s;
-    sc(s);
-
-    map<char, ll>m;
-    f(i, 0, s.length()) {
-        m[s[i]]++;
+    f(i, 1, n + 1) {
+        sc(p[i]);
     }
 
-    int flag = 0;
-    for(auto i : m) {
-        if(i.ss % k != 0) {
-            flag = 1;
-            break;
+    vector<int> ans;
+    f(i, 1, n + 1) {
+        if(i == 1 || i ==  n || ((p[i - 1] < p[i]) != (p[i] < p[i + 1]))) {
+            ans.pb(p[i]);
         }
     }
 
-    if(flag) {
-        pf(-1);
-    } else {
-        string out = "";
-        f(i, 0, k) {
-            for(auto it : m) {
-                f(j, 0, it.ss / k) {
-                    out += it.ff;
-                }
-            }
-        }
-
-        pf(out);
-    }
+    pf(ans.size());
+    vpnt(ans);
 }
 
 int main() {
     FAST_IO
-    solve();
+    ll t;
+    sc(t);
+
+    while(t--) {
+        solve(); 
+    }
+
     return 0;
 }

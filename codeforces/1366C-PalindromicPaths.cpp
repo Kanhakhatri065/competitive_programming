@@ -43,43 +43,42 @@ void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
 void solve() {
-    ll k;
-    sc(k);
+    int n, m;
+    sc(n);
+    sc(m);
+    int s = n - 1 + m - 1;
+    vector<vector<int>> freqs(n + m, vector<int> (2, 0));
 
-    string s;
-    sc(s);
+    int a, r;
+    f(i, 0, n) {
+        f(j, 0, m) {
+            sc(a);
 
-    map<char, ll>m;
-    f(i, 0, s.length()) {
-        m[s[i]]++;
-    }
-
-    int flag = 0;
-    for(auto i : m) {
-        if(i.ss % k != 0) {
-            flag = 1;
-            break;
-        }
-    }
-
-    if(flag) {
-        pf(-1);
-    } else {
-        string out = "";
-        f(i, 0, k) {
-            for(auto it : m) {
-                f(j, 0, it.ss / k) {
-                    out += it.ff;
-                }
+            if(i + j == (s - i - j)) {
+                continue;
             }
-        }
 
-        pf(out);
+            r = min(i + j, s - i - j);
+            freqs[r][a]++;
+        }
     }
+
+    int ans = 0;
+    for(vector<int> z : freqs) {
+        ans += min(z[0], z[1]);
+    }
+
+    pf(ans);
 }
 
 int main() {
     FAST_IO
-    solve();
+    ll t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+
     return 0;
 }

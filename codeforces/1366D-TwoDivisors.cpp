@@ -42,40 +42,50 @@ typedef vector<pair<ll,ll>>vpll;
 void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
-void solve() {
-    ll k;
-    sc(k);
-
-    string s;
-    sc(s);
-
-    map<char, ll>m;
-    f(i, 0, s.length()) {
-        m[s[i]]++;
-    }
-
-    int flag = 0;
-    for(auto i : m) {
-        if(i.ss % k != 0) {
-            flag = 1;
-            break;
-        }
-    }
-
-    if(flag) {
-        pf(-1);
-    } else {
-        string out = "";
-        f(i, 0, k) {
-            for(auto it : m) {
-                f(j, 0, it.ss / k) {
-                    out += it.ff;
+const int N = 1e7 + 2;
+int seive[N];
+void pre() {
+    seive[1] = 1;
+    for(ll i = 2;i * i <= N;i++) {
+        if(seive[i] == 0) {
+            seive[i] == i;
+            for(int j = 2 * i;j < N;j += i) {
+                if(seive[j] == 0) {
+                    seive[j] = i;
                 }
             }
         }
-
-        pf(out);
     }
+}
+
+void solve() {
+    pre();
+    int n, x;
+    sc(n);
+
+    vector<int> a(n);
+    forIn(a, n);
+
+    vector<int> ans1(n, -1), ans2(n, -1);
+    f(i, 0, n) {
+        x = a[i];
+        int ff = seive[a[i]];
+        if(ff == 0) {
+            continue;
+        }
+
+        while(x % ff == 0) {
+            x /= ff;
+        }
+
+        if(x > 1) {
+            ans1[i] = ff;
+            ans2[i] = x;
+        }
+    }
+
+    vpnt(ans1);
+    vpnt(ans2); 
 }
 
 int main() {

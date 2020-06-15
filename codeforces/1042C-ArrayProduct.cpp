@@ -43,39 +43,52 @@ void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
 void solve() {
-    ll k;
-    sc(k);
-
-    string s;
-    sc(s);
-
-    map<char, ll>m;
-    f(i, 0, s.length()) {
-        m[s[i]]++;
-    }
-
-    int flag = 0;
-    for(auto i : m) {
-        if(i.ss % k != 0) {
-            flag = 1;
-            break;
-        }
-    }
-
-    if(flag) {
-        pf(-1);
-    } else {
-        string out = "";
-        f(i, 0, k) {
-            for(auto it : m) {
-                f(j, 0, it.ss / k) {
-                    out += it.ff;
-                }
-            }
-        }
-
-        pf(out);
-    }
+    int n;
+	scanf("%d", &n);
+	vector<int> a(n);
+	for (int i = 0; i < n; ++i)
+		scanf("%d", &a[i]);
+	
+	int cntneg = 0;
+	int cntzero = 0;
+	vector<int> used(n);
+	int pos = -1;
+	for (int i = 0; i < n; ++i) {
+		if (a[i] == 0) {
+			used[i] = 1;
+			++cntzero;
+		}
+		if (a[i] < 0) {
+			++cntneg;
+			if (pos == -1 || abs(a[pos]) > abs(a[i]))
+				pos = i;
+		}
+	}
+	if (cntneg & 1)
+		used[pos] = 1;
+		
+	if (cntzero == n || (cntzero == n - 1 && cntneg == 1)) {
+		for (int i = 0; i < n - 1; ++i)
+			printf("1 %d %d\n", i + 1, i + 2);
+		return;
+	}
+	
+	int lst = -1;
+	for (int i = 0; i < n; ++i) {
+		if (used[i]) {
+			if (lst != -1) printf("1 %d %d\n", lst + 1, i + 1);
+			lst = i;
+		}
+	}
+	if (lst != -1) printf("2 %d\n", lst + 1);
+	
+	lst = -1;
+	for (int i = 0; i < n; ++i) {
+		if (!used[i]) {
+			if (lst != -1) printf("1 %d %d\n", lst + 1, i + 1);
+			lst = i;
+		}
+	}
 }
 
 int main() {

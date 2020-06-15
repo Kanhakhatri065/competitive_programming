@@ -42,39 +42,64 @@ typedef vector<pair<ll,ll>>vpll;
 void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
+int a[200010],lev[200010],idx[200010],x[200010],y[200010];
+bool vis[200010];
+vector<pair<int,int>>v[200010];
+vector<int>node;
+
+void bfs(int s){
+    vis[s]=1;
+    queue<int>q;
+    q.push(s);
+    node.push_back(s);
+    while(!q.empty()){
+        int top=q.front();
+        q.pop();
+        for(int j=0;j<v[top].size();j++){
+            if(!vis[v[top][j].second]){
+                vis[v[top][j].second]=1;
+                q.push(v[top][j].second);
+                node.push_back(v[top][j].second);
+            }
+        }
+    }
+}
+
 void solve() {
-    ll k;
-    sc(k);
-
-    string s;
-    sc(s);
-
-    map<char, ll>m;
-    f(i, 0, s.length()) {
-        m[s[i]]++;
+    ll n;
+    sc(n);
+    f(i, 1, n) {
+        sc(x[i]);
+        sc(y[i]);
     }
 
+    f(i, 0, n) {
+        sc(a[i]);
+        idx[a[i]] = i;
+    }
+
+    f(i, 1, n) {
+        v[x[i]].pb({idx[y[i]], y[i]});
+        v[y[i]].pb({idx[x[i]], x[i]});
+    }
+
+    f(i, 1, n + 1) {
+        srt(v[i]);
+    }
+
+    bfs(1);
     int flag = 0;
-    for(auto i : m) {
-        if(i.ss % k != 0) {
+    f(i, 0, n) {
+        if(node[i] != a[i]) {
             flag = 1;
             break;
         }
     }
 
     if(flag) {
-        pf(-1);
+        no;
     } else {
-        string out = "";
-        f(i, 0, k) {
-            for(auto it : m) {
-                f(j, 0, it.ss / k) {
-                    out += it.ff;
-                }
-            }
-        }
-
-        pf(out);
+        yes;
     }
 }
 

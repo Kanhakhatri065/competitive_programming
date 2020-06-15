@@ -42,40 +42,57 @@ typedef vector<pair<ll,ll>>vpll;
 void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
+ll bpow(ll x, ll v) {	
+	if (v == 0) {
+		return 1 % mod1;
+    }
+ 
+	if (v % 2 == 1) {
+		return (x * bpow(x, v - 1)) % mod1;
+    }
+ 
+	ll r = bpow(x, v / 2);
+ 
+	return (r * r) % mod1;	
+}
+
 void solve() {
-    ll k;
-    sc(k);
+    int n, x;
+	cin >> n >> x;
+	vector < ll > a(n), b;
+	ll sum = 0;
+	for(int i = 0; i < n; i++) {
+		cin >> a[i];
+		sum += a[i];	
+	}
 
-    string s;
-    sc(s);
-
-    map<char, ll>m;
-    f(i, 0, s.length()) {
-        m[s[i]]++;
+	for(int i = 0; i < n; i++) {
+	 	b.push_back(sum - a[i]);
     }
 
-    int flag = 0;
-    for(auto i : m) {
-        if(i.ss % k != 0) {
-            flag = 1;
-            break;
-        }
-    }
-
-    if(flag) {
-        pf(-1);
-    } else {
-        string out = "";
-        f(i, 0, k) {
-            for(auto it : m) {
-                f(j, 0, it.ss / k) {
-                    out += it.ff;
-                }
+    srtGreat(b);             
+ 
+	while (true) {
+		ll v = b[b.size() - 1];
+    
+    	int cnt = 0;
+		while (b.size() > 0 && b[b.size() - 1] == v) {
+			cnt ++;
+			b.pop_back();
+		}
+        
+        if (cnt % x != 0) {
+            v = min(v, sum);
+			cout << bpow(x, v) << endl;
+			return;
+		}
+		else {
+			cnt /= x;
+			for(int i = 0; i < cnt; i++) {
+				b.push_back(v + 1);
             }
-        }
-
-        pf(out);
-    }
+		}	
+	}
 }
 
 int main() {

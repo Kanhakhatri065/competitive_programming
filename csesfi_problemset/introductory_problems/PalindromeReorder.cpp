@@ -42,44 +42,43 @@ typedef vector<pair<ll,ll>>vpll;
 void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
-void solve() {
-    ll k;
-    sc(k);
+int cnt = 0;
+bool chk[26];
+string s, ans = "";
 
-    string s;
-    sc(s);
-
-    map<char, ll>m;
-    f(i, 0, s.length()) {
-        m[s[i]]++;
-    }
-
-    int flag = 0;
-    for(auto i : m) {
-        if(i.ss % k != 0) {
-            flag = 1;
-            break;
+int main()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cin >> s;
+    for (char &c : s)
+    {
+        if (!chk[c - 'A'])
+        {
+            chk[c - 'A'] = true;
+            cnt++;
+        }
+        else
+        {
+            ans += c;
+            chk[c - 'A'] = false;
+            cnt--;
         }
     }
-
-    if(flag) {
-        pf(-1);
-    } else {
-        string out = "";
-        f(i, 0, k) {
-            for(auto it : m) {
-                f(j, 0, it.ss / k) {
-                    out += it.ff;
-                }
-            }
-        }
-
-        pf(out);
+    if (cnt >= 2)
+    {
+        cout << "NO SOLUTION" << endl;
+        return 0;
     }
-}
-
-int main() {
-    FAST_IO
-    solve();
+    cout << ans;
+    for (char c = 'A'; c <= 'Z'; c++)
+    {
+        if (chk[c - 'A'])
+        {
+            cout << c;
+        }
+    }
+    reverse(ans.begin(), ans.end());
+    cout << ans;
     return 0;
 }

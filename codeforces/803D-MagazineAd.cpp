@@ -42,44 +42,59 @@ typedef vector<pair<ll,ll>>vpll;
 void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
+ll linesNeeded(ll n, vll arr) {
+    ll result = 1;
+    ll curr = 0;
+
+    f(i, 0, arr.size()) {
+        if(arr[i] > n) {
+            return LONG_LONG_MAX;
+        }
+
+        curr += arr[i];
+        if(curr > n) {
+            result++;
+            curr = arr[i];
+        }
+    }
+
+    return result;
+}
+
 void solve() {
     ll k;
     sc(k);
+    cin.ignore();
+    string str;
+    getline(cin, str);
 
-    string s;
-    sc(s);
-
-    map<char, ll>m;
-    f(i, 0, s.length()) {
-        m[s[i]]++;
-    }
-
-    int flag = 0;
-    for(auto i : m) {
-        if(i.ss % k != 0) {
-            flag = 1;
-            break;
+    vll arr;
+    ll curr = 0;
+    f(i, 0, str.length()) {
+        curr++;
+        if(str[i] == '-' || str[i] == ' ') {
+            arr.pb(curr);
+            curr = 0;
         }
     }
 
-    if(flag) {
-        pf(-1);
-    } else {
-        string out = "";
-        f(i, 0, k) {
-            for(auto it : m) {
-                f(j, 0, it.ss / k) {
-                    out += it.ff;
-                }
-            }
-        }
+    arr.pb(curr);
 
-        pf(out);
+    ll left = 0;
+    ll right = str.length();
+    while(left < right) {
+        ll mid = left + (right - left) / 2;
+        if(linesNeeded(mid, arr) <= k) {
+            right = mid;
+        } else {
+            left = mid + 1;
+        }
     }
+
+    pf(left);
 }
 
 int main() {
-    FAST_IO
     solve();
     return 0;
 }

@@ -43,39 +43,29 @@ void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
 void solve() {
-    ll k;
-    sc(k);
+    ll x, n;
+    sc(x);
+    sc(n);
 
-    string s;
-    sc(s);
+    vll v(n);
+    forIn(v, n);
+    
+    set<ll> points = {0, x};
+    multiset<ll> lengths = {x};
+    ll left, right;
+    f(i, 0, n) {
+        auto it = points.upper_bound(v[i]);
+        left = *prev(it);
+        right = *it;
+        lengths.erase(lengths.find(right - left));
+        lengths.insert(v[i] - left);
+        lengths.insert(right - v[i]);
 
-    map<char, ll>m;
-    f(i, 0, s.length()) {
-        m[s[i]]++;
+        points.insert(it, v[i]);
+        
+        cout << *lengths.rbegin() << " ";
     }
-
-    int flag = 0;
-    for(auto i : m) {
-        if(i.ss % k != 0) {
-            flag = 1;
-            break;
-        }
-    }
-
-    if(flag) {
-        pf(-1);
-    } else {
-        string out = "";
-        f(i, 0, k) {
-            for(auto it : m) {
-                f(j, 0, it.ss / k) {
-                    out += it.ff;
-                }
-            }
-        }
-
-        pf(out);
-    }
+    cout << endl;
 }
 
 int main() {

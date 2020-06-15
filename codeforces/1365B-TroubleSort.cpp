@@ -43,43 +43,57 @@ void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
 void solve() {
-    ll k;
-    sc(k);
+    ll n;
+    sc(n);
 
-    string s;
-    sc(s);
+    vll a(n);
+    forIn(a, n);
 
-    map<char, ll>m;
-    f(i, 0, s.length()) {
-        m[s[i]]++;
-    }
+    vector<int> b(n);
+    forIn(b, n);
 
-    int flag = 0;
-    for(auto i : m) {
-        if(i.ss % k != 0) {
-            flag = 1;
-            break;
+    vll first_type;
+    vll second_type;
+
+    f(i, 0, n) {
+        if(b[i] == 0) {
+            first_type.pb(a[i]);
+        } else {
+            second_type.pb(a[i]);
         }
     }
 
-    if(flag) {
-        pf(-1);
-    } else {
-        string out = "";
-        f(i, 0, k) {
-            for(auto it : m) {
-                f(j, 0, it.ss / k) {
-                    out += it.ff;
-                }
+    if(first_type.empty()) {
+        f(i, 1, second_type.size()) {
+            if(second_type[i] < second_type[i - 1]) {
+                no;
+                return;
             }
         }
 
-        pf(out);
+        yes;
+    } else if(second_type.empty()) {
+        f(i, 1, first_type.size()) {
+            if(first_type[i] < first_type[i - 1]) {
+                no;
+                return;
+            }
+        }
+
+        yes;
+    } else {
+        yes;
     }
 }
 
 int main() {
     FAST_IO
-    solve();
+    ll t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+
     return 0;
 }

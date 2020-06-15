@@ -42,40 +42,42 @@ typedef vector<pair<ll,ll>>vpll;
 void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
+int a[100005], b[100005];
+bool ex[100005];
+
 void solve() {
-    ll k;
-    sc(k);
+    int n;
+    sc(n);
 
-    string s;
-    sc(s);
-
-    map<char, ll>m;
-    f(i, 0, s.length()) {
-        m[s[i]]++;
+    f(i, 1, n + 1) {
+        sc(a[i]);
     }
 
-    int flag = 0;
-    for(auto i : m) {
-        if(i.ss % k != 0) {
-            flag = 1;
-            break;
+    memset(b, -1, sizeof(b));
+    f(i, 1, n + 1) {
+        if(a[i] != a[i - 1]) {
+            b[i] = a[i - 1];
+            ex[b[i]] = 1;
         }
     }
 
-    if(flag) {
-        pf(-1);
-    } else {
-        string out = "";
-        f(i, 0, k) {
-            for(auto it : m) {
-                f(j, 0, it.ss / k) {
-                    out += it.ff;
-                }
-            }
+    ex[a[n]] = 1;
+    int m = 0;
+    f(i, 1, n + 1) {
+        while(ex[m]) {
+            m++;
         }
 
-        pf(out);
+        if(b[i] == -1) {
+            b[i] = m;
+            ex[m] = 1;
+        }
     }
+
+    f(i, 1, n + 1) {
+        cout << b[i] << " ";
+    }    
+    cout << endl;
 }
 
 int main() {

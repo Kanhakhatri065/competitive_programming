@@ -43,39 +43,49 @@ void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
 void solve() {
-    ll k;
+    ll l1, r1, l2, r2, k;
+    sc(l1);
+    sc(r1);
+    sc(l2);
+    sc(r2);
     sc(k);
 
-    string s;
-    sc(s);
-
-    map<char, ll>m;
-    f(i, 0, s.length()) {
-        m[s[i]]++;
-    }
-
-    int flag = 0;
-    for(auto i : m) {
-        if(i.ss % k != 0) {
-            flag = 1;
-            break;
-        }
-    }
-
-    if(flag) {
-        pf(-1);
-    } else {
-        string out = "";
-        f(i, 0, k) {
-            for(auto it : m) {
-                f(j, 0, it.ss / k) {
-                    out += it.ff;
-                }
+    ll ans = 0;
+    if(r2 < l1) {
+        ans = 0;
+    } else if(l2 > r1) {
+        ans = 0;
+    } else if(l2 <= l1) {
+        if(r2 <= r1) {
+            if(k >= l1 && k <= r2) {
+                ans = r2 - l1;
+            } else {
+                ans = r2 - l1 + 1;
+            }
+        } else {
+            if(k >= l1 && k <= r1) {
+                ans = r1 - l1;
+            } else {
+                ans = r1 - l1 + 1;
             }
         }
-
-        pf(out);
+    } else {
+        if(r2 <= r1) {
+            if(k >= l2 && k <= r2) {
+                ans = r2 - l2;
+            } else {
+                ans = r2 - l2 + 1;
+            }
+        } else {
+            if(k >= l2 && k <= r1) {
+                ans = r1 - l2;
+            } else {
+                ans = r1 - l2 + 1;
+            }
+        }
     }
+
+    pf(ans);
 }
 
 int main() {

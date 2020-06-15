@@ -43,38 +43,34 @@ void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
 void solve() {
-    ll k;
-    sc(k);
+    ll n;
+    sc(n);
 
-    string s;
-    sc(s);
+    vector<pll> v(n);
+    ll sum1 = 0, sum2 = 0;
+    vector<ll> ans;
+    f(i, 0, n) {
+        sc(v[i].ff);
+        sc(v[i].ss);
 
-    map<char, ll>m;
-    f(i, 0, s.length()) {
-        m[s[i]]++;
+        sum1 += v[i].ff;
+        sum2 += v[i].ss;
     }
 
-    int flag = 0;
-    for(auto i : m) {
-        if(i.ss % k != 0) {
-            flag = 1;
-            break;
-        }
+    f(i, 0, n) {
+        ans.pb(abs(sum1 - (2 * v[i].ff) + (2 * v[i].ss) - sum2));
     }
 
-    if(flag) {
-        pf(-1);
+    if(abs(sum1 - sum2) >= *max_element(all(ans))) {
+        pf(0);
     } else {
-        string out = "";
-        f(i, 0, k) {
-            for(auto it : m) {
-                f(j, 0, it.ss / k) {
-                    out += it.ff;
-                }
+        ll mx = *max_element(all(ans));
+        f(i, 0, ans.size()) {
+            if(mx == ans[i]) {
+                pf(i + 1);
+                return;
             }
         }
-
-        pf(out);
     }
 }
 

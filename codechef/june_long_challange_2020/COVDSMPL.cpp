@@ -43,43 +43,73 @@ void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
 void solve() {
-    ll k;
-    sc(k);
+    ll n, p;
+    sc(n);
+    sc(p);
 
-    string s;
-    sc(s);
+    ll arr[n][n] = {0};
 
-    map<char, ll>m;
-    f(i, 0, s.length()) {
-        m[s[i]]++;
+    ll x = n - 1, y = n - 1;
+    ll giv, prev;
+    string out = "1 " + to_string(x + 1) + " " + to_string(y + 1) + + " " + to_string(n) + " " + to_string(n);
+    pf(out);
+    sc(giv);
+
+    while(giv == -1) {
+        pf(out);
+        sc(giv);
     }
 
-    int flag = 0;
-    for(auto i : m) {
-        if(i.ss % k != 0) {
-            flag = 1;
-            break;
-        }
-    }
+    prev = giv;
+    x--;
 
-    if(flag) {
-        pf(-1);
-    } else {
-        string out = "";
-        f(i, 0, k) {
-            for(auto it : m) {
-                f(j, 0, it.ss / k) {
-                    out += it.ff;
+    while(true) {
+        out = "1 " + to_string(x + 1) + " " + to_string(y + 1) + + " " + to_string(n) + " " + to_string(n);
+        pf(out);
+        sc(giv);
+
+        if(giv != -1) {
+            if(giv > prev) {
+                arr[x][y] = 1;
+            } else {
+                arr[x][y] = 0;
+            }
+            
+            x--;
+
+            if(x == -1) {
+                if(y == 0) {
+                    break;
+                } else {
+                    x = n - 1;
+                    y--;
                 }
             }
         }
+    }
 
-        pf(out);
+    pf(2);
+    f(i, 0, n) {
+        f(j, 0, n) {
+            cout << arr[i][j] << " ";
+        }
+        cout << endl;
+    }
+
+    sc(giv);
+    if(giv == -1) {
+        exit(0);
     }
 }
 
 int main() {
     FAST_IO
-    solve();
+    ll t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+
     return 0;
 }

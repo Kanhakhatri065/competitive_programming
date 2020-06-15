@@ -42,40 +42,30 @@ typedef vector<pair<ll,ll>>vpll;
 void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
+#include <ext/pb_ds/assoc_container.hpp>
+using namespace __gnu_pbds;
+typedef tree<int, null_type, less_equal<int>, rb_tree_tag, tree_order_statistics_node_update> indexed_set;
+
 void solve() {
-    ll k;
+    int n, k;
+    sc(n);
     sc(k);
 
-    string s;
-    sc(s);
+    vector<int> v(n);
+    forIn(v, n);
 
-    map<char, ll>m;
-    f(i, 0, s.length()) {
-        m[s[i]]++;
+    indexed_set s;
+    for(int i = 0;i < k;i++) {
+        s.insert(v[i]);
     }
 
-    int flag = 0;
-    for(auto i : m) {
-        if(i.ss % k != 0) {
-            flag = 1;
-            break;
-        }
-    }
-
-    if(flag) {
-        pf(-1);
-    } else {
-        string out = "";
-        f(i, 0, k) {
-            for(auto it : m) {
-                f(j, 0, it.ss / k) {
-                    out += it.ff;
-                }
-            }
-        }
-
-        pf(out);
-    }
+    cout << *s.find_by_order((k + 1) / 2 - 1);
+    for(int i = 0;i < n - k;i++) {
+        s.erase(s.find_by_order(s.order_of_key(v[i])));
+        s.insert(v[i + k]);
+        cout << " " << *s.find_by_order((k + 1) / 2 - 1);
+    } 
+    cout << endl;
 }
 
 int main() {

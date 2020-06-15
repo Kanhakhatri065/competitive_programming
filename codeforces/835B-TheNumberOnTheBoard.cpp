@@ -46,36 +46,28 @@ void solve() {
     ll k;
     sc(k);
 
-    string s;
-    sc(s);
+    string str;
+    sc(str);
 
-    map<char, ll>m;
-    f(i, 0, s.length()) {
-        m[s[i]]++;
+    ll sum = 0;
+    f(i, 0, str.length()) {
+        sum += str[i] - '0';
     }
 
-    int flag = 0;
-    for(auto i : m) {
-        if(i.ss % k != 0) {
-            flag = 1;
+    ll need = k - sum;
+    srt(str);
+
+    ll ans = 0;
+    f(i, 0, str.length()) {
+        if(need > 0) {
+            need -= ('9' - str[i]);
+            ans++;
+        } else {
             break;
         }
     }
 
-    if(flag) {
-        pf(-1);
-    } else {
-        string out = "";
-        f(i, 0, k) {
-            for(auto it : m) {
-                f(j, 0, it.ss / k) {
-                    out += it.ff;
-                }
-            }
-        }
-
-        pf(out);
-    }
+    pf(ans);
 }
 
 int main() {

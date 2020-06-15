@@ -43,38 +43,33 @@ void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
 void solve() {
-    ll k;
-    sc(k);
-
-    string s;
-    sc(s);
-
-    map<char, ll>m;
-    f(i, 0, s.length()) {
-        m[s[i]]++;
+    mll m;
+    f(i, 0, 6) {
+        ll num;
+        sc(num);
+        m[num]++;
     }
 
-    int flag = 0;
+    int checklegs = 0;
     for(auto i : m) {
-        if(i.ss % k != 0) {
-            flag = 1;
+        if(i.ss >= 4) {
+            checklegs = 1;
+            m[i.ff] -= 4;
+            if(m[i.ff] == 0) {
+                m.erase(i.ff);
+            }
             break;
         }
     }
 
-    if(flag) {
-        pf(-1);
-    } else {
-        string out = "";
-        f(i, 0, k) {
-            for(auto it : m) {
-                f(j, 0, it.ss / k) {
-                    out += it.ff;
-                }
-            }
+    if(checklegs) {
+        if(m.size() == 1) {
+            pf("Elephant");
+        } else {
+            pf("Bear");
         }
-
-        pf(out);
+    } else {
+        pf("Alien");
     }
 }
 

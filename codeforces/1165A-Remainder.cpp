@@ -43,39 +43,35 @@ void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
 void solve() {
-    ll k;
-    sc(k);
+    ll n, x, y;
+    sc(n);
+    sc(x);
+    sc(y);
 
-    string s;
-    sc(s);
+    string str;
+    sc(str);
 
-    map<char, ll>m;
-    f(i, 0, s.length()) {
-        m[s[i]]++;
-    }
-
-    int flag = 0;
-    for(auto i : m) {
-        if(i.ss % k != 0) {
-            flag = 1;
-            break;
-        }
-    }
-
-    if(flag) {
-        pf(-1);
-    } else {
-        string out = "";
-        f(i, 0, k) {
-            for(auto it : m) {
-                f(j, 0, it.ss / k) {
-                    out += it.ff;
-                }
+    ll cnt = 0;
+    for(ll i = n - 1;i >= n - x - 1;i--) {
+        if(i > n - y - 1) {
+            if(str[i] == '1') {
+                cnt++;
+                str[i] == '0';
+            }
+        } else if(i == n - y - 1) {
+            if(str[i] == '0') {
+                cnt++;
+                str[i] == '1';
+            }
+        } else if(i > n - x - 1) {
+            if(str[i] == '1') {
+                cnt++;
+                str[i] == '0';
             }
         }
-
-        pf(out);
     }
+
+    pf(cnt);
 }
 
 int main() {

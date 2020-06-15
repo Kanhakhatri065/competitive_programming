@@ -43,38 +43,40 @@ void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
 void solve() {
-    ll k;
-    sc(k);
+    string str;
+    sc(str);
 
-    string s;
-    sc(s);
+    map<char, char> mp;
+    mp['>'] = '<';
+    mp['}'] = '{';
+    mp[')'] = '(';
+    mp[']'] = '[';
 
-    map<char, ll>m;
-    f(i, 0, s.length()) {
-        m[s[i]]++;
-    }
-
+    set<char> s = {'{', '<', '(', '['};
+    stack<char> stk;
+    ll cnt = 0;
     int flag = 0;
-    for(auto i : m) {
-        if(i.ss % k != 0) {
-            flag = 1;
-            break;
-        }
-    }
-
-    if(flag) {
-        pf(-1);
-    } else {
-        string out = "";
-        f(i, 0, k) {
-            for(auto it : m) {
-                f(j, 0, it.ss / k) {
-                    out += it.ff;
+    f(i, 0, str.length()) {
+        if(s.count(str[i])) {
+            stk.push(str[i]);
+        } else {
+            if(stk.size()) {
+                char c = stk.top();
+                if(c != mp[str[i]]) {
+                    cnt++;
                 }
+                stk.pop();
+            } else {
+                flag = 1;
+                break;
             }
         }
+    }
 
-        pf(out);
+    if(flag || stk.size()) {
+        pf("Impossible");
+    } else {
+        pf(cnt);
     }
 }
 

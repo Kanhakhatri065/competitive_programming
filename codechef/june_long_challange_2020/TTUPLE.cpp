@@ -42,44 +42,112 @@ typedef vector<pair<ll,ll>>vpll;
 void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
-void solve() {
-    ll k;
-    sc(k);
+const int MAXN = 100*1000 + 5;
+ 
+inline ll mulFac(ll a,ll b,ll c,ll d){
+	if(b != a and (d-c)%(b-a) == 0){
+		return (d-c)/(b-a);
+	}else{
+		return 1;
+	}
+}
+ 
+inline bool equal(ll* a, ll* b){
+	f(i, 0, 3) {
+        if(a[i] != b[i]) {
+            return false;
+        }
+    }
+    return true;
+}
 
-    string s;
-    sc(s);
+int best;
 
-    map<char, ll>m;
-    f(i, 0, s.length()) {
-        m[s[i]]++;
+void solve(ll* a,ll* b,int num = 0){
+	if(num >= best) {
+        return;
     }
 
-    int flag = 0;
-    for(auto i : m) {
-        if(i.ss % k != 0) {
-            flag = 1;
-            break;
+    if(equal(a,b)){
+		best = min(best,num);
+		return;
+	}
+
+	if(num >= 2) {
+        return;
+    }
+
+	set<ll> add;
+	add.insert(b[0]-a[0]);
+	add.insert(b[1]-a[1]);
+	add.insert(b[2]-a[2]);
+
+	set<ll> mult;
+	
+    f(i, 0, 3) {
+        if(a[i] != 0 and b[i]%a[i] == 0) {
+            mult.insert(b[i]/a[i]);
         }
     }
 
-    if(flag) {
-        pf(-1);
-    } else {
-        string out = "";
-        f(i, 0, k) {
-            for(auto it : m) {
-                f(j, 0, it.ss / k) {
-                    out += it.ff;
-                }
+	mult.insert(mulFac(a[0],a[1],b[0],b[1]));
+	mult.insert(mulFac(a[2],a[1],b[2],b[1]));
+	mult.insert(mulFac(a[0],a[2],b[0],b[2]));
+	mult.insert(0);
+	
+	f(mask,1,8) {
+		vector<int> all;
+		f(j, 0, 3) {
+            if(mask&(1<<j)) {
+                all.pb(j);
             }
         }
 
-        pf(out);
-    }
+        for(auto x: add){
+			ll aa[3];
+			f(j, 0, 3) {
+                aa[j] = a[j];
+            }
+
+        	for(auto e: all) {
+                aa[e]+=x;
+            }
+
+			solve(aa,b,num+1);
+		}
+		for(auto x:mult){
+			ll aa[3];
+			f(j, 0, 3) {
+                aa[j] = a[j];
+            }
+
+			for(auto e: all) {
+                aa[e]*=x;
+            }
+            
+			solve(aa,b,num+1);
+		}
+ 
+	}
+}
+ 
+void solve(){
+	best = 3;
+	ll a[3];
+	ll b[3];
+	cin >> a[0] >> a[1] >> a[2];
+	cin >> b[0] >> b[1] >> b[2];
+	solve(a,b);
+	cout << best << endl;
 }
 
 int main() {
-    FAST_IO
-    solve();
+    ll t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+
     return 0;
 }

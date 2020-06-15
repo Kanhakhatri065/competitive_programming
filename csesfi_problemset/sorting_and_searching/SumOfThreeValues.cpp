@@ -43,39 +43,37 @@ void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
 void solve() {
-    ll k;
-    sc(k);
+    ll n, x;
+    sc(n);
+    sc(x);
 
-    string s;
-    sc(s);
-
-    map<char, ll>m;
-    f(i, 0, s.length()) {
-        m[s[i]]++;
+    vector<pll> v(n);
+    f(i, 0, n) {
+        sc(v[i].ff);
+        v[i].ss = i + 1;
     }
 
-    int flag = 0;
-    for(auto i : m) {
-        if(i.ss % k != 0) {
-            flag = 1;
-            break;
-        }
-    }
-
-    if(flag) {
-        pf(-1);
-    } else {
-        string out = "";
-        f(i, 0, k) {
-            for(auto it : m) {
-                f(j, 0, it.ss / k) {
-                    out += it.ff;
+    if(v.size() >= 3) {
+        srt(v);
+        ll l, r;
+        f(i, 0, v.size() - 2) {
+            l = i + 1;
+            r = v.size() - 1;
+            while(l < r) {
+                if(v[i].ff + v[l].ff + v[r].ff == x) {
+                    cout << v[i].ss << " " << v[l].ss << " " << v[r].ss << endl;
+                    return;
+                } else if(v[i].ff + v[l].ff + v[r].ff < x) {
+                    l++;
+                } else {
+                    r--;
                 }
             }
         }
-
-        pf(out);
     }
+
+
+    pf("IMPOSSIBLE");
 }
 
 int main() {

@@ -43,43 +43,84 @@ void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
 void solve() {
-    ll k;
-    sc(k);
+    ll a, b;
+    sc(a);
+    sc(b);
 
-    string s;
-    sc(s);
+    if(a == b) {
+        pf(0);
+    } else if(a > b) {
+        if(a % b == 0) {
+            a /= b;
 
-    map<char, ll>m;
-    f(i, 0, s.length()) {
-        m[s[i]]++;
-    }
+            if(GET_SET_BITSLL(a) != 1) {
+                pf(-1);
+            } else {
+                ll cnt = -1;
+                while(a != 0) {
+                    cnt++;
+                    if(a % 2 == 1) {
+                        break;
+                    }
+                    a /= 2;
+                }
 
-    int flag = 0;
-    for(auto i : m) {
-        if(i.ss % k != 0) {
-            flag = 1;
-            break;
-        }
-    }
+                if(cnt > 0) {
+                    ll div = cnt / 3;
+                    if(cnt % 3 != 0) {
+                        div++;
+                    }
 
-    if(flag) {
-        pf(-1);
-    } else {
-        string out = "";
-        f(i, 0, k) {
-            for(auto it : m) {
-                f(j, 0, it.ss / k) {
-                    out += it.ff;
+                    pf(div);
+                } else {
+                    pf(-1);
                 }
             }
-        }
 
-        pf(out);
+        } else {
+            pf(-1);
+        }
+    } else {
+        if(b % a == 0) {
+            b /= a;
+            if(GET_SET_BITSLL(b) == 1) {
+                ll cnt = -1;
+                while(b != 0) {
+                    cnt++;
+                    if(b % 2 == 1) {
+                        break;
+                    }
+                    b /= 2;
+                }
+
+                if(cnt > 0) {
+                    ll div = cnt / 3;
+                    if(cnt % 3 != 0) {
+                        div++;
+                    }
+
+                    pf(div);
+                } else {
+                    pf(-1);
+                }
+            } else {
+                pf(-1);
+            }
+
+        } else {
+            pf(-1);
+        }
     }
 }
 
 int main() {
     FAST_IO
-    solve();
+    ll t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+
     return 0;
 }

@@ -43,43 +43,39 @@ void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
 void solve() {
-    ll k;
-    sc(k);
+    ll arr[3];
+    forIn(arr, 3);
 
-    string s;
-    sc(s);
+    sort(arr, arr + 3);
+    ll x = arr[2] - arr[1];
+    if(arr[0] >= x && x != 0) {
+        arr[0] -= x;
+        arr[2] = arr[1];
 
-    map<char, ll>m;
-    f(i, 0, s.length()) {
-        m[s[i]]++;
-    }
-
-    int flag = 0;
-    for(auto i : m) {
-        if(i.ss % k != 0) {
-            flag = 1;
-            break;
+        if(arr[0] % 2 == 0) {
+            pf(x + arr[0] + arr[2] - arr[0] / 2);
+        } else {
+            pf(x + arr[0] + arr[2] - arr[0] / 2 - 1);
         }
-    }
-
-    if(flag) {
-        pf(-1);
+    } else if(x == 0) {
+        if(arr[0] % 2 == 0) {
+            pf(arr[0] + arr[2] - arr[0] / 2);
+        } else {
+            pf(arr[0] + arr[2] - arr[0] / 2 - 1);
+        }
     } else {
-        string out = "";
-        f(i, 0, k) {
-            for(auto it : m) {
-                f(j, 0, it.ss / k) {
-                    out += it.ff;
-                }
-            }
-        }
-
-        pf(out);
+        pf(arr[0] + arr[1]);
     }
 }
 
 int main() {
     FAST_IO
-    solve();
+    ll t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+
     return 0;
 }

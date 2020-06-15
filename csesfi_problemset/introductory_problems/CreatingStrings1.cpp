@@ -42,39 +42,26 @@ typedef vector<pair<ll,ll>>vpll;
 void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
+set<string> perms;
+void permutations(string prefix, string suffix) {
+    if(suffix.length() == 0) {
+        perms.insert(prefix);
+        return;
+    }
+
+    f(i, 0, suffix.length()) {
+        permutations(prefix + suffix[i], suffix.substr(0, i) + suffix.substr(i + 1));
+    }
+}
+
 void solve() {
-    ll k;
-    sc(k);
+    string str;
+    sc(str);
 
-    string s;
-    sc(s);
-
-    map<char, ll>m;
-    f(i, 0, s.length()) {
-        m[s[i]]++;
-    }
-
-    int flag = 0;
-    for(auto i : m) {
-        if(i.ss % k != 0) {
-            flag = 1;
-            break;
-        }
-    }
-
-    if(flag) {
-        pf(-1);
-    } else {
-        string out = "";
-        f(i, 0, k) {
-            for(auto it : m) {
-                f(j, 0, it.ss / k) {
-                    out += it.ff;
-                }
-            }
-        }
-
-        pf(out);
+    permutations("", str);
+    pf(perms.size());
+    for(auto x : perms) {
+        pf(x);
     }
 }
 

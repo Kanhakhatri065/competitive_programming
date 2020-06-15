@@ -43,39 +43,50 @@ void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
 void solve() {
-    ll k;
-    sc(k);
+    ll n;
+    sc(n);
 
-    string s;
-    sc(s);
+    vll v(n);
+    forIn(v, n);
+    
+    vll neg;
+    vll pos;
+    vll zero;
 
-    map<char, ll>m;
-    f(i, 0, s.length()) {
-        m[s[i]]++;
-    }
-
-    int flag = 0;
-    for(auto i : m) {
-        if(i.ss % k != 0) {
-            flag = 1;
-            break;
+    f(i, 0, n) {
+        if(v[i] < 0) {
+            neg.pb(v[i]);
+        } else if(v[i] > 0) {
+            pos.pb(v[i]);
+        } else {
+            zero.pb(v[i]);
         }
     }
 
-    if(flag) {
-        pf(-1);
-    } else {
-        string out = "";
-        f(i, 0, k) {
-            for(auto it : m) {
-                f(j, 0, it.ss / k) {
-                    out += it.ff;
-                }
+    if(pos.empty()) {
+        ll count = 0;
+        for(ll i = neg.size() - 1;i >= 0;i--) {
+            pos.pb(neg[i]);
+            neg.erase(i + neg.begin());
+            count++;
+
+            if(count == 2) {
+                break;
             }
         }
-
-        pf(out);
     }
+
+    if(neg.size() % 2 == 0) {
+        zero.pb(neg[neg.size() - 1]);
+        neg.erase(neg.begin() + neg.size() - 1);
+    }
+
+    cout << neg.size() << " ";
+    vpnt(neg);
+    cout << pos.size() << " ";
+    vpnt(pos);
+    cout << zero.size() << " ";
+    vpnt(zero);
 }
 
 int main() {

@@ -43,39 +43,42 @@ void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
 void solve() {
-    ll k;
-    sc(k);
+    ll n;
+    sc(n);
 
-    string s;
-    sc(s);
+    vector<pair<ll, pll>> v;
+    ll x, y;
+    f(i, 0, n) {
+        sc(x);
+        sc(y);
 
-    map<char, ll>m;
-    f(i, 0, s.length()) {
-        m[s[i]]++;
+        v.pb({x, {-1, i}});
+        v.pb({y, {1, i}});
     }
 
-    int flag = 0;
-    for(auto i : m) {
-        if(i.ss % k != 0) {
-            flag = 1;
-            break;
+    srt(v);
+
+    vll rooms;
+    ll occ = 0, mx = 0, inorout, ind;
+    ll ans[200005];
+    for(auto ele : v) {
+        inorout = ele.ss.ff;
+        ind = ele.ss.ss;
+
+        if(inorout == 1) {
+            rooms.pb(ans[ind]);
+        } else if(occ == rooms.size()) {
+            ans[ind] = ++mx;
+        } else {
+            ans[ind] = rooms[occ++];
         }
     }
 
-    if(flag) {
-        pf(-1);
-    } else {
-        string out = "";
-        f(i, 0, k) {
-            for(auto it : m) {
-                f(j, 0, it.ss / k) {
-                    out += it.ff;
-                }
-            }
-        }
-
-        pf(out);
+    pf(mx);
+    f(i, 0, n) {
+        cout << ans[i] << " ";
     }
+    cout << endl;
 }
 
 int main() {

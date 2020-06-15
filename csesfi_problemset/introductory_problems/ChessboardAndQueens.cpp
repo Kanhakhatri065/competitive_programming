@@ -42,40 +42,32 @@ typedef vector<pair<ll,ll>>vpll;
 void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
-void solve() {
-    ll k;
-    sc(k);
+bool takencols[8], takendiag1[16], takendiag2[16];
 
-    string s;
-    sc(s);
-
-    map<char, ll>m;
-    f(i, 0, s.length()) {
-        m[s[i]]++;
+void place(string board[8], int r, ll &ans) {
+    if(r == 8) {
+        ans++;
+        return;
     }
 
-    int flag = 0;
-    for(auto i : m) {
-        if(i.ss % k != 0) {
-            flag = 1;
-            break;
-        }
-    }
-
-    if(flag) {
-        pf(-1);
-    } else {
-        string out = "";
-        f(i, 0, k) {
-            for(auto it : m) {
-                f(j, 0, it.ss / k) {
-                    out += it.ff;
-                }
+    f(c, 0, 8) {
+        if(board[r][c] == '.') {
+            if(!takencols[c] && !takendiag1[r - c + 8 - 1] && !takendiag2[r + c]) {
+                takencols[c] = takendiag1[r - c + 8 - 1] = takendiag2[r + c] = true;
+                place(board, r + 1, ans);
+                takencols[c] = takendiag1[r - c + 8 - 1] = takendiag2[r + c] = false;
             }
         }
-
-        pf(out);
     }
+}
+
+void solve() {
+    string board[8];
+    forIn(board, 8);
+
+    ll ans = 0;
+    place(board, 0, ans);
+    pf(ans);
 }
 
 int main() {

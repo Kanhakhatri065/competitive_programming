@@ -43,38 +43,61 @@ void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
 void solve() {
-    ll k;
-    sc(k);
-
     string s;
     sc(s);
 
-    map<char, ll>m;
-    f(i, 0, s.length()) {
-        m[s[i]]++;
-    }
+    string a = "Danil", b = "Olya", c = "Slava", d = "Ann", e = "Nikita";
 
-    int flag = 0;
-    for(auto i : m) {
-        if(i.ss % k != 0) {
-            flag = 1;
-            break;
-        }
-    }
-
-    if(flag) {
-        pf(-1);
-    } else {
-        string out = "";
-        f(i, 0, k) {
-            for(auto it : m) {
-                f(j, 0, it.ss / k) {
-                    out += it.ff;
-                }
+    ll cnt = 0;
+    if(s.length() >= 5) {
+        f(i, 0, s.length() - 4) {
+            string p = s.substr(i, 5);
+            if(p == a) {
+                cnt++;
             }
         }
+    }
 
-        pf(out);
+    if(s.length() >= 4) {
+        f(i, 0, s.length() - 3) {
+            string p = s.substr(i, 4);
+            if(p == b) {
+                cnt++;
+            }
+        }
+    }
+
+    if(s.length() >= 5) {
+        f(i, 0, s.length() - 4) {
+            string p = s.substr(i, 5);
+            if(p == c) {
+                cnt++;
+            }
+        }
+    }
+
+    if(s.length() >= 3) {
+        f(i, 0, s.length() - 2) {
+            string p = s.substr(i, 3);
+            if(p == d) {
+                cnt++;
+            }
+        }
+    }
+
+    if(s.length() >= 6) {
+        f(i, 0, s.length() - 5) {
+            string p = s.substr(i, 6);
+            if(p == e) {
+                cnt++;
+            }
+        }
+    }
+
+    if(cnt == 1) {
+        yes;
+    } else {
+        no;
     }
 }
 

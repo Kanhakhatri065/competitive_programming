@@ -42,40 +42,39 @@ typedef vector<pair<ll,ll>>vpll;
 void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
-void solve() {
-    ll k;
-    sc(k);
+ll sum_of_digits(ll n) {
+    ll sum = 0;
+    while(n != 0) {
+        sum += (n % 10);
+        n /= 10;
+    }
 
-    string s;
+    return sum;
+}
+
+
+void solve() {
+    ll n, s;
+    sc(n);
     sc(s);
 
-    map<char, ll>m;
-    f(i, 0, s.length()) {
-        m[s[i]]++;
-    }
+    ll ans = 0;
+    ll left = 0;
+    ll right = n;
 
-    int flag = 0;
-    for(auto i : m) {
-        if(i.ss % k != 0) {
-            flag = 1;
-            break;
+    ll mid;
+    while(left <= right) {
+        mid = left + (right - left) / 2;
+        if(mid - sum_of_digits(mid) >= s) {
+            //itne ka diff s se bada hai
+            ans = n - mid + 1;
+            right = mid - 1;
+        } else {
+            left = mid + 1;
         }
-    }
+    }    
 
-    if(flag) {
-        pf(-1);
-    } else {
-        string out = "";
-        f(i, 0, k) {
-            for(auto it : m) {
-                f(j, 0, it.ss / k) {
-                    out += it.ff;
-                }
-            }
-        }
-
-        pf(out);
-    }
+    pf(ans);
 }
 
 int main() {
