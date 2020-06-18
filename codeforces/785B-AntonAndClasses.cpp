@@ -38,4 +38,46 @@ typedef vector<pair<ll,ll>>vpll;
 /*** Some Prints ***/
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
+/*** Swapping ***/
+void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
+void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
+void solve() {
+    ll n;
+    sc(n);
+
+    vector<pll> chess(n);
+    f(i, 0, n) {
+        sc(chess[i].ff);
+        sc(chess[i].ss);
+    }
+
+    ll m;
+    sc(m);
+    vector<pll> prog(m);
+    f(i, 0, m) {
+        sc(prog[i].ff);
+        sc(prog[i].ss);
+    }
+
+    ll maxL1 = LONG_LONG_MIN, minR1 = LONG_LONG_MAX;
+    ll maxL2 = LONG_LONG_MIN, minR2 = LONG_LONG_MAX;
+
+    f(i, 0, n) {
+        maxL1 = max(maxL1, chess[i].ff);
+        minR1 = min(minR1, chess[i].ss);
+    }
+
+    f(i, 0, m) {
+        maxL2 = max(maxL2, prog[i].ff);
+        minR2 = min(minR2, prog[i].ss);
+    }
+
+    pf(max(0LL, max(maxL2 - minR1, maxL1 - minR2)));
+}
+
+int main() {
+    FAST_IO
+    solve();
+    return 0;
+}

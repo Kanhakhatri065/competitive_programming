@@ -39,3 +39,36 @@ typedef vector<pair<ll,ll>>vpll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+int h[1001];
+int s[1001];
+int a[100002];
+
+void solve() {
+    int n, x;
+    sc(n);
+    sc(x);
+
+    f(i, 0, n) {
+        sc(h[i]);
+    }
+
+    f(i, 0, n) {
+        sc(s[i]);
+    }
+
+    f(i, 0, n) {
+        for(int j = x;j >= 1;j--) {
+            if(h[i] <= j) {
+                a[j] = max(a[j], a[j - h[i]] + s[i]);
+            }
+        }
+    }
+
+    pf(a[x]);
+}
+
+int main() {
+    FAST_IO
+    solve();
+    return 0;
+}

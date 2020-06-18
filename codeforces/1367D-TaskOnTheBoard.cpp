@@ -38,4 +38,78 @@ typedef vector<pair<ll,ll>>vpll;
 /*** Some Prints ***/
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
+/*** Swapping ***/
+void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
+void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
+void solve() {
+    string s;
+    sc(s);
+
+    int n;
+    sc(n);
+
+    vector<int> b(n);
+    forIn(b, n);
+
+    vector<vector<int>> groups;
+    while(true) {
+        vector<int> pos;
+
+        f(i, 0, n) {
+            if(b[i] == 0) {
+                pos.pb(i);
+            }
+        }
+
+        if(pos.empty()) {
+            break;
+        }
+
+        groups.pb(pos);
+
+        f(i, 0, n) {
+            if(b[i] == 0) {
+                b[i] = INT_MAX;
+            } else {
+                for(int pp : pos) {
+                    b[i] -= abs(i - pp);
+                }
+            }
+        }
+    }
+
+    map<char, int> cnts;
+    f(i, 0, s.length()) {
+        cnts[s[i]]++;
+    }
+
+    auto j = cnts.rbegin();
+    string t(n, '?');
+
+    for(auto g : groups) {
+        while(j->ss < g.size()) {
+            j++;
+        }
+
+        for(int pp : g) {
+            t[pp] = j->ff;
+        }
+
+        j++;
+    }
+
+    pf(t);
+}
+
+int main() {
+    FAST_IO
+    ll t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+
+    return 0;
+}

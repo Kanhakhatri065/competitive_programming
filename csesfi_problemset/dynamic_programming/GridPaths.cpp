@@ -39,3 +39,39 @@ typedef vector<pair<ll,ll>>vpll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+void solve() {
+    int n;
+    sc(n);
+
+    char arr[n][n];
+    f(i, 0, n) {
+        f(j, 0, n) {
+            sc(arr[i][j]);
+        }
+    }
+    vector<vector<int>> a(n, vector<int>(n));
+    a[0][0] = (arr[0][0] == '.') ? 1 : 0;
+    f(i, 0, n) {
+        f(j, 0, n) {
+            if(arr[i][j] == '*') {
+                continue;
+            }
+
+            if(i > 0) {
+                (a[i][j] += a[i - 1][j]) %= mod1;
+            }
+
+            if(j > 0) {
+                (a[i][j] += a[i][j - 1]) %= mod1;
+            }
+        }
+    }
+
+    pf(a[n - 1][n - 1]);
+}
+
+int main() {
+    FAST_IO
+    solve();
+    return 0;
+}

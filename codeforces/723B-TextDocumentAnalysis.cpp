@@ -38,4 +38,72 @@ typedef vector<pair<ll,ll>>vpll;
 /*** Some Prints ***/
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
+/*** Swapping ***/
+void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
+void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
+void solve() {
+    int n;
+    sc(n);
+
+    string s;
+    sc(s);
+
+    vector<string> open, close;
+    bool par_open = false;
+    string cword = "";
+    for(auto c : s) {
+        if(c == '_') {
+            if(cword != "") {
+                if(par_open) {
+                    close.pb(cword);
+                } else {
+                    open.pb(cword);
+                }
+
+                cword = "";
+            }
+        } else if(c == '(') {
+            par_open = true;
+            if(cword != "") {
+                open.pb(cword);
+                cword = "";
+            }
+        } else if(c == ')') {
+            par_open = false;
+            if(cword != "") {
+                close.pb(cword);
+                cword = "";
+            }
+        } else {
+            cword += c;
+        }
+    }
+
+    if(cword != "") {
+        if(par_open) {
+            close.pb(cword);
+        } else {
+            open.pb(cword);
+        }
+        cword = "";
+    }
+
+    int out = 0, in = 0;
+    for(auto i : open) {
+        out = max(out, (int)i.size());
+    }
+
+    for(auto i : close) {
+        in++;
+    }
+
+    cout << out << " " << in << endl;
+}
+
+
+int main() {
+    FAST_IO
+    solve();
+    return 0;
+}

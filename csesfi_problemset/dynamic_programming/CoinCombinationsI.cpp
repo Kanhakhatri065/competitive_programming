@@ -39,3 +39,32 @@ typedef vector<pair<ll,ll>>vpll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+void solve() {
+    int n;
+    sc(n);
+
+    ll x;
+    sc(x);
+
+    vll v(n);
+    forIn(v, n);
+
+    vll d(x + 1);
+    d[0] = 1;
+
+    f(i, 1, x + 1) {
+        for(ll c : v) {
+            if(c <= i) {
+                d[i] = (d[i] + d[i - c]) % mod1;
+            }  
+        }
+    }
+
+    pf(d[x]);
+}
+
+int main() {
+    FAST_IO
+    solve();
+    return 0;
+}

@@ -38,4 +38,57 @@ typedef vector<pair<ll,ll>>vpll;
 /*** Some Prints ***/
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
+/*** Swapping ***/
+void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
+void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
+void solve() {
+    string s;
+    sc(s);
+
+    ll n = s.length();
+
+    string temp(4, '!');
+    for(ll i = 0;i < n;i += 4) {
+        if(s[i] != '!') {
+            temp[0] = s[i];
+            break;
+        }
+    }
+
+    for(ll i = 1;i < n;i += 4) {
+        if(s[i] != '!') {
+            temp[1] = s[i];
+            break;
+        }
+    }
+
+    for(ll i = 2;i < n;i += 4) {
+        if(s[i] != '!') {
+            temp[2] = s[i];
+            break;
+        }
+    }
+
+    for(ll i = 3;i < n;i += 4) {
+        if(s[i] != '!') {
+            temp[3] = s[i];
+            break;
+        }
+    }
+
+    map<char, ll> ans;
+    f(i, 0, n) {
+        if(s[i] == '!') {
+            ans[temp[i % 4]]++;
+        }
+    }
+
+    cout << ans['R'] << " " << ans['B'] << " " << ans['Y'] << " " << ans['G'] << endl;
+}
+
+int main() {
+    FAST_IO
+    solve();
+    return 0;
+}

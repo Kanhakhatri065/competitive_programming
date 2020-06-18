@@ -39,3 +39,35 @@ typedef vector<pair<ll,ll>>vpll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+void solve() {
+    ll n;
+    sc(n);
+
+    vector<int> v;
+    ll tmp =  n;
+
+    ll cnt = 0;
+    while(true) {
+        if(n == 0) {
+            break;
+        }
+        
+        tmp = n;
+        while(tmp != 0) {
+            v.pb(tmp % 10);
+            tmp /= 10;
+        }
+
+        n -= *max_element(all(v));
+        cnt++;
+        v.clear();
+    }
+
+    pf(cnt);
+}
+
+int main() {
+    FAST_IO
+    solve();
+    return 0;
+}

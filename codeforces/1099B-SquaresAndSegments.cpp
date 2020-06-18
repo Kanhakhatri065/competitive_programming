@@ -38,4 +38,33 @@ typedef vector<pair<ll,ll>>vpll;
 /*** Some Prints ***/
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
+/*** Swapping ***/
+void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
+void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
+void solve() {
+    ll n;
+    sc(n);
+
+    ll l = 2, r = n + 1, mi = LONG_LONG_MAX;
+
+    ll mid;
+    while(l <= r) {
+        mid = l + (r - l) / 2;
+
+        if(mid / 2 * (mid - mid / 2) >= n) {
+            mi = min(mi, mid);
+            r = mid - 1;
+        } else {
+            l = mid + 1;
+        }
+    }
+
+    pf(mi);
+}
+
+int main() {
+    FAST_IO
+    solve();
+    return 0;
+}

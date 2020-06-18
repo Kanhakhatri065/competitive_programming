@@ -39,3 +39,31 @@ typedef vector<pair<ll,ll>>vpll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+void solve() {
+    ll n;
+    ll l;
+    sc(n);
+    sc(l);
+
+    vll v(n);
+    forIn(v, n);
+
+    srt(v);
+    long double ans = v[0] - 0;
+    long double curr;
+    f(i, 0, n - 1) {
+        curr = (v[i + 1] - v[i]) / 2.0;
+        ans = max(ans, curr);
+    }
+
+    ans = max(ans, (long double)l - v.back());
+
+    printf("%.10Lf\n", ans);
+}
+
+int main() {
+    FAST_IO
+    
+    solve();
+    return 0;
+}

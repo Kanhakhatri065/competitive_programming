@@ -39,3 +39,42 @@ typedef vector<pair<ll,ll>>vpll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+void solve() {
+    int n, m;
+    sc(n);
+    sc(m);
+
+    vector<int> v(n);
+    forIn(v, n);
+
+    vector<vector<int>> s(n, vector<int>(m + 1));
+
+    for (int j = 1; j <= m; j++) {
+        if (v[0] && j == v[0] || !v[0]) {
+            s[0][j] = 1;
+        }
+    }
+
+    for (int i = 1; i < n; i++) {
+        for (int j = 1; j <= m; j++) {
+            if (v[i] && j == v[i] || !v[i]) {
+                for (int k = max(0, j - 1); k <= min(m, j + 1); k++) {
+                    (s[i][j] += s[i - 1][k]) %= mod1;
+                }
+            }
+        }
+    }
+
+    ll c = 0;
+    f(i, 1, m + 1) {
+        (c += s[n - 1][i]) %= mod1;
+    }
+
+    pf(c);
+}
+
+int main() {
+    FAST_IO
+    solve();
+    return 0;
+}

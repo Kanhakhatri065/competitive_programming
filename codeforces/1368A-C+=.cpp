@@ -39,3 +39,36 @@ typedef vector<pair<ll,ll>>vpll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+void solve() {
+    ll a, b, n;
+    sc(a);
+    sc(b);
+    sc(n);
+    
+    if(a > b) {
+        swap(a, b);
+    }
+
+    ll cnt = 0;
+    ll sum = 0;
+    while(n >= b) {
+        cnt++;
+        sum = a + b;
+        a = b;
+        b = sum;
+    } 
+
+    pf(cnt);
+}
+
+int main() {
+    FAST_IO
+    ll t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+
+    return 0;
+}

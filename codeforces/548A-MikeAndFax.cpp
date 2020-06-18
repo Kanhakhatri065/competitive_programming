@@ -38,4 +38,54 @@ typedef vector<pair<ll,ll>>vpll;
 /*** Some Prints ***/
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
+/*** Swapping ***/
+void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
+void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
+bool isPalindrome(string s) {
+    for(ll i = 0;i < s.length() / 2;i++) {
+        if(s[i] != s[s.length() - i - 1]) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+void solve() {
+    string s;
+    sc(s);
+
+    ll n;
+    sc(n);
+
+    if(s.length() % n != 0) {
+        no;
+    } else {
+        ll k = s.length() / n;
+        vector<string> store;
+        for(ll i = 0;i < s.length();i += k) {
+            store.pb(s.substr(i, k));
+        }
+
+        int flag = 0;
+        f(i, 0, store.size()) {
+            if(!isPalindrome(store[i])) {
+                flag = 1;
+                break;
+            }
+        }
+
+        if(flag) {
+            no;
+        } else {
+            yes;
+        }
+    }
+}
+
+int main() {
+    FAST_IO
+    solve();
+    return 0;
+}
