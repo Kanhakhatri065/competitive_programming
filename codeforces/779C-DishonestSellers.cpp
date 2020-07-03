@@ -40,39 +40,54 @@ typedef vector<pair<ll,ll>>vpll;
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
 void solve() {
-    ll n, k;
+    int n, k;
     sc(n);
     sc(k);
 
-    string str = "";
-    for(int i = 0;i < k;i++) {
-        str += (char)(i + 97);
+    int a[n + 1], b[n + 1];
+    f(i,1 , n + 1) {
+        sc(a[i]);
     }
 
-    string outputstr = "";
-    ll div = n / k;
-    n -= (k * div);
-    for(int i = 0;i < div;i++) {
-        outputstr += str;
+    ll sum = 0;
+    f(i, 1, n + 1) {
+        sc(b[i]);
+        sum += b[i];
     }
 
-    if(n != 0) {
-        for(int i = 0;i < n;i++) {
-            outputstr += str[i];
+    vector<pair<int, int>> discount;
+    f(i, 1, n + 1) {
+        discount.pb({-1 * (a[i] - b[i]), i});
+    }
+
+    srt(discount);
+    int cnt = 0;
+    ll discount_sum = 0;
+    int ni;
+
+    for(int i = n - 1;i >= 0;i--) {
+        if(discount[i].ff < 0) {
+            ni = i;
+            break;
         }
+
+        discount_sum += discount[i].ff;
+        cnt++;
     }
 
-    pf(outputstr);
+    if(k <= cnt) {
+        pf(sum - discount_sum);
+    } else {
+        sum -= discount_sum;
+        f(i, 0, k - cnt) {
+            sum -= discount[ni--].ff;
+        }
+        pf(sum);
+    }
 }
 
 int main() {
     FAST_IO
-    ll testcases;
-    sc(testcases);
-
-    while(testcases--) {
-        solve();
-    }
-
+    solve();
     return 0;
 }

@@ -39,38 +39,39 @@ typedef vector<pair<ll,ll>>vpll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
-void solve() {
-    ll n, k;
-    sc(n);
-    sc(k);
-
-    string str = "";
-    for(int i = 0;i < k;i++) {
-        str += (char)(i + 97);
+bool isPrime(int n) {
+    if(n == 1) {
+        return false;
     }
 
-    string outputstr = "";
-    ll div = n / k;
-    n -= (k * div);
-    for(int i = 0;i < div;i++) {
-        outputstr += str;
-    }
-
-    if(n != 0) {
-        for(int i = 0;i < n;i++) {
-            outputstr += str[i];
+    for(int i = 2;i <= sqrt(n);i++) {
+        if(n % i == 0) {
+            return false;
         }
     }
 
-    pf(outputstr);
+    return true;
+}
+
+void solve() {
+    int x, y;
+    sc(x);
+    sc(y);
+
+    int sum = x + y + 1;
+    while(!isPrime(sum)) {
+        sum++;
+    }
+
+    pf(sum - x - y);
 }
 
 int main() {
     FAST_IO
-    ll testcases;
-    sc(testcases);
+    int t;
+    sc(t);
 
-    while(testcases--) {
+    while(t--) {
         solve();
     }
 

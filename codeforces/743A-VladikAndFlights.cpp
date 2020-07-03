@@ -40,39 +40,48 @@ typedef vector<pair<ll,ll>>vpll;
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
 void solve() {
-    ll n, k;
+    int n, a, b;
     sc(n);
-    sc(k);
+    sc(a);
+    sc(b);
+    a--;
+    b--;
 
-    string str = "";
-    for(int i = 0;i < k;i++) {
-        str += (char)(i + 97);
+    string s;
+    sc(s);
+
+    if(s[a] == s[b]) {
+        pf(0);
+        return;
     }
 
-    string outputstr = "";
-    ll div = n / k;
-    n -= (k * div);
-    for(int i = 0;i < div;i++) {
-        outputstr += str;
-    }
-
-    if(n != 0) {
-        for(int i = 0;i < n;i++) {
-            outputstr += str[i];
+    int mn = INT_MAX;
+    if(a < b) {    
+        f(i, a + 1, b) {
+            if(s[i] == s[a]) {
+                a = i;
+            } else {
+                mn = min(mn,(int)i - a);
+            }
         }
+        mn = min(mn, b - a);
+    } else {
+        for(int i = a - 1;i > b;i--) {
+            if(s[i] == s[a]) {
+                a = i;
+            } else {
+                mn = min(mn, a - i);
+            }
+        }
+
+        mn = min(mn, a - b);
     }
 
-    pf(outputstr);
+    pf(mn);
 }
 
 int main() {
     FAST_IO
-    ll testcases;
-    sc(testcases);
-
-    while(testcases--) {
-        solve();
-    }
-
+    solve();
     return 0;
 }

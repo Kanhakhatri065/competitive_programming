@@ -40,37 +40,61 @@ typedef vector<pair<ll,ll>>vpll;
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
 void solve() {
-    ll n, k;
+    int n;
     sc(n);
-    sc(k);
 
-    string str = "";
-    for(int i = 0;i < k;i++) {
-        str += (char)(i + 97);
+    string s;
+    sc(s);
+
+    int x = 0, y = 0;
+
+    if(s[0] == 'U') {
+        y++;
+    } else if(s[0] == 'D') {
+        y--;
+    } else if(s[0] == 'R') {
+        x++;
+    } else {
+        x--;
     }
 
-    string outputstr = "";
-    ll div = n / k;
-    n -= (k * div);
-    for(int i = 0;i < div;i++) {
-        outputstr += str;
-    }
-
-    if(n != 0) {
-        for(int i = 0;i < n;i++) {
-            outputstr += str[i];
+    f(i, 1, n) {
+        if(s[i] == 'U' || s[i] == 'D') {
+            if(s[i - 1] != 'U' && s[i - 1] != 'D') {
+                if(s[i] == 'U') {
+                    y++;
+                } else if(s[i] == 'D') {
+                    y--;
+                } else if(s[i] == 'R') {
+                    x++;
+                } else {
+                    x--;
+                }   
+            }
+        } else {
+            if(s[i - 1] != 'R' && s[i - 1] != 'L') {
+                if(s[i] == 'U') {
+                    y++;
+                } else if(s[i] == 'D') {
+                    y--;
+                } else if(s[i] == 'R') {
+                    x++;
+                } else {
+                    x--;
+                }   
+            }
         }
     }
 
-    pf(outputstr);
+    cout << x << " " << y << endl;
 }
 
 int main() {
     FAST_IO
-    ll testcases;
-    sc(testcases);
+    int t;
+    sc(t);
 
-    while(testcases--) {
+    while(t--) {
         solve();
     }
 

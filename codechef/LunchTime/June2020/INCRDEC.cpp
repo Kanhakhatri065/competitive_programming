@@ -39,38 +39,83 @@ typedef vector<pair<ll,ll>>vpll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+const int N = 2e5 + 5;
+int arr[N];
 void solve() {
-    ll n, k;
+    int n;
     sc(n);
-    sc(k);
 
-    string str = "";
-    for(int i = 0;i < k;i++) {
-        str += (char)(i + 97);
+    int mx = 0;
+    vector<int> v(n);
+    f(i, 0, n) {
+        sc(v[i]);
+        mx = max(mx, v[i]);
+    }
+    
+
+    mem(arr, 0);
+    
+    f(i, 0, n) {
+        arr[v[i]]++;
     }
 
-    string outputstr = "";
-    ll div = n / k;
-    n -= (k * div);
-    for(int i = 0;i < div;i++) {
-        outputstr += str;
+    int flag = 0;
+    if(arr[mx] >= 2) {
+        flag = 1;
     }
 
-    if(n != 0) {
-        for(int i = 0;i < n;i++) {
-            outputstr += str[i];
+    vector<int> store;
+    int cnt = 0;
+    if(!flag) {
+        f(i, 0, N) {
+            if(cnt == n) {
+                break;
+            }
+
+            if(arr[i] > 2) {
+                flag = 1;
+                break;
+            } else {
+                if(arr[i] > 0) {
+                    store.pb(i);
+                    arr[i]--;
+                    cnt++;
+                }
+            }
+        }
+
+        for(int i = N;i >= 0;i--) {
+            if(cnt == n) {
+                break;
+            }
+
+            if(arr[i] > 1) {
+                flag = 1;
+                break;
+            } else {
+                if(arr[i] > 0) {
+                    store.pb(i);
+                    arr[i]--;
+                    cnt++;
+                }
+            }
         }
     }
 
-    pf(outputstr);
+    if(flag) {
+        no;
+    } else {
+        yes;
+        vpnt(store);
+    }
 }
 
 int main() {
     FAST_IO
-    ll testcases;
-    sc(testcases);
+    int t;
+    sc(t);
 
-    while(testcases--) {
+    while(t--) {
         solve();
     }
 

@@ -40,39 +40,43 @@ typedef vector<pair<ll,ll>>vpll;
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
 void solve() {
-    ll n, k;
-    sc(n);
-    sc(k);
+    int n, k;
+	cin >> n >> k;
+	
+    vector<pair<int, int>> res(n);
+	vector<int> a(n); 
+	
+    for (int i = 0; i < n; ++i) {
+		cin >> res[i].first;
+		a[i] = res[i].first;
+		res[i].second = i + 1;
+	}
+	
+	sort(res.begin(), res.end());
+	reverse(res.begin(), res.end());
+	sort(res.begin(), res.begin() + k, [&](pair<int, int> a, pair<int, int> b) { return a.second < b.second; });
+	
+	int lst = 0, sum = 0;
+	for (int i = 0; i < k - 1; ++i) {
+	    sum += *max_element(a.begin() + lst, a.begin() + res[i].second);
+		lst = res[i].second;	
+	}
+	
+    sum += *max_element(a.begin() + lst, a.end());
+	cout << sum << endl;
+	
 
-    string str = "";
-    for(int i = 0;i < k;i++) {
-        str += (char)(i + 97);
-    }
+	lst = 0;
+	for (int i = 0; i < k - 1; ++i) {
+		cout << res[i].second - lst << " ";
+		lst = res[i].second;	
+	}
 
-    string outputstr = "";
-    ll div = n / k;
-    n -= (k * div);
-    for(int i = 0;i < div;i++) {
-        outputstr += str;
-    }
-
-    if(n != 0) {
-        for(int i = 0;i < n;i++) {
-            outputstr += str[i];
-        }
-    }
-
-    pf(outputstr);
+	cout << n - lst << endl;
 }
 
 int main() {
     FAST_IO
-    ll testcases;
-    sc(testcases);
-
-    while(testcases--) {
-        solve();
-    }
-
+    solve();
     return 0;
 }
