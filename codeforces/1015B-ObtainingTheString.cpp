@@ -40,54 +40,50 @@ typedef vector<pair<ll,ll>>vpll;
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
 void solve() {
-    ll n;
+    int n;
     sc(n);
-    ll x;
-    sc(x);
 
-    vll v(n);
-    forIn(v, n);
+    string s, t;
+    sc(s);
+    sc(t);
 
-    ll cnt = 0;
-    
-    srt(v);
-    ll pos = 0;
+    vector<int> ans;
+    int pos;
     f(i, 0, n) {
-        if(x % 2) {
-            if(v[i] >= (x + 1) / 2) {
-                pos = i;
-                break;
-            }
-        } else {
-            if(v[i] >= x / 2) {
-                pos = i;
+        if(s[i] == t[i]) {
+            continue;
+        }
+
+        pos = -1;
+        f(j, i + 1, n) {
+            if(s[j] == t[i]) {
+                pos = j;
                 break;
             }
         }
-    }
 
-    f(i, pos, n) {
-        cnt++;
-        while(x < v[i]) {
-            cnt++;
-            x *= 2;
+        if(pos == -1) {
+            pf(-1);
+            return;
         }
 
-        x = 2 * v[i];
+        for(int j = pos - 1;j >= i;j--) {
+            swap(s[j], s[j + 1]);
+            ans.pb(j);
+        }
     }
 
-    cnt += pos;
-    pf(cnt);
+    assert(s == t);
+
+    pf(ans.size());
+    for(auto it : ans) {
+        cout << (it + 1) << " ";
+    }
+    cout << endl;
 }
 
 int main() {
     FAST_IO
-    int t;
-    sc(t);
-
-    while(t--) {
-        solve();
-    }
-
+    solve();
     return 0;
 }

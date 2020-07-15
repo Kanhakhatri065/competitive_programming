@@ -40,54 +40,46 @@ typedef vector<pair<ll,ll>>vpll;
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
 void solve() {
-    ll n;
+    vector<bool> sieve(1001, true);
+    sieve[0] = sieve[1] = false;
+    set<int> s;
+    vector<int> prime;
+
+    f(i, 2, 1001) {
+        if(sieve[i]) {
+            for(int j = i * i;j <= 1000;j += i) {
+                sieve[j] = false;
+            }
+            prime.pb(i);
+        }
+    }     
+
+    f(i, 0, prime.size() - 1) {
+        s.insert(prime[i] + prime[i + 1] + 1);
+    }
+
+    int n, k;
     sc(n);
-    ll x;
-    sc(x);
+    sc(k);
 
-    vll v(n);
-    forIn(v, n);
-
-    ll cnt = 0;
-    
-    srt(v);
-    ll pos = 0;
-    f(i, 0, n) {
-        if(x % 2) {
-            if(v[i] >= (x + 1) / 2) {
-                pos = i;
-                break;
-            }
-        } else {
-            if(v[i] >= x / 2) {
-                pos = i;
-                break;
+    int cnt = 0;
+    for(auto it : s) {
+        if(it <= n) {
+            if(sieve[it]) {
+                cnt++;
             }
         }
     }
 
-    f(i, pos, n) {
-        cnt++;
-        while(x < v[i]) {
-            cnt++;
-            x *= 2;
-        }
-
-        x = 2 * v[i];
+    if(cnt >= k) {
+        yes;
+    } else {
+        no;
     }
-
-    cnt += pos;
-    pf(cnt);
 }
 
 int main() {
     FAST_IO
-    int t;
-    sc(t);
-
-    while(t--) {
-        solve();
-    }
-
+    solve();
     return 0;
 }

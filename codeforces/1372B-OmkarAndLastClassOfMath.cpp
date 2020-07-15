@@ -39,45 +39,39 @@ typedef vector<pair<ll,ll>>vpll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+ll lcm(ll a, ll b) {
+    ll g = __gcd(a, b);
+    ll ans = (a * b) / g;
+    return ans;
+}
+
 void solve() {
     ll n;
     sc(n);
-    ll x;
-    sc(x);
 
-    vll v(n);
-    forIn(v, n);
-
-    ll cnt = 0;
-    
-    srt(v);
-    ll pos = 0;
-    f(i, 0, n) {
-        if(x % 2) {
-            if(v[i] >= (x + 1) / 2) {
-                pos = i;
-                break;
-            }
-        } else {
-            if(v[i] >= x / 2) {
-                pos = i;
-                break;
+    vll f;
+    for(ll i = 1;i * i <= n;i++) {
+        if(n % i == 0) {
+            if(i * i == n) {
+                f.push_back(i);
+            } else {
+                f.push_back(i);
+                f.push_back(n / i);
             }
         }
     }
 
-    f(i, pos, n) {
-        cnt++;
-        while(x < v[i]) {
-            cnt++;
-            x *= 2;
+    srt(f);
+    f.pop_back();
+    ll l, r, ans = LLONG_MAX;
+    for(auto x : f) {
+        if(ans > lcm(x, n - x)) {
+            l = x;
+            r = n - x;
         }
-
-        x = 2 * v[i];
     }
 
-    cnt += pos;
-    pf(cnt);
+    cout << l << " " << r << endl;
 }
 
 int main() {

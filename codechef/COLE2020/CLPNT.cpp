@@ -18,17 +18,13 @@ typedef long long ll;typedef unsigned long long ull;
 #define pb push_back
 #define ff first
 #define ss second
-#define mp make_pair
 #define mem(name, value) memset(name, value, sizeof(name))
-#define pp pair
 /*** STLs ***/
 typedef vector<ll>vll;typedef set<ll>sll;typedef multiset<ll>msll;
-typedef queue<ll>qll;typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
-typedef vector<pair<ll,ll>>vpll;
+typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 /*** Sorts ***/
 #define all(v) (v).begin(), (v).end()
 #define srt(v) sort(all(v))
-#define srtGreat(v) sort(all(v), greater<ll>())
 /*** Bit-Stuff ***/
 #define GET_SET_BITS(a) (__builtin_popcount(a))
 #define GET_SET_BITSLL(a) ( __builtin_popcountll(a))
@@ -40,44 +36,39 @@ typedef vector<pair<ll,ll>>vpll;
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
 void solve() {
-    ll n;
+    int n;
     sc(n);
-    ll x;
-    sc(x);
 
-    vll v(n);
-    forIn(v, n);
-
-    ll cnt = 0;
-    
-    srt(v);
-    ll pos = 0;
+    ll x, y;
+    sll a;
+    vll v;
     f(i, 0, n) {
-        if(x % 2) {
-            if(v[i] >= (x + 1) / 2) {
-                pos = i;
-                break;
-            }
+        sc(x);
+        v.pb(x);
+        a.insert(x);
+    }
+
+    int q;
+    sc(q);
+
+    ll idx;
+    while(q--) {
+        sc(x);
+        sc(y);
+
+        if(a.find(x + y) != a.end()) {
+            pf(-1);
         } else {
-            if(v[i] >= x / 2) {
-                pos = i;
-                break;
+            if(v.back() < x + y) {
+                pf(n);
+            } else if(v.front() > x + y) {
+                pf(0);
+            } else {
+                idx = upper_bound(all(v), x + y) - v.begin();
+                pf(idx);
             }
         }
     }
-
-    f(i, pos, n) {
-        cnt++;
-        while(x < v[i]) {
-            cnt++;
-            x *= 2;
-        }
-
-        x = 2 * v[i];
-    }
-
-    cnt += pos;
-    pf(cnt);
 }
 
 int main() {

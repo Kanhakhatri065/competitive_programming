@@ -18,17 +18,13 @@ typedef long long ll;typedef unsigned long long ull;
 #define pb push_back
 #define ff first
 #define ss second
-#define mp make_pair
 #define mem(name, value) memset(name, value, sizeof(name))
-#define pp pair
 /*** STLs ***/
 typedef vector<ll>vll;typedef set<ll>sll;typedef multiset<ll>msll;
-typedef queue<ll>qll;typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
-typedef vector<pair<ll,ll>>vpll;
+typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 /*** Sorts ***/
 #define all(v) (v).begin(), (v).end()
 #define srt(v) sort(all(v))
-#define srtGreat(v) sort(all(v), greater<ll>())
 /*** Bit-Stuff ***/
 #define GET_SET_BITS(a) (__builtin_popcount(a))
 #define GET_SET_BITSLL(a) ( __builtin_popcountll(a))
@@ -40,54 +36,61 @@ typedef vector<pair<ll,ll>>vpll;
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
 void solve() {
-    ll n;
-    sc(n);
-    ll x;
-    sc(x);
+    string s;
+    sc(s);
 
-    vll v(n);
-    forIn(v, n);
+    //pf("string input completed");
+    vector<set<int>> poss(26);
+    for(int i = 0;i < (int) s.size();i++) {
+        poss[s[i] - 'a'].insert(i);
+    }
 
-    ll cnt = 0;
-    
-    srt(v);
-    ll pos = 0;
-    f(i, 0, n) {
-        if(x % 2) {
-            if(v[i] >= (x + 1) / 2) {
-                pos = i;
-                break;
-            }
+    //pf("vector of set creation completed");
+
+    int q;
+    sc(q);
+
+    for(int i = 0;i < q;i++) {
+        int tp;
+        sc(tp);
+
+        if(tp == 1) {
+            //pf("Type 1 query execution start");
+            int pos;
+            char c;
+            sc(pos);
+            sc(c);
+
+            --pos;
+            poss[s[pos] - 'a'].erase(pos);
+            s[pos] = c;
+            poss[s[pos] - 'a'].insert(pos);
+            //pf("Type 1 query done right");
         } else {
-            if(v[i] >= x / 2) {
-                pos = i;
-                break;
+            //pf("Type 2 query execution start");
+            int l, r;
+            sc(l);
+            sc(r);
+
+            l--;
+            r--;
+
+            int cnt = 0;
+            for(int c = 0;c < 26;c++) {
+                auto it = poss[c].lower_bound(l);
+                if(it != poss[c].end() && *it <= r) {
+                    cnt++;
+                }
             }
+
+            pf(cnt);
+            //pf("Type 2 query done right");
         }
     }
-
-    f(i, pos, n) {
-        cnt++;
-        while(x < v[i]) {
-            cnt++;
-            x *= 2;
-        }
-
-        x = 2 * v[i];
-    }
-
-    cnt += pos;
-    pf(cnt);
 }
 
 int main() {
     FAST_IO
-    int t;
-    sc(t);
-
-    while(t--) {
-        solve();
-    }
-
+    solve();
     return 0;
 }

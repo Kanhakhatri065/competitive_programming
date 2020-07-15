@@ -39,55 +39,56 @@ typedef vector<pair<ll,ll>>vpll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+int n, k, c[2000001][26], m, cnt[2000001];
+ll ans;
+
+void dfs(int u=0, int d=0) {
+	for(int v=0; v<26; ++v) {
+		if(c[u][v]) {
+			dfs(c[u][v], d+1);
+            cnt[u]+=cnt[c[u][v]];
+        }
+    }
+
+	while(cnt[u]>=k) {
+		cnt[u]-=k;
+		ans+=d;
+	}
+}
+
 void solve() {
-    ll n;
-    sc(n);
-    ll x;
-    sc(x);
-
-    vll v(n);
-    forIn(v, n);
-
-    ll cnt = 0;
-    
-    srt(v);
-    ll pos = 0;
-    f(i, 0, n) {
-        if(x % 2) {
-            if(v[i] >= (x + 1) / 2) {
-                pos = i;
-                break;
+	cin >> n >> k;
+	m=1;
+	for(int i=0; i<n; ++i) {
+		string s;
+		cin >> s;
+		int u=0;
+		for(char d : s) {
+			if(!c[u][d-'A']) {
+				c[u][d-'A']=m++;
             }
-        } else {
-            if(v[i] >= x / 2) {
-                pos = i;
-                break;
-            }
-        }
-    }
-
-    f(i, pos, n) {
-        cnt++;
-        while(x < v[i]) {
-            cnt++;
-            x *= 2;
-        }
-
-        x = 2 * v[i];
-    }
-
-    cnt += pos;
-    pf(cnt);
+            
+			u=c[u][d-'A'];
+		}
+		++cnt[u];
+	}
+	ans=0;
+	dfs();
+	cout << ans << "\n";
+	memset(c, 0, m*sizeof(c[0]));
+	memset(cnt, 0, m*4);
 }
 
 int main() {
-    FAST_IO
-    int t;
-    sc(t);
+	FAST_IO
 
-    while(t--) {
-        solve();
-    }
+	int t, i=1;
+	cin >> t;
+	while(t--) {
+		cout << "Case #" << i << ": ";
+		solve();
+		++i;
+	}
 
     return 0;
 }

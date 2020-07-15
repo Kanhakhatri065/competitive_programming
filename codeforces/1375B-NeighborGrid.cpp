@@ -39,45 +39,59 @@ typedef vector<pair<ll,ll>>vpll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+const int MAX = 305;
+int mat[MAX][MAX];
+
 void solve() {
-    ll n;
+    int n, m;
     sc(n);
-    ll x;
-    sc(x);
+    sc(m);
 
-    vll v(n);
-    forIn(v, n);
-
-    ll cnt = 0;
-    
-    srt(v);
-    ll pos = 0;
+    bool flag = true;
     f(i, 0, n) {
-        if(x % 2) {
-            if(v[i] >= (x + 1) / 2) {
-                pos = i;
-                break;
-            }
-        } else {
-            if(v[i] >= x / 2) {
-                pos = i;
-                break;
+        f(j, 0, m) {
+            sc(mat[i][j]);
+        }
+    }
+
+    for(int i = 0;i < n && flag;i++) {
+        f(j, 0, m) {
+            if((i == 0 || i == n - 1) && (j == m - 1 || j == 0)) {
+                if(mat[i][j] > 2) {
+                    flag = false;
+                    break;
+                } else {
+                    mat[i][j] = 2;
+                }
+            } else if(i == 0 || j == 0 || i == n - 1 ||j == m - 1) {
+                if(mat[i][j] > 3) {
+                    flag = false;
+                    break;
+                } else {
+                    mat[i][j] = 3;
+                }
+            } else {
+                if(mat[i][j] > 4)  {
+                    flag = false;
+                    break;
+                } else {
+                    mat[i][j] = 4;
+                }
             }
         }
     }
 
-    f(i, pos, n) {
-        cnt++;
-        while(x < v[i]) {
-            cnt++;
-            x *= 2;
+    if(flag) {
+        yes;
+        f(i, 0, n) {
+            f(j, 0, m) {
+                cout << mat[i][j] << " ";
+            }
+            cout << endl;
         }
-
-        x = 2 * v[i];
+    } else {
+        no;
     }
-
-    cnt += pos;
-    pf(cnt);
 }
 
 int main() {

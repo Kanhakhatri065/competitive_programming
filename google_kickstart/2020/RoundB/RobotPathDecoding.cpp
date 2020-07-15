@@ -40,44 +40,33 @@ typedef vector<pair<ll,ll>>vpll;
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
 void solve() {
-    ll n;
-    sc(n);
-    ll x;
-    sc(x);
-
-    vll v(n);
-    forIn(v, n);
-
-    ll cnt = 0;
+    ll mod = 1e9;
+    string s;
+    sc(s);
     
-    srt(v);
-    ll pos = 0;
-    f(i, 0, n) {
-        if(x % 2) {
-            if(v[i] >= (x + 1) / 2) {
-                pos = i;
-                break;
-            }
+    ll x = 0, y = 0;
+    vll mul = {1};
+    for(char c : s) {
+        if(c >= '2' && c <= '9') {
+            mul.push_back(mul.back() * (c - '0') % mod);
+        } else if(c == 'E') {
+            x = (x + mul.back()) % mod;
+        } else if(c == 'W') {
+            x = ((x - mul.back()) % mod + mod) % mod;
+        } else if(c == 'S') {
+            y = (y + mul.back()) % mod;
+        } else if(c == 'N') {
+            y = ((y - mul.back()) % mod + mod) % mod;
+        } else if(c == '(') {
+            continue;
+        } else if(c == ')') {
+            mul.pop_back();
         } else {
-            if(v[i] >= x / 2) {
-                pos = i;
-                break;
-            }
+            assert(0);
         }
     }
 
-    f(i, pos, n) {
-        cnt++;
-        while(x < v[i]) {
-            cnt++;
-            x *= 2;
-        }
-
-        x = 2 * v[i];
-    }
-
-    cnt += pos;
-    pf(cnt);
+    cout << (x + 1) << " " << (y + 1) << endl;
 }
 
 int main() {
@@ -85,7 +74,9 @@ int main() {
     int t;
     sc(t);
 
+    int i = 1;
     while(t--) {
+        cout << "Case #" << i++ << ": ";
         solve();
     }
 

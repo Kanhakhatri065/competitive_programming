@@ -39,55 +39,37 @@ typedef vector<pair<ll,ll>>vpll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+int n, k, p, a[50][30];
+int dp[51][1501];
+
 void solve() {
-    ll n;
     sc(n);
-    ll x;
-    sc(x);
-
-    vll v(n);
-    forIn(v, n);
-
-    ll cnt = 0;
-    
-    srt(v);
-    ll pos = 0;
+    sc(k);
+    sc(p);
+    mem(dp, 0);
+    dp[0][0] = 0;
     f(i, 0, n) {
-        if(x % 2) {
-            if(v[i] >= (x + 1) / 2) {
-                pos = i;
-                break;
-            }
-        } else {
-            if(v[i] >= x / 2) {
-                pos = i;
-                break;
+        memcpy(dp[i + 1], dp[i], sizeof(dp[0]));
+        for(int j = 0, s = 0;j < k;j++) {
+            sc(a[i][j]);
+            s += a[i][j];
+            for(int l = 0;l + j + 1 <= p;l++) {
+                dp[i + 1][l + j + 1] = max(dp[i][l] + s, dp[i + 1][l + j + 1]);
             }
         }
     }
-
-    f(i, pos, n) {
-        cnt++;
-        while(x < v[i]) {
-            cnt++;
-            x *= 2;
-        }
-
-        x = 2 * v[i];
-    }
-
-    cnt += pos;
-    pf(cnt);
+    
+    pf(dp[n][p]);
 }
 
 int main() {
     FAST_IO
     int t;
     sc(t);
-
-    while(t--) {
+    
+    f(tt, 1, t + 1) {
+        cout << "Case #" << tt << ": ";
         solve();
     }
-
     return 0;
 }

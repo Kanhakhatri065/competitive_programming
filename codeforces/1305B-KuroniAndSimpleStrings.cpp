@@ -40,54 +40,49 @@ typedef vector<pair<ll,ll>>vpll;
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
 void solve() {
-    ll n;
-    sc(n);
-    ll x;
-    sc(x);
+    string s;
+    sc(s);
 
-    vll v(n);
-    forIn(v, n);
+    vector<int> le, ri;
+    int l  = 0, r = s.size() - 1;
+    while(l < r) {
+        while(l < s.size() && s[l] == ')') {
+            l++;
+        }
 
-    ll cnt = 0;
-    
-    srt(v);
-    ll pos = 0;
-    f(i, 0, n) {
-        if(x % 2) {
-            if(v[i] >= (x + 1) / 2) {
-                pos = i;
-                break;
-            }
-        } else {
-            if(v[i] >= x / 2) {
-                pos = i;
-                break;
-            }
+        while(r >= 0 && s[r] == '(') {
+            r--;
+        }
+
+        if(l < s.size() && r >= 0 && l < r) {
+            le.pb(l + 1);
+            ri.pb(r + 1);
+
+            l++;
+            r--;
         }
     }
 
-    f(i, pos, n) {
-        cnt++;
-        while(x < v[i]) {
-            cnt++;
-            x *= 2;
-        }
-
-        x = 2 * v[i];
+    if(le.empty()) {
+        pf(0);
+        return;
     }
 
-    cnt += pos;
-    pf(cnt);
+    pf(1);
+    pf(2 * le.size());
+    for(auto x : le) {
+        cout << x << " ";
+    }
+
+    reverse(all(ri));
+    for(auto x : ri) {
+        cout << x << " ";
+    }
+    cout << endl;
 }
 
 int main() {
     FAST_IO
-    int t;
-    sc(t);
-
-    while(t--) {
-        solve();
-    }
-
+    solve();
     return 0;
 }

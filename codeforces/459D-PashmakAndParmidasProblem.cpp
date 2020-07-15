@@ -18,17 +18,13 @@ typedef long long ll;typedef unsigned long long ull;
 #define pb push_back
 #define ff first
 #define ss second
-#define mp make_pair
 #define mem(name, value) memset(name, value, sizeof(name))
-#define pp pair
 /*** STLs ***/
 typedef vector<ll>vll;typedef set<ll>sll;typedef multiset<ll>msll;
-typedef queue<ll>qll;typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
-typedef vector<pair<ll,ll>>vpll;
+typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 /*** Sorts ***/
 #define all(v) (v).begin(), (v).end()
 #define srt(v) sort(all(v))
-#define srtGreat(v) sort(all(v), greater<ll>())
 /*** Bit-Stuff ***/
 #define GET_SET_BITS(a) (__builtin_popcount(a))
 #define GET_SET_BITSLL(a) ( __builtin_popcountll(a))
@@ -39,55 +35,66 @@ typedef vector<pair<ll,ll>>vpll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
-void solve() {
-    ll n;
-    sc(n);
-    ll x;
-    sc(x);
+const int MAXN = 1e6 + 10;
+int fen[MAXN];
 
-    vll v(n);
-    forIn(v, n);
-
-    ll cnt = 0;
-    
-    srt(v);
-    ll pos = 0;
-    f(i, 0, n) {
-        if(x % 2) {
-            if(v[i] >= (x + 1) / 2) {
-                pos = i;
-                break;
-            }
-        } else {
-            if(v[i] >= x / 2) {
-                pos = i;
-                break;
-            }
-        }
+void add(int x, int val) {
+    for(int i = x + 1;i < MAXN;i += (i & (-i))) {
+        fen[i] += val;
     }
-
-    f(i, pos, n) {
-        cnt++;
-        while(x < v[i]) {
-            cnt++;
-            x *= 2;
-        }
-
-        x = 2 * v[i];
-    }
-
-    cnt += pos;
-    pf(cnt);
 }
+
+int get(int x) {
+    int ans = 0;
+    for(int i = x;i > 0;i -= (i & (-i))) {
+        ans += fen[i];
+    }
+
+    return ans;
+}
+
+int sum(int x, int y) {
+    return get(y) - get(x);
+}
+
+int rem[MAXN], cnt[MAXN], a[MAXN], tot[MAXN], sz;
+
+void solve() {
+    int n;
+    sc(n);
+
+    for(int i = 0;i < n;i++) {
+        sc(a[i]);
+        tot[sz++] = a[i];
+    }
+
+    sort(tot, tot + sz);
+    sz = unique(tot, tot + sz) - tot;
+
+    for(int i = 0;i < n;i++) {
+        a[i] = lower_bound(tot, tot + sz, a[i]) - tot;
+    }
+
+    for(int i = n - 1;i >= 0;i--) {
+        cnt[a[i]]++;
+        add(cnt[a[i]], 1);
+
+        rem[i] = cnt[a[i]];
+    }
+
+    mem(cnt, 0);
+    ll ans = 0;
+    for(int i = 0;i < n;i++) {
+        add(rem[i], -1);
+        cnt[a[i]]++;
+        ans += sum(1, cnt[a[i]]);
+    }
+
+    pf(ans);
+}   
 
 int main() {
     FAST_IO
-    int t;
-    sc(t);
-
-    while(t--) {
-        solve();
-    }
-
+    solve();
     return 0;
 }

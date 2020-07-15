@@ -39,45 +39,75 @@ typedef vector<pair<ll,ll>>vpll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+using ld = long double;
+
+const int INF = 1e9;
+const int MAX = 5e5 + 2;
+int n, a, b;
+vector<int> adj[MAX];
+int cnt_a[MAX];
+int cnt_b[MAX];
+int depth[MAX];
+
+int suba[MAX], subb[MAX];
+const int root = 0;
+
+void dfs(int v, int u, int dep = 0) {
+    depth[v] = dep;
+
+    int depa = dep % a;
+    int depb = dep % b;
+
+    suba[v] = cnt_a[depa];
+    subb[v] = cnt_b[depb];
+
+    cnt_a[depa]++;
+    cnt_b[depb]++;
+
+    for(int w : adj[v]) {
+        if(w == u) {
+            continue;
+        }
+
+        dfs(w, v, dep + 1);
+    }
+
+    suba[v] = cnt_a[depa] - suba[v];
+    subb[v] = cnt_b[depb] - subb[v];
+}
+
 void solve() {
-    ll n;
     sc(n);
-    ll x;
-    sc(x);
+    sc(a);
+    sc(b);
 
-    vll v(n);
-    forIn(v, n);
-
-    ll cnt = 0;
-    
-    srt(v);
-    ll pos = 0;
-    f(i, 0, n) {
-        if(x % 2) {
-            if(v[i] >= (x + 1) / 2) {
-                pos = i;
-                break;
-            }
-        } else {
-            if(v[i] >= x / 2) {
-                pos = i;
-                break;
-            }
-        }
+    for(int i = 0;i < n;i++) {
+        adj[i].clear();
     }
 
-    f(i, pos, n) {
-        cnt++;
-        while(x < v[i]) {
-            cnt++;
-            x *= 2;
-        }
-
-        x = 2 * v[i];
+    int par;
+    f(i, 1, n) {
+        sc(par);
+        par--;
+        adj[i].pb(par);
+        adj[par].pb(i);
     }
 
-    cnt += pos;
-    pf(cnt);
+    dfs(root, root);
+    ld ans = 0;
+    f(v, 0, n) {
+        ld p = suba[v] / (ld) n;
+        ld q = subb[v] / (ld) n;
+        
+        ans += (p + q - p * q);
+
+        int depa = depth[v] % a;
+        int depb = depth[v] % b;
+        cnt_a[depa]--;
+        cnt_b[depb]--; 
+    }
+
+    cout << fixed << setprecision(12) << ans << endl;
 }
 
 int main() {
@@ -85,7 +115,9 @@ int main() {
     int t;
     sc(t);
 
+    int p = 1;
     while(t--) {
+        cout << "Case #" << p++ << ": ";
         solve();
     }
 

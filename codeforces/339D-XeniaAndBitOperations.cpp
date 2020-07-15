@@ -18,17 +18,13 @@ typedef long long ll;typedef unsigned long long ull;
 #define pb push_back
 #define ff first
 #define ss second
-#define mp make_pair
 #define mem(name, value) memset(name, value, sizeof(name))
-#define pp pair
 /*** STLs ***/
 typedef vector<ll>vll;typedef set<ll>sll;typedef multiset<ll>msll;
-typedef queue<ll>qll;typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
-typedef vector<pair<ll,ll>>vpll;
+typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 /*** Sorts ***/
 #define all(v) (v).begin(), (v).end()
 #define srt(v) sort(all(v))
-#define srtGreat(v) sort(all(v), greater<ll>())
 /*** Bit-Stuff ***/
 #define GET_SET_BITS(a) (__builtin_popcount(a))
 #define GET_SET_BITSLL(a) ( __builtin_popcountll(a))
@@ -39,55 +35,76 @@ typedef vector<pair<ll,ll>>vpll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+ll a[1000005];
+ll tree[1000005];
+
+ll power(ll n) {
+	ll num = 1;
+	while(n--) {
+		num <<= 1;
+	}
+
+	return num;
+}
+
+void build(int n) {
+	bool f = 1;
+	for(int i = n;i > 1;i /= 2) {
+		for(int j = i;j < 2 * i;j += 2) {
+			if(f) {
+				tree[j / 2] = tree[j] | tree[j + 1];
+			} else {
+				tree[j / 2] = tree[j] ^ tree[j + 1];
+			}
+		}
+
+		f = 1 - f;
+	}
+}
+
+void update(int idx, int val) {
+	tree[idx] = val;
+
+	bool f = 1;
+	while(idx > 1) {
+		if(f) {
+			tree[idx / 2] = tree[idx] | ((idx & 1) ? tree[idx - 1] : tree[idx + 1]);
+		} else {
+			tree[idx / 2] = tree[idx] ^ ((idx & 1) ? tree[idx - 1] : tree[idx + 1]);
+		}
+
+		idx /= 2;
+		f = 1 - f;
+	}
+}
+
 void solve() {
-    ll n;
-    sc(n);
-    ll x;
-    sc(x);
+	ll n, m;
+	sc(n);
+	sc(m);
 
-    vll v(n);
-    forIn(v, n);
+	n = power(n);
 
-    ll cnt = 0;
-    
-    srt(v);
-    ll pos = 0;
-    f(i, 0, n) {
-        if(x % 2) {
-            if(v[i] >= (x + 1) / 2) {
-                pos = i;
-                break;
-            }
-        } else {
-            if(v[i] >= x / 2) {
-                pos = i;
-                break;
-            }
-        }
-    }
+	f(i, n, 2 * n) {
+		sc(tree[i]);
+	}
+	
+	build(n);
 
-    f(i, pos, n) {
-        cnt++;
-        while(x < v[i]) {
-            cnt++;
-            x *= 2;
-        }
+	while(m--) {
+		int idx, val;
+		sc(idx);
+		sc(val);
 
-        x = 2 * v[i];
-    }
+		idx = n + idx - 1;
+		update(idx, val);
 
-    cnt += pos;
-    pf(cnt);
+		pf(tree[1]);
+	}
 }
 
 int main() {
-    FAST_IO
-    int t;
-    sc(t);
-
-    while(t--) {
-        solve();
-    }
-
-    return 0;
+	FAST_IO
+	solve();
+	return 0;
 }

@@ -39,55 +39,58 @@ typedef vector<pair<ll,ll>>vpll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+const int INF = 1e9;
+map<string, int> was;
+
+inline int getC(string a, string b) {
+    if(!was.count(a) || !was.count(b)) {
+        return INF;
+    }
+
+    return was[a] + was[b];
+}
+
 void solve() {
-    ll n;
+    int n, c;
+    string s;
     sc(n);
-    ll x;
-    sc(x);
+    for(int i = 0;i < n;i++) {
+        sc(c);
+        sc(s);
 
-    vll v(n);
-    forIn(v, n);
-
-    ll cnt = 0;
-    
-    srt(v);
-    ll pos = 0;
-    f(i, 0, n) {
-        if(x % 2) {
-            if(v[i] >= (x + 1) / 2) {
-                pos = i;
-                break;
-            }
+        srt(s);
+        if(was.count(s) == 0) {
+            was[s] = c;
         } else {
-            if(v[i] >= x / 2) {
-                pos = i;
-                break;
-            }
+            was[s] = min(was[s], c);
         }
     }
 
-    f(i, pos, n) {
-        cnt++;
-        while(x < v[i]) {
-            cnt++;
-            x *= 2;
-        }
-
-        x = 2 * v[i];
+    int ans = INF;
+    if(was.count("A") && was.count("B") && was.count("C")) {
+        ans = was["A"] + was["B"] + was["C"];
     }
 
-    cnt += pos;
-    pf(cnt);
+    if(was.count("ABC")) {
+        ans = min(ans, was["ABC"]);
+    }
+
+    ans = min(ans, getC("AB", "C"));
+    ans = min(ans, getC("A", "BC"));
+    ans = min(ans, getC("AC", "B"));
+    ans = min(ans, getC("AB", "BC"));
+    ans = min(ans, getC("AC", "BC"));
+    ans = min(ans, getC("AC", "AB"));
+
+    if(ans == INF) {
+        ans = -1;
+    }
+
+    pf(ans);
 }
 
 int main() {
     FAST_IO
-    int t;
-    sc(t);
-
-    while(t--) {
-        solve();
-    }
-
+    solve();
     return 0;
 }

@@ -40,43 +40,45 @@ typedef vector<pair<ll,ll>>vpll;
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
 void solve() {
-    ll n;
-    sc(n);
-    ll x;
-    sc(x);
+    int k;
+    sc(k);
 
-    vll v(n);
-    forIn(v, n);
+    vector<int> v(k, 0);
+    forIn(v, k);
 
-    ll cnt = 0;
-    
-    srt(v);
-    ll pos = 0;
-    f(i, 0, n) {
-        if(x % 2) {
-            if(v[i] >= (x + 1) / 2) {
-                pos = i;
-                break;
+    int cnt = 0;
+    int inc_cnt = 1;
+    int dec_cnt = 1;
+
+    int flag = 0;
+    f(i, 1, k) {
+        if(flag) {
+            if(v[i] > v[i - 1]) {
+                inc_cnt++;
+                if(inc_cnt > 4) {
+                    cnt++;
+                    inc_cnt = 1;
+                }
+            } else if(v[i] < v[i - 1]) {
+                dec_cnt = 1;
+                flag = 0;
+                i--;
             }
         } else {
-            if(v[i] >= x / 2) {
-                pos = i;
-                break;
+            if(v[i] > v[i - 1]) {
+                inc_cnt = 1;
+                flag = 1;
+                i--;
+            } else if(v[i] < v[i - 1]) {
+                dec_cnt++;
+                if(dec_cnt > 4) {
+                    cnt++;
+                    dec_cnt = 1;
+                }
             }
         }
     }
 
-    f(i, pos, n) {
-        cnt++;
-        while(x < v[i]) {
-            cnt++;
-            x *= 2;
-        }
-
-        x = 2 * v[i];
-    }
-
-    cnt += pos;
     pf(cnt);
 }
 
@@ -85,9 +87,10 @@ int main() {
     int t;
     sc(t);
 
+    int i = 1;
     while(t--) {
+        cout << "Case #" << i++ << ": ";
         solve();
     }
-
     return 0;
 }

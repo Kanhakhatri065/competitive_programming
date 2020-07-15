@@ -39,55 +39,41 @@ typedef vector<pair<ll,ll>>vpll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+const int N = 1e6 + 10;
+vector<bool> isp(N, false);
+void fill() {
+    isp[1] = true;
+    for(int i = 2;i < N;i++) {
+        if(!isp[i]) {
+            for(int j = i * 2;j < N;j += i) {
+                isp[j] = true;
+            }
+        }
+    }
+}
+
 void solve() {
-    ll n;
+    fill();
+    int n;
     sc(n);
-    ll x;
-    sc(x);
 
-    vll v(n);
-    forIn(v, n);
-
-    ll cnt = 0;
-    
-    srt(v);
-    ll pos = 0;
+    ll num, t1, t2;
     f(i, 0, n) {
-        if(x % 2) {
-            if(v[i] >= (x + 1) / 2) {
-                pos = i;
-                break;
-            }
+        sc(num);
+
+        t1 = ceil(sqrt(num));
+        t2 = floor(sqrt(num));
+
+        if(t1 == t2 && !isp[t1]) {
+            yes;
         } else {
-            if(v[i] >= x / 2) {
-                pos = i;
-                break;
-            }
+            no;
         }
     }
-
-    f(i, pos, n) {
-        cnt++;
-        while(x < v[i]) {
-            cnt++;
-            x *= 2;
-        }
-
-        x = 2 * v[i];
-    }
-
-    cnt += pos;
-    pf(cnt);
 }
 
 int main() {
     FAST_IO
-    int t;
-    sc(t);
-
-    while(t--) {
-        solve();
-    }
-
+    solve();
     return 0;
 }
