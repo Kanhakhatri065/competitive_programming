@@ -35,29 +35,61 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+
 void solve() {
-    ll a, b;
-    sc(a);
-    sc(b);
+    int n, m;
+    sc(n);
+    sc(m);
 
-    ll large;
-    ll total = 6;
-    if(a > b) {
-        large = a;
-    } else {
-        large = b;
-    }
-    large = total - large + 1;
+    vll a(n);
+    forIn(a, n);
 
-    string str = to_string(large / __gcd(large, total)) + "/" + to_string(total / __gcd(large, total));
-    if(large == 0) {
-        str = "0/1";
+    vll b(n);
+    forIn(b, n);
+
+    srt(a);
+    srt(b);
+
+    ll ans[10100];
+
+    priority_queue<pair<ll, pair<int, int>>> pq;
+    for(int i = 0;i < n;i++) {
+        pq.push({-(a[i] + b[0]), {i, 0}});
     }
-    pf(str);
+
+    ll mx = 10100;
+    if(n < 1000) {
+        mx = min(mx, (ll) n * n);
+    }
+
+    for(int i = 0;i < mx;i++) {
+        ll val = pq.top().ff;
+        ll x = pq.top().ss.ff, y = pq.top().ss.ss;
+
+        pq.pop();
+        ans[i] = -val;
+        pq.push({-(a[x] + b[y + 1]), {x, y + 1}});
+    }
+
+    while(!pq.empty()) {
+        pq.pop();
+    }
+
+    ll x;
+    for(int i = 0;i < m;i++) {
+        sc(x);
+        pf(ans[x - 1]);
+    }
 }
 
 int main() {
     FAST_IO
-    solve();
+    int t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+
     return 0;
 }

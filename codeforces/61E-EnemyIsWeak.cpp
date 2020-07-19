@@ -35,28 +35,63 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+using namespace __gnu_pbds;
+ 
+#define ordered_set tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update>
+
+#define int long long
+
+struct BIT {
+    int N;
+    vector<int> bit;
+ 
+    BIT(int n) {
+        N = n;
+        bit.assign(n + 1, 0);
+    }
+ 
+    void add(int idx, int val) {
+        for (; idx <= N; idx += idx & (-idx))
+            bit[idx] += val;
+    }
+ 
+    int pref(int idx) {
+        int ans = 0;
+        for (; idx > 0; idx -= idx & (-idx))
+            ans += bit[idx];
+        return ans;
+    }
+ 
+    int sum(int a, int b) {
+        return pref(b) - pref(a - 1);
+    }
+ 
+};
+ 
 void solve() {
-    ll a, b;
-    sc(a);
-    sc(b);
-
-    ll large;
-    ll total = 6;
-    if(a > b) {
-        large = a;
-    } else {
-        large = b;
+    int n;
+    cin >> n;
+ 
+    vector<int> v(n);
+    ordered_set st;
+    for (int i = 0; i < n; ++i) {
+        cin >> v[i];
+        st.insert(v[i]);
     }
-    large = total - large + 1;
-
-    string str = to_string(large / __gcd(large, total)) + "/" + to_string(total / __gcd(large, total));
-    if(large == 0) {
-        str = "0/1";
+    for (auto &x: v)x = st.order_of_key(x) + 1;
+    struct BIT a(n), b(n);
+    int ans = 0;
+    for (int i = 0; i < n; i++) {
+        ans += b.sum(v[i] + 1, n);
+        b.add(v[i], a.sum(v[i] + 1, n));
+        a.add(v[i], 1);
     }
-    pf(str);
+    cout << ans << endl;
 }
 
-int main() {
+int32_t main() {
     FAST_IO
     solve();
     return 0;

@@ -35,29 +35,54 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+int func(string s, int n, char a) {
+    if(n == 1) {
+        if(s[0] == a) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
+
+    int cnt = 0;
+    for(int i = 0;i < n / 2;i++) {
+        if(s[i] != a) {
+            cnt++;
+        }
+    }
+
+    string temp = s.substr(n / 2, n - 1);
+    string temp_t = temp;
+    reverse(all(temp_t));
+    a = a + 1;
+
+    return (cnt + min(func(temp, n / 2, a), func(temp_t, n / 2, a)));
+}
+
 void solve() {
-    ll a, b;
-    sc(a);
-    sc(b);
+    int n;
+    sc(n);
 
-    ll large;
-    ll total = 6;
-    if(a > b) {
-        large = a;
-    } else {
-        large = b;
-    }
-    large = total - large + 1;
+    string s;
+    sc(s);
 
-    string str = to_string(large / __gcd(large, total)) + "/" + to_string(total / __gcd(large, total));
-    if(large == 0) {
-        str = "0/1";
-    }
-    pf(str);
+    string t = s;
+    reverse(all(t));
+
+    int a = func(s, n, 'a');
+    int b = func(t, n, 'a');
+
+    pf(min(a, b));
 }
 
 int main() {
     FAST_IO
-    solve();
+    int t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+
     return 0;
 }

@@ -36,24 +36,18 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
 void solve() {
-    ll a, b;
-    sc(a);
-    sc(b);
+    ll x, y, n;
+    sc(x);
+    sc(y);
+    sc(n);
 
-    ll large;
-    ll total = 6;
-    if(a > b) {
-        large = a;
-    } else {
-        large = b;
-    }
-    large = total - large + 1;
+    ll M = 1000000007;
+    ll p;
 
-    string str = to_string(large / __gcd(large, total)) + "/" + to_string(total / __gcd(large, total));
-    if(large == 0) {
-        str = "0/1";
-    }
-    pf(str);
+    ll arr[] = {x - y, x, y, y - x, -x, -y};
+    p = arr[n % 6];
+
+    pf((p % M + M) % M);
 }
 
 int main() {

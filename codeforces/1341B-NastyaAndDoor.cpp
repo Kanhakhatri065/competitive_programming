@@ -35,29 +35,60 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+
+
 void solve() {
-    ll a, b;
-    sc(a);
-    sc(b);
+    int n, k;
+    sc(n);
+    sc(k);
 
-    ll large;
-    ll total = 6;
-    if(a > b) {
-        large = a;
-    } else {
-        large = b;
-    }
-    large = total - large + 1;
+    vector<int> v(n);
+    forIn(v, n);
 
-    string str = to_string(large / __gcd(large, total)) + "/" + to_string(total / __gcd(large, total));
-    if(large == 0) {
-        str = "0/1";
+    vector<int> peaks(n, 0);
+    int maxPeaks = 0, index = 1;
+    for(int i = 1;i < n - 1;++i) {
+        if(v[i] > v[i - 1] && v[i] > v[i + 1]) {
+            peaks[i] = 1;
+        }
     }
-    pf(str);
+
+    for(int i = 1;i < k - 1;i++) {
+        if(peaks[i]) {
+            maxPeaks++;
+        }
+    }
+
+    int l = 1, r = k - 1;
+    int countPeaks = maxPeaks;
+    for(int i = 1;i <= (n - k);i++) {
+        if(peaks[l]) {
+            countPeaks--;
+        }
+
+        if(peaks[r]) {
+            countPeaks++;
+        }
+
+        l++;
+        r++;
+        if(countPeaks > maxPeaks) {
+            index = l;
+            maxPeaks = max(maxPeaks, countPeaks);
+        }
+    }
+
+    cout << maxPeaks + 1 << " " << index << endl;
 }
 
 int main() {
     FAST_IO
-    solve();
+    int t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+
     return 0;
 }

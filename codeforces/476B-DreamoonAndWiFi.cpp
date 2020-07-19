@@ -35,25 +35,60 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+long long fac(ll n) {
+    ll f = 1;
+    for(ll i = 1;i <= n;i++) {
+        f *= i;
+    }
+
+    return f; 
+}
+
 void solve() {
-    ll a, b;
-    sc(a);
-    sc(b);
+    string s, t;
+    sc(s);
+    sc(t);
 
-    ll large;
-    ll total = 6;
-    if(a > b) {
-        large = a;
+    int plus1 = 0;
+    int minus1 = 0;
+    for(int i = 0;i < (int)s.length();i++) {
+        if(s[i] == '+') {
+            plus1++;
+        } else {
+            minus1++;
+        }
+    }
+
+    int plus2 = 0, minus2 = 0, unknown = 0;
+    for(int i = 0;i < (int) t.length();i++) {
+        if(t[i] == '+') {
+            plus2++;
+        } else if(t[i] == '-') {
+            minus2++;
+        } else {
+            unknown++;
+        }
+    }
+
+    double ans;
+    if(plus2 > plus1 or minus2 > minus1) {
+        ans = 0.0;
     } else {
-        large = b;
-    }
-    large = total - large + 1;
+        //cout << "unknown : " << unknown << endl;
+        ll total = pow(2, unknown);
+        ll arrangement = fac(unknown);
+        ll similar_plus = fac(plus1 - plus2);
+        ll similar_minus = fac(minus1 - minus2);
 
-    string str = to_string(large / __gcd(large, total)) + "/" + to_string(total / __gcd(large, total));
-    if(large == 0) {
-        str = "0/1";
+        ll selected = arrangement / (similar_minus * similar_plus);
+        //cout << "Arrangement : " << arrangement << " similar plus : " << similar_plus << " similar_minus : " << similar_minus << endl;
+        //cout << "Selected : " << selected <<"Total : " << total << endl;
+
+        ans = (double) selected / total; 
     }
-    pf(str);
+
+
+    cout << fixed << setprecision(12) << ans << endl;
 }
 
 int main() {

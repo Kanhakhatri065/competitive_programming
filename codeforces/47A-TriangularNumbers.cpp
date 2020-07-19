@@ -7,27 +7,24 @@ typedef long long ll;typedef unsigned long long ull;
 #define sc(a) cin >> a
 #define pf(a) cout << a << endl
 /*** Loops ***/
-#define for0(num) for(ll i = 0; i < num; i++)
+#define f(i, p, num) for(ll i = p; i < num; i++)
 #define forIn(arr, num) for(ll i = 0; i < num; i++) cin >> arr[i];
 #define vpnt(ans) for(ll i = 0; i < ans.size(); i++) cout << ans[i] << (i + 1 < ans.size() ? ' ' : '\n');
 /*** Define Values ***/
-#define mod 1000000007
+#define mod1 1000000007
+#define mod2 998244353
 #define eps 1e-7
 /*** Abbrevations **/
 #define pb push_back
 #define ff first
 #define ss second
-#define mp make_pair
 #define mem(name, value) memset(name, value, sizeof(name))
-#define pp pair
 /*** STLs ***/
 typedef vector<ll>vll;typedef set<ll>sll;typedef multiset<ll>msll;
-typedef queue<ll>qll;typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
-typedef vector<pair<ll,ll>>vpll;
+typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 /*** Sorts ***/
 #define all(v) (v).begin(), (v).end()
 #define srt(v) sort(all(v))
-#define srtGreat(v) sort(all(v), greater<ll>())
 /*** Bit-Stuff ***/
 #define GET_SET_BITS(a) (__builtin_popcount(a))
 #define GET_SET_BITSLL(a) ( __builtin_popcountll(a))
@@ -37,16 +34,8 @@ typedef vector<pair<ll,ll>>vpll;
 /*** Some Prints ***/
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
-/*** Swapping ***/
-void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
-void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
-/*** comparators ***/
-#define MX(x,y) x>y?x:y
-#define MN(x,y) x>y?y:x
 /*----------------------------------------------------------------*/
-
-int main() {
-    FAST_IO
+void solve() {
     ll n;
     sc(n);
 
@@ -69,6 +58,10 @@ int main() {
     } else {
         no;
     }
-    
+}
+
+int main() {
+    FAST_IO
+    solve();    
     return 0;
 }

@@ -36,28 +36,102 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
 void solve() {
-    ll a, b;
-    sc(a);
-    sc(b);
+    int n;
+    sc(n);
 
-    ll large;
-    ll total = 6;
-    if(a > b) {
-        large = a;
-    } else {
-        large = b;
-    }
-    large = total - large + 1;
+    string s;
+    sc(s);
+    
+	string check = "abacaba";
 
-    string str = to_string(large / __gcd(large, total)) + "/" + to_string(total / __gcd(large, total));
-    if(large == 0) {
-        str = "0/1";
-    }
-    pf(str);
+	int flag = 0;
+	int count = 0;
+	for(int i = 0;i <= n - 7;i++) {
+		if(s.substr(i, 7) == check) {
+			count++;
+			if(count == 2) {
+				flag = 1;
+				break;
+			}
+		}
+	}
+
+	if(flag) {
+		no;
+	} else {
+		if(count == 1) {
+			yes;
+			for(int i = 0;i < n;i++) {
+				if(s[i] == '?') {
+					s[i] = 'z';
+				}
+			}
+
+			pf(s);
+			return;
+		}
+		bool ok;
+		for(int i = 0;i <= n - 7;i++) {
+			string temp = s.substr(i, 7);
+			ok = true;
+			string ans = "";
+			for(int j = 0;j < 7;j++) {
+				if(temp[j] != check[j]) {
+					if(temp[j] != '?') {
+						ok = false;
+						break;
+					}
+				}
+			}
+
+			if(i + 10 < n && s.substr(i + 7, 4) == "caba") {
+				ok = false;
+			}
+
+			if(i + 12 < n && s.substr(i + 7, 6) == "bacaba") {
+				ok = false;
+			}
+
+			if(i >= 6 && s.substr(i - 6, 6) == "abacab") {
+				ok = false;
+			}
+
+			if(i >= 4 && s.substr(i - 4, 4) == "abac") {
+				ok = false;
+			}
+			
+			if(ok) {
+				for(int j = i, k = 0;j < i + 7;j++, k++) {
+					s[j] = check[k];
+				}
+
+				yes;
+				for(int j = 0;j < n;j++) {
+					if(s[j] == '?') {
+						s[j] = 'z';
+					}
+				}
+
+				pf(s);
+				break;
+			}
+		}
+
+		if(!ok) {
+			no;
+		}
+	}
+
 }
 
 int main() {
     FAST_IO
-    solve();
+    int t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    } 
+
     return 0;
 }
