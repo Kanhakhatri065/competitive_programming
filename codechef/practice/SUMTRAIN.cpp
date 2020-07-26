@@ -7,7 +7,7 @@ typedef long long ll;typedef unsigned long long ull;
 #define sc(a) cin >> a
 #define pf(a) cout << a << endl
 /*** Loops ***/
-#define for0(num) for(ll i = 0; i < num; i++)
+#define f(i, p, num) for(ll i = p; i < num; i++)
 #define forIn(arr, num) for(ll i = 0; i < num; i++) cin >> arr[i];
 #define vpnt(ans) for(ll i = 0; i < ans.size(); i++) cout << ans[i] << (i + 1 < ans.size() ? ' ' : '\n');
 /*** Define Values ***/
@@ -18,17 +18,13 @@ typedef long long ll;typedef unsigned long long ull;
 #define pb push_back
 #define ff first
 #define ss second
-#define mp make_pair
 #define mem(name, value) memset(name, value, sizeof(name))
-#define pp pair
 /*** STLs ***/
 typedef vector<ll>vll;typedef set<ll>sll;typedef multiset<ll>msll;
-typedef queue<ll>qll;typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
-typedef vector<pair<ll,ll>>vpll;
+typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 /*** Sorts ***/
 #define all(v) (v).begin(), (v).end()
 #define srt(v) sort(all(v))
-#define srtGreat(v) sort(all(v), greater<ll>())
 /*** Bit-Stuff ***/
 #define GET_SET_BITS(a) (__builtin_popcount(a))
 #define GET_SET_BITSLL(a) ( __builtin_popcountll(a))
@@ -38,53 +34,47 @@ typedef vector<pair<ll,ll>>vpll;
 /*** Some Prints ***/
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
-/*** Swapping ***/
-void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
-void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
 void solve() {
-    ll n, k;
-    sc(n);
-    sc(k);
+	int n;
+	sc(n);
 
-    vll v(n, 0);
-    forIn(v, n);
+	int a[n][n], s[n][n];
+	sc(a[0][0]);
+	s[0][0] = a[0][0];
+	int mx = s[0][0];
 
-    vll u(k, 0);
+	for(int i = 1;i < n;i++) {
+		for(int j = 0;j <= i;j++) {
+			sc(a[i][j]);
 
-    for0(n) {
-        if(find(all(u), v[i]) != u.end()) {
-            continue;
-        } else {
-            for(ll i = k - 2;i >= 0;i--) {
-                u[i + 1] = u[i];
-            }
-            u[0] = v[i];
-        }
-    }
+			if(j == 0) {
+				s[i][j] = s[i - 1][j] + a[i][j];
+			} else if(i == j) {
+				s[i][j] = s[i - 1][j - 1] + a[i][j];
+			} else {
+				if(s[i - 1][j] > s[i - 1][j - 1]) {
+					s[i][j] = s[i - 1][j] + a[i][j];
+				} else {
+					s[i][j] = s[i - 1][j - 1] + a[i][j];
+				}
+			}
 
-    ll count = 0;
-    for0(k) {
-        if(u[i] == 0) {
-            break;
-        } else {
-            count++;
-        }
-    }
+			mx = max(mx, s[i][j]);
+		}
+	}	
 
-    pf(count);
-    for0(k) {
-        if(u[i] == 0) {
-            break;
-        } else {
-            cout << u[i] << " ";
-        }
-    }
-    cout << endl;
+	pf(mx);
 }
 
 int main() {
-    FAST_IO
-    solve();
-    return 0;
+	FAST_IO
+	int t;
+	sc(t);
+
+	while(t--) {
+		solve();
+	}
+
+	return 0;
 }

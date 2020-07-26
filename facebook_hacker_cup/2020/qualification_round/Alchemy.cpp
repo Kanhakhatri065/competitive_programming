@@ -7,7 +7,7 @@ typedef long long ll;typedef unsigned long long ull;
 #define sc(a) cin >> a
 #define pf(a) cout << a << endl
 /*** Loops ***/
-#define for0(num) for(ll i = 0; i < num; i++)
+#define f(i, p, num) for(ll i = p; i < num; i++)
 #define forIn(arr, num) for(ll i = 0; i < num; i++) cin >> arr[i];
 #define vpnt(ans) for(ll i = 0; i < ans.size(); i++) cout << ans[i] << (i + 1 < ans.size() ? ' ' : '\n');
 /*** Define Values ***/
@@ -18,17 +18,13 @@ typedef long long ll;typedef unsigned long long ull;
 #define pb push_back
 #define ff first
 #define ss second
-#define mp make_pair
 #define mem(name, value) memset(name, value, sizeof(name))
-#define pp pair
 /*** STLs ***/
 typedef vector<ll>vll;typedef set<ll>sll;typedef multiset<ll>msll;
-typedef queue<ll>qll;typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
-typedef vector<pair<ll,ll>>vpll;
+typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 /*** Sorts ***/
 #define all(v) (v).begin(), (v).end()
 #define srt(v) sort(all(v))
-#define srtGreat(v) sort(all(v), greater<ll>())
 /*** Bit-Stuff ***/
 #define GET_SET_BITS(a) (__builtin_popcount(a))
 #define GET_SET_BITSLL(a) ( __builtin_popcountll(a))
@@ -36,55 +32,44 @@ typedef vector<pair<ll,ll>>vpll;
 #define GET_LEAD_ZERO(a) (__builtin_clz(a))
 #define GET_PARITY(a) (__builtin_parity(a))
 /*** Some Prints ***/
-#define no cout << "NO" << endl
-#define yes cout << "YES" << endl
-/*** Swapping ***/
-void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
-void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
+#define no cout << "N" << endl
+#define yes cout << "Y" << endl
 /*----------------------------------------------------------------*/
 void solve() {
-    ll n, k;
+    int n;
     sc(n);
-    sc(k);
 
-    vll v(n, 0);
-    forIn(v, n);
+    string s;
+    sc(s);
 
-    vll u(k, 0);
-
-    for0(n) {
-        if(find(all(u), v[i]) != u.end()) {
-            continue;
+    int a = 0, b = 0;
+    for(int i = 0;i < n;i++) {
+        if(s[i] == 'A') {
+            a++;
         } else {
-            for(ll i = k - 2;i >= 0;i--) {
-                u[i + 1] = u[i];
-            }
-            u[0] = v[i];
+            b++;
         }
     }
 
-    ll count = 0;
-    for0(k) {
-        if(u[i] == 0) {
-            break;
-        } else {
-            count++;
-        }
+    if(abs(a - b) == 1) {
+        yes;
+    } else {
+        no;
     }
-
-    pf(count);
-    for0(k) {
-        if(u[i] == 0) {
-            break;
-        } else {
-            cout << u[i] << " ";
-        }
-    }
-    cout << endl;
 }
 
 int main() {
     FAST_IO
-    solve();
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+
+    int t;
+    sc(t);
+
+    for(int tt = 1;tt <= t;tt++) {
+        cout << "Case #" << tt << ": ";
+        solve();
+    }
+
     return 0;
 }

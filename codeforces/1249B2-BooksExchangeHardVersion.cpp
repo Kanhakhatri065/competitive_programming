@@ -7,7 +7,7 @@ typedef long long ll;typedef unsigned long long ull;
 #define sc(a) cin >> a
 #define pf(a) cout << a << endl
 /*** Loops ***/
-#define for0(num) for(ll i = 0; i < num; i++)
+#define f(i, p, num) for(ll i = p; i < num; i++)
 #define forIn(arr, num) for(ll i = 0; i < num; i++) cin >> arr[i];
 #define vpnt(ans) for(ll i = 0; i < ans.size(); i++) cout << ans[i] << (i + 1 < ans.size() ? ' ' : '\n');
 /*** Define Values ***/
@@ -18,17 +18,13 @@ typedef long long ll;typedef unsigned long long ull;
 #define pb push_back
 #define ff first
 #define ss second
-#define mp make_pair
 #define mem(name, value) memset(name, value, sizeof(name))
-#define pp pair
 /*** STLs ***/
 typedef vector<ll>vll;typedef set<ll>sll;typedef multiset<ll>msll;
-typedef queue<ll>qll;typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
-typedef vector<pair<ll,ll>>vpll;
+typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 /*** Sorts ***/
 #define all(v) (v).begin(), (v).end()
 #define srt(v) sort(all(v))
-#define srtGreat(v) sort(all(v), greater<ll>())
 /*** Bit-Stuff ***/
 #define GET_SET_BITS(a) (__builtin_popcount(a))
 #define GET_SET_BITSLL(a) ( __builtin_popcountll(a))
@@ -38,53 +34,46 @@ typedef vector<pair<ll,ll>>vpll;
 /*** Some Prints ***/
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
-/*** Swapping ***/
-void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
-void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
 void solve() {
-    ll n, k;
-    sc(n);
-    sc(k);
+	int n;
+	sc(n);
 
-    vll v(n, 0);
-    forIn(v, n);
+	vector<int> p(n);
+	for(int i = 0;i < n;i++) {
+		sc(p[i]);
+		p[i]--;
+	}
 
-    vll u(k, 0);
+	vector<int> used(n);
+	vector<int> ans(n);
 
-    for0(n) {
-        if(find(all(u), v[i]) != u.end()) {
-            continue;
-        } else {
-            for(ll i = k - 2;i >= 0;i--) {
-                u[i + 1] = u[i];
-            }
-            u[0] = v[i];
-        }
-    }
+	for(int i = 0;i < n;i++) {
+		if(!used[i]) {
+			vector<int> cur;
+			while(!used[i]) {
+				cur.pb(i);
+				used[i] = true;
+				i = p[i];
+			}
 
-    ll count = 0;
-    for0(k) {
-        if(u[i] == 0) {
-            break;
-        } else {
-            count++;
-        }
-    }
+			for(auto el : cur) {
+				ans[el] = cur.size();
+			}
+		}
+	}
 
-    pf(count);
-    for0(k) {
-        if(u[i] == 0) {
-            break;
-        } else {
-            cout << u[i] << " ";
-        }
-    }
-    cout << endl;
+	vpnt(ans);
 }
 
 int main() {
-    FAST_IO
-    solve();
-    return 0;
+	FAST_IO
+	int t;
+	sc(t);
+
+	while(t--) {
+		solve();
+	}
+
+	return 0;
 }

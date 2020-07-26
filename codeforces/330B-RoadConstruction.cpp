@@ -7,7 +7,7 @@ typedef long long ll;typedef unsigned long long ull;
 #define sc(a) cin >> a
 #define pf(a) cout << a << endl
 /*** Loops ***/
-#define for0(num) for(ll i = 0; i < num; i++)
+#define f(i, p, num) for(ll i = p; i < num; i++)
 #define forIn(arr, num) for(ll i = 0; i < num; i++) cin >> arr[i];
 #define vpnt(ans) for(ll i = 0; i < ans.size(); i++) cout << ans[i] << (i + 1 < ans.size() ? ' ' : '\n');
 /*** Define Values ***/
@@ -18,17 +18,13 @@ typedef long long ll;typedef unsigned long long ull;
 #define pb push_back
 #define ff first
 #define ss second
-#define mp make_pair
 #define mem(name, value) memset(name, value, sizeof(name))
-#define pp pair
 /*** STLs ***/
 typedef vector<ll>vll;typedef set<ll>sll;typedef multiset<ll>msll;
-typedef queue<ll>qll;typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
-typedef vector<pair<ll,ll>>vpll;
+typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 /*** Sorts ***/
 #define all(v) (v).begin(), (v).end()
 #define srt(v) sort(all(v))
-#define srtGreat(v) sort(all(v), greater<ll>())
 /*** Bit-Stuff ***/
 #define GET_SET_BITS(a) (__builtin_popcount(a))
 #define GET_SET_BITSLL(a) ( __builtin_popcountll(a))
@@ -38,49 +34,36 @@ typedef vector<pair<ll,ll>>vpll;
 /*** Some Prints ***/
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
-/*** Swapping ***/
-void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
-void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
 void solve() {
-    ll n, k;
+    int n, m;
     sc(n);
-    sc(k);
+    sc(m);
 
-    vll v(n, 0);
-    forIn(v, n);
+    vector<bool> v(n + 1, 0);
 
-    vll u(k, 0);
+    int s, d;
+    for(int i = 0;i < m;i++) {
+        sc(s);
+        sc(d);
+        v[s] = 1;
+        v[d] = 1;
+    }
 
-    for0(n) {
-        if(find(all(u), v[i]) != u.end()) {
+    int root;
+    for(int i = 1;i <= n;i++) {
+        if(!v[i]) {
+            root = i;
+        }
+    }
+
+    pf(n - 1);
+    for(int i = 1;i <= n;i++) {
+        if(i == root) {
             continue;
-        } else {
-            for(ll i = k - 2;i >= 0;i--) {
-                u[i + 1] = u[i];
-            }
-            u[0] = v[i];
         }
+        cout << root << " " << i << endl;
     }
-
-    ll count = 0;
-    for0(k) {
-        if(u[i] == 0) {
-            break;
-        } else {
-            count++;
-        }
-    }
-
-    pf(count);
-    for0(k) {
-        if(u[i] == 0) {
-            break;
-        } else {
-            cout << u[i] << " ";
-        }
-    }
-    cout << endl;
 }
 
 int main() {

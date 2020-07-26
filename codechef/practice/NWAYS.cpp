@@ -7,7 +7,7 @@ typedef long long ll;typedef unsigned long long ull;
 #define sc(a) cin >> a
 #define pf(a) cout << a << endl
 /*** Loops ***/
-#define for0(num) for(ll i = 0; i < num; i++)
+#define f(i, p, num) for(ll i = p; i < num; i++)
 #define forIn(arr, num) for(ll i = 0; i < num; i++) cin >> arr[i];
 #define vpnt(ans) for(ll i = 0; i < ans.size(); i++) cout << ans[i] << (i + 1 < ans.size() ? ' ' : '\n');
 /*** Define Values ***/
@@ -18,17 +18,13 @@ typedef long long ll;typedef unsigned long long ull;
 #define pb push_back
 #define ff first
 #define ss second
-#define mp make_pair
 #define mem(name, value) memset(name, value, sizeof(name))
-#define pp pair
 /*** STLs ***/
 typedef vector<ll>vll;typedef set<ll>sll;typedef multiset<ll>msll;
-typedef queue<ll>qll;typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
-typedef vector<pair<ll,ll>>vpll;
+typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 /*** Sorts ***/
 #define all(v) (v).begin(), (v).end()
 #define srt(v) sort(all(v))
-#define srtGreat(v) sort(all(v), greater<ll>())
 /*** Bit-Stuff ***/
 #define GET_SET_BITS(a) (__builtin_popcount(a))
 #define GET_SET_BITSLL(a) ( __builtin_popcountll(a))
@@ -38,53 +34,57 @@ typedef vector<pair<ll,ll>>vpll;
 /*** Some Prints ***/
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
-/*** Swapping ***/
-void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
-void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
+const int N = 2e6 + 6;
+const int mod = 1e9 + 7;
+ll fac[N];
+
+ll power(ll a, ll b) {
+	ll ans = 1;
+	while(b) {
+		if(b & 1) {
+			ans = (ans * a) % mod;
+		}
+
+		a = (a * a) % mod;
+		b /= 2;
+	}
+
+	return ans;
+}
+
+ll nCr(ll n, ll r) {
+	ll ans = (fac[n] * power(fac[r], mod - 2)) % mod;
+
+	return (ans * power(fac[n - r], mod - 2)) % mod;
+}
+
+void precomputation() {
+	fac[0] = fac[1] = 1;
+	for(int i = 2;i < N;i++) {
+		fac[i] = (i * fac[i - 1]) % mod;
+	}
+}
+
 void solve() {
-    ll n, k;
-    sc(n);
-    sc(k);
+	ll n, k;
+	sc(n);
+	sc(k);
 
-    vll v(n, 0);
-    forIn(v, n);
-
-    vll u(k, 0);
-
-    for0(n) {
-        if(find(all(u), v[i]) != u.end()) {
-            continue;
-        } else {
-            for(ll i = k - 2;i >= 0;i--) {
-                u[i + 1] = u[i];
-            }
-            u[0] = v[i];
-        }
-    }
-
-    ll count = 0;
-    for0(k) {
-        if(u[i] == 0) {
-            break;
-        } else {
-            count++;
-        }
-    }
-
-    pf(count);
-    for0(k) {
-        if(u[i] == 0) {
-            break;
-        } else {
-            cout << u[i] << " ";
-        }
-    }
-    cout << endl;
+	ll ans = (2 * nCr(n + k + 1, n - 1) + mod - n) % mod;
+	pf(ans);
 }
 
 int main() {
-    FAST_IO
-    solve();
-    return 0;
+	FAST_IO
+	int t;
+	sc(t);
+
+	precomputation();
+
+	while(t--) {
+		solve();
+	}
+
+	return 0;
 }
