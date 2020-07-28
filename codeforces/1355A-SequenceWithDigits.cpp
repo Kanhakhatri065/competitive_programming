@@ -18,17 +18,13 @@ typedef long long ll;typedef unsigned long long ull;
 #define pb push_back
 #define ff first
 #define ss second
-#define mp make_pair
 #define mem(name, value) memset(name, value, sizeof(name))
-#define pp pair
 /*** STLs ***/
 typedef vector<ll>vll;typedef set<ll>sll;typedef multiset<ll>msll;
-typedef queue<ll>qll;typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
-typedef vector<pair<ll,ll>>vpll;
+typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 /*** Sorts ***/
 #define all(v) (v).begin(), (v).end()
 #define srt(v) sort(all(v))
-#define srtGreat(v) sort(all(v), greater<ll>())
 /*** Bit-Stuff ***/
 #define GET_SET_BITS(a) (__builtin_popcount(a))
 #define GET_SET_BITSLL(a) ( __builtin_popcountll(a))
