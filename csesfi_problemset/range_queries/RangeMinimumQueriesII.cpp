@@ -35,43 +35,74 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
-void solve() {
-    ll n, m;
-    sc(n);
-    sc(m);
+void construct_segment_tree(vector<int>& segtree,  vector<int> &a, int n) { 
+    for (int i = 0; i < n; i++)  {
+        segtree[n + i] = a[i];     
+    }
+  
+    for (int i = n - 1; i >= 1; i--) {
+        segtree[i] = min(segtree[2 * i],  segtree[2 * i + 1]); 
+    }
+} 
+  
+void update(vector<int>& segtree, int pos, int value,  int n) { 
+    pos += n; 
+  
+    segtree[pos] = value; 
+  
+    while (pos > 1) { 
+        pos >>= 1; 
+        segtree[pos] = min(segtree[2 * pos], segtree[2 * pos + 1]); 
+    } 
+} 
+  
+int range_query(vector<int>& segtree, int left, int right, int n) { 
+    left += n; 
+    right += n; 
+  
+    int mi = (int)1e9; 
+  
+    while (left < right) { 
+  
+        if (left & 1) { 
+            mi = min(mi, segtree[left]);   
+            left++; 
+        } 
+  
+        if (right & 1) {   
+            right--; 
+            mi = min(mi, segtree[right]); 
+        } 
+  
+        left /= 2; 
+        right /= 2; 
+    } 
 
-    vll v(n, 0);
+    return mi; 
+} 
+
+void solve() {
+    int n, q;
+    cin >> n >> q;
+
+    vector<int> v(n);
     forIn(v, n);
 
-    vll u(m, 0);
-    forIn(u, m);
+    vector<int> segtree(2 * n);
+    construct_segment_tree(segtree, v, n);
 
-    srt(v);
-
-    ll count = 0;
-    ll left = 0;
-    ll right = n - 1;
-    ll mid;
-    vll store;
-    for(ll i = 0;i < m;i++) {
-        count = 0;
-        left = 0;
-        right = n - 1;
-
-        while (left <= right) { 
-            mid = (right + left) / 2; 
-  
-            if (v[mid] <= u[i]) { 
-                count = mid + 1; 
-                left = mid + 1; 
-            } else {
-                right = mid - 1; 
-            }
-        } 
-        store.pb(count);
+    int type, l, r;
+    int ans;
+    while(q--) {
+        cin >> type >> l >> r;
+        if(type == 1) {
+            update(segtree, l - 1, r, n);
+        } else {
+            l--;
+            ans = range_query(segtree, l, r, n);
+            pf(ans);
+        }
     }
-
-    vpnt(store);
 }
 
 int main() {

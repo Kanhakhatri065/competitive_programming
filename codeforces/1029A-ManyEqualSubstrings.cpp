@@ -35,43 +35,39 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+#define sz(a) int(a.size())
 void solve() {
-    ll n, m;
+    int n, k;
     sc(n);
-    sc(m);
+    sc(k);
 
-    vll v(n, 0);
-    forIn(v, n);
+    string t;
+    sc(t);
 
-    vll u(m, 0);
-    forIn(u, m);
+    int cnt = 1;
+    int pos = 1;
+    string ans = t;
+    while (cnt < k) {
+		if (pos >= sz(ans)) {
+			ans += t;
+			++cnt;
+		} else {
+			bool ok = true;
+			int len = 0;
+			for (int i = 0; i < sz(t); ++i) {
+				if (pos + i >= sz(ans)) break;
+				++len;
+				if (ans[pos + i] != t[i]) ok = false;
+			}
+			if (ok) {
+				ans += t.substr(len);
+				++cnt;
+			}
+		}
+		++pos;
+	}
 
-    srt(v);
-
-    ll count = 0;
-    ll left = 0;
-    ll right = n - 1;
-    ll mid;
-    vll store;
-    for(ll i = 0;i < m;i++) {
-        count = 0;
-        left = 0;
-        right = n - 1;
-
-        while (left <= right) { 
-            mid = (right + left) / 2; 
-  
-            if (v[mid] <= u[i]) { 
-                count = mid + 1; 
-                left = mid + 1; 
-            } else {
-                right = mid - 1; 
-            }
-        } 
-        store.pb(count);
-    }
-
-    vpnt(store);
+    pf(ans);
 }
 
 int main() {

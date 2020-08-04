@@ -35,43 +35,91 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+const int N = 1e4;
+int cnt[27];
+string s;
+int n;
+
+bool valid() {
+    for(int i = 0;i < 26;i++) {
+        if(cnt[i] >= 2) {
+            return false;
+        }
+
+    }
+    
+    return true;
+}
+
+void fillall() {
+    for(int i = 0;i < n;i++) {
+        if(s[i] == '?') {
+            s[i] = 'A';
+        }
+    }
+}
+
 void solve() {
-    ll n, m;
-    sc(n);
-    sc(m);
+    sc(s);
+    n = (int) s.length();
 
-    vll v(n, 0);
-    forIn(v, n);
-
-    vll u(m, 0);
-    forIn(u, m);
-
-    srt(v);
-
-    ll count = 0;
-    ll left = 0;
-    ll right = n - 1;
-    ll mid;
-    vll store;
-    for(ll i = 0;i < m;i++) {
-        count = 0;
-        left = 0;
-        right = n - 1;
-
-        while (left <= right) { 
-            mid = (right + left) / 2; 
-  
-            if (v[mid] <= u[i]) { 
-                count = mid + 1; 
-                left = mid + 1; 
-            } else {
-                right = mid - 1; 
-            }
-        } 
-        store.pb(count);
+    if(n < 26) {
+        pf(-1);
+        return;
     }
 
-    vpnt(store);
+    for(int i = 0;i < 26;i++) {
+        cnt[s[i] - 'A']++;
+    }
+
+    if(valid()) {
+        int cur = 0;
+        while(cnt[cur] > 0) {
+            cur++;
+        }
+
+        for(int i = 0;i < 26;i++) {
+            if(s[i] == '?') {
+                s[i] = cur + 'A';
+                cur++;
+                while(cnt[cur] > 0) {
+                    cur++;
+                }
+            }
+        }
+
+        fillall();
+        pf(s);
+        return;
+    }
+
+    for(int i = 26;i < n;i++) {
+        cnt[s[i] - 'A']++;
+        cnt[s[i - 26] - 'A']--;
+
+        if(valid()) {
+            int cur = 0;
+            while(cnt[cur] > 0) {
+                cur++;
+            }
+
+            for(int j = i - 25;j <= i;j++) {
+                if(s[j] == '?') {
+                    s[j] = cur + 'A';
+                    cur++;
+                    while(cnt[cur] > 0) {
+                        cur++;
+                    }
+                }
+            }
+
+            fillall();
+            pf(s);
+            return;
+        }
+    }
+
+    pf(-1);
 }
 
 int main() {

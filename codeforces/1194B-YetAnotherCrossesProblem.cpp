@@ -36,46 +36,67 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
 void solve() {
-    ll n, m;
+    int n, m;
     sc(n);
     sc(m);
 
-    vll v(n, 0);
-    forIn(v, n);
-
-    vll u(m, 0);
-    forIn(u, m);
-
-    srt(v);
-
-    ll count = 0;
-    ll left = 0;
-    ll right = n - 1;
-    ll mid;
-    vll store;
-    for(ll i = 0;i < m;i++) {
-        count = 0;
-        left = 0;
-        right = n - 1;
-
-        while (left <= right) { 
-            mid = (right + left) / 2; 
-  
-            if (v[mid] <= u[i]) { 
-                count = mid + 1; 
-                left = mid + 1; 
-            } else {
-                right = mid - 1; 
-            }
-        } 
-        store.pb(count);
+    char arr[n][m];
+    for(int i = 0;i < n;i++) {
+        for(int j = 0;j < m;j++) {
+            sc(arr[i][j]);
+        }
     }
 
-    vpnt(store);
+    int rol[n];
+    int cnt = 0;
+    for(int i = 0;i < n;i++) {
+        cnt = 0;
+        for(int j = 0;j < m;j++) {
+            if(arr[i][j] == '*') {
+                cnt++;
+            }
+        }
+
+        rol[i] = cnt;
+    }
+
+    int col[m];
+    for(int i = 0;i < m;i++) {
+        cnt = 0;
+        for(int j = 0;j < n;j++) {
+            if(arr[j][i] == '*') {
+                cnt++;
+            }
+        }
+
+        col[i] = cnt;
+    }
+
+    int cmp = n + (m - 1);
+    int mn = cmp;
+    for(int i = 0;i < n;i++) {
+        for(int j = 0;j < m;j++) {
+            cnt = rol[i] + col[j];
+            if(arr[i][j] == '*') {
+                cnt--;
+            }
+            //cout << cnt << " ";
+            mn = min(mn, cmp - cnt);
+        }
+        //cout << endl;
+    }
+    
+    pf(mn);
 }
 
 int main() {
     FAST_IO
-    solve();
+    int t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+
     return 0;
 }

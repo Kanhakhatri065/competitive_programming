@@ -35,43 +35,32 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+const int N = 1e5 + 5;
+ll cnt[2];
+vector<int> v[N];
+void dfs(int node, int pnode, int color) {
+    cnt[color]++;
+    for(int i = 0;i < (int)v[node].size();i++) {
+        if(v[node][i] != pnode) {
+            dfs(v[node][i], node, !color);
+        }
+    }
+}
+
 void solve() {
-    ll n, m;
+    int n;
     sc(n);
-    sc(m);
 
-    vll v(n, 0);
-    forIn(v, n);
-
-    vll u(m, 0);
-    forIn(u, m);
-
-    srt(v);
-
-    ll count = 0;
-    ll left = 0;
-    ll right = n - 1;
-    ll mid;
-    vll store;
-    for(ll i = 0;i < m;i++) {
-        count = 0;
-        left = 0;
-        right = n - 1;
-
-        while (left <= right) { 
-            mid = (right + left) / 2; 
-  
-            if (v[mid] <= u[i]) { 
-                count = mid + 1; 
-                left = mid + 1; 
-            } else {
-                right = mid - 1; 
-            }
-        } 
-        store.pb(count);
+    int src, dest;
+    for(int i = 1;i < n;i++) {
+        cin >> src >> dest;
+        v[src].pb(dest);
+        v[dest].pb(src);
     }
 
-    vpnt(store);
+    dfs(1, 0, 0);
+    ll ans = cnt[0] * cnt[1] - n + 1;
+    pf(ans);
 }
 
 int main() {

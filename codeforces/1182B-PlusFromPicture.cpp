@@ -36,42 +36,74 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
 void solve() {
-    ll n, m;
-    sc(n);
-    sc(m);
+    int n, m;
+    cin >> n >> m;
 
-    vll v(n, 0);
-    forIn(v, n);
+    string s[n];
+    forIn(s, n);
 
-    vll u(m, 0);
-    forIn(u, m);
-
-    srt(v);
-
-    ll count = 0;
-    ll left = 0;
-    ll right = n - 1;
-    ll mid;
-    vll store;
-    for(ll i = 0;i < m;i++) {
-        count = 0;
-        left = 0;
-        right = n - 1;
-
-        while (left <= right) { 
-            mid = (right + left) / 2; 
-  
-            if (v[mid] <= u[i]) { 
-                count = mid + 1; 
-                left = mid + 1; 
-            } else {
-                right = mid - 1; 
+    int x = -1, y = -1;
+    for(int i = 1;i < n - 1;i++) {
+        for(int j = 1;j < m - 1;j++) {
+            if(s[i][j] == '*' && s[i - 1][j] == '*' && s[i][j - 1] == '*' && s[i + 1][j] == '*' && s[i][j + 1] == '*') {
+                x = i, y = j;
+                break;
             }
-        } 
-        store.pb(count);
+        }
     }
 
-    vpnt(store);
+    if(x == -1) {
+        no;
+        return;
+    }
+
+    for(int i = y;i < m;i++) {
+        if(s[x][i] == '*') {
+            s[x][i] = '.';
+        } else {
+            break;
+        }
+    }
+
+    for(int i = y - 1;i >= 0;i--) {
+        if(s[x][i] == '*') {
+            s[x][i] = '.';
+        } else {
+            break;
+        }
+    }
+
+    for(int i = x + 1;i < n;i++) {
+        if(s[i][y] == '*') {
+            s[i][y] = '.';
+        } else {
+            break;
+        }
+    }
+
+    for(int i = x - 1;i >= 0;i--) {
+        if(s[i][y] == '*') {
+            s[i][y] = '.';
+        } else {
+            break;
+        }
+    }
+
+    bool ok = true;
+    for(int i = 0;i < n;i++) {
+        for(int j = 0;j < m;j++) {
+            if(s[i][j] == '*') {
+                ok = false;
+                break;
+            }
+        }
+    }
+
+    if(ok) {
+        yes;
+    } else {
+        no;
+    }
 }
 
 int main() {

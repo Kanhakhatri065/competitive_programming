@@ -36,44 +36,31 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
 void solve() {
-    ll n, m;
+    int n, q;
     sc(n);
-    sc(m);
-
-    vll v(n, 0);
+    sc(q);
+ 
+    vll v(n);
     forIn(v, n);
-
-    vll u(m, 0);
-    forIn(u, m);
-
-    srt(v);
-
-    ll count = 0;
-    ll left = 0;
-    ll right = n - 1;
-    ll mid;
-    vll store;
-    for(ll i = 0;i < m;i++) {
-        count = 0;
-        left = 0;
-        right = n - 1;
-
-        while (left <= right) { 
-            mid = (right + left) / 2; 
-  
-            if (v[mid] <= u[i]) { 
-                count = mid + 1; 
-                left = mid + 1; 
-            } else {
-                right = mid - 1; 
-            }
-        } 
-        store.pb(count);
+ 
+    for(int i = 1;i < n;i++) {
+        v[i] += v[i - 1];
     }
-
-    vpnt(store);
+ 
+    int l, r;
+    for(int i = 0;i < q;i++) {
+        cin >> l >> r;
+        l--;
+        r--;
+ 
+        if(l == 0) {
+            pf(v[r]);
+        } else {
+            pf(v[r] - v[l - 1]);
+        }
+    }
 }
-
+ 
 int main() {
     FAST_IO
     solve();

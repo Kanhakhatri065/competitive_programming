@@ -35,43 +35,47 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
-void solve() {
-    ll n, m;
-    sc(n);
-    sc(m);
 
-    vll v(n, 0);
+void solve() {
+    int n;
+    sc(n);
+
+    vector<int> v(n);
     forIn(v, n);
 
-    vll u(m, 0);
-    forIn(u, m);
-
-    srt(v);
-
-    ll count = 0;
-    ll left = 0;
-    ll right = n - 1;
-    ll mid;
-    vll store;
-    for(ll i = 0;i < m;i++) {
-        count = 0;
-        left = 0;
-        right = n - 1;
-
-        while (left <= right) { 
-            mid = (right + left) / 2; 
-  
-            if (v[mid] <= u[i]) { 
-                count = mid + 1; 
-                left = mid + 1; 
-            } else {
-                right = mid - 1; 
-            }
-        } 
-        store.pb(count);
+    map<int, vector<int>> mp;
+    for(int i = 0;i < n;i++) {
+        mp[v[i]].pb(i + 1);
     }
 
-    vpnt(store);
+    vector<pair<int, int>> store;
+    int d;
+    bool flag = true;
+    for(auto it : mp) {
+        if(it.ss.size() == 1) {
+            store.pb({it.ff, 0});
+        } else if(it.ss.size() == 2) {
+            store.pb({it.ff, it.ss[1] - it.ss[0]});
+        } else {
+            d = it.ss[1] - it.ss[0];
+            flag = true;
+            for(int i = 1;i < it.ss.size();i++) {
+                if(d != (it.ss[i] - it.ss[i - 1])) {
+                    flag = false;
+                    break;
+                }
+            }
+
+            if(flag) {
+                store.pb({it.ff, d});
+            }
+        }
+    }
+
+    pf(store.size());
+    for(auto i : store) {
+        cout << i.ff << " " << i.ss << endl;
+    }
 }
 
 int main() {

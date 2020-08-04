@@ -36,42 +36,45 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
 void solve() {
-    ll n, m;
-    sc(n);
-    sc(m);
+    int n, sx, sy;
+    cin >> n >> sx >> sy;
 
-    vll v(n, 0);
-    forIn(v, n);
+    int a = 0, b = 0, c = 0, d = 0;
+    int x, y;
+    for(int i = 0;i < n;i++) {
+        cin >> x >> y;
 
-    vll u(m, 0);
-    forIn(u, m);
+        if(x < sx) {
+            a++;
+        }
 
-    srt(v);
+        if(x > sx) {
+            b++;
+        }
 
-    ll count = 0;
-    ll left = 0;
-    ll right = n - 1;
-    ll mid;
-    vll store;
-    for(ll i = 0;i < m;i++) {
-        count = 0;
-        left = 0;
-        right = n - 1;
+        if(y < sy) {
+            c++;
+        }
 
-        while (left <= right) { 
-            mid = (right + left) / 2; 
-  
-            if (v[mid] <= u[i]) { 
-                count = mid + 1; 
-                left = mid + 1; 
-            } else {
-                right = mid - 1; 
-            }
-        } 
-        store.pb(count);
+        if(y > sy) {
+            d++;
+        }
     }
 
-    vpnt(store);
+    int tmp = max({a, b, c, d});
+    if(tmp == a) {
+        pf(a);
+        cout << (sx - 1) << " " << sy << endl;
+    } else if(tmp == b) {
+        pf(b);
+        cout << (sx + 1) << " " << sy << endl;
+    } else if(tmp == c) {
+        pf(c);
+        cout << sx << " " << (sy - 1) << endl;
+    } else if(tmp == d) {
+        pf(d);
+        cout << sx << " " << (sy + 1) << endl;
+    }
 }
 
 int main() {

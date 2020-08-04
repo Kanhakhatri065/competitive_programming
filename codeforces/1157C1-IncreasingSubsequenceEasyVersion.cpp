@@ -36,42 +36,48 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
 void solve() {
-    ll n, m;
+    int n;
     sc(n);
-    sc(m);
 
-    vll v(n, 0);
-    forIn(v, n);
+    vector<int> a(n);
+    forIn(a, n);
 
-    vll u(m, 0);
-    forIn(u, m);
+    string res;
+    int l = 0, r = n - 1;
+    int lst = 0;
+    while(l <= r) {
+        vector<pair<int, char>> cur;
+        if(lst < a[l]) {
+            cur.pb({a[l], 'L'});
+        }
 
-    srt(v);
+        if(lst < a[r]) {
+            cur.pb({a[r], 'R'});
+        }
 
-    ll count = 0;
-    ll left = 0;
-    ll right = n - 1;
-    ll mid;
-    vll store;
-    for(ll i = 0;i < m;i++) {
-        count = 0;
-        left = 0;
-        right = n - 1;
+        srt(cur);
 
-        while (left <= right) { 
-            mid = (right + left) / 2; 
-  
-            if (v[mid] <= u[i]) { 
-                count = mid + 1; 
-                left = mid + 1; 
+        if(int(cur.size()) == 2) {
+            cur.pop_back();
+        }
+
+        if(int(cur.size()) == 1) {
+            if(cur[0].ss == 'L') {
+                res += 'L';
+                lst = a[l];
+                l++;
             } else {
-                right = mid - 1; 
+                res += 'R';
+                lst = a[r];
+                r--;
             }
-        } 
-        store.pb(count);
+        } else {
+            break;
+        }
     }
 
-    vpnt(store);
+    pf(res.size());
+    pf(res);
 }
 
 int main() {

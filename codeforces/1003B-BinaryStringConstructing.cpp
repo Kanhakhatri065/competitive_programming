@@ -36,42 +36,63 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
 void solve() {
-    ll n, m;
-    sc(n);
-    sc(m);
+    int a, b, x;
+    cin >> a >> b >> x;
 
-    vll v(n, 0);
-    forIn(v, n);
-
-    vll u(m, 0);
-    forIn(u, m);
-
-    srt(v);
-
-    ll count = 0;
-    ll left = 0;
-    ll right = n - 1;
-    ll mid;
-    vll store;
-    for(ll i = 0;i < m;i++) {
-        count = 0;
-        left = 0;
-        right = n - 1;
-
-        while (left <= right) { 
-            mid = (right + left) / 2; 
-  
-            if (v[mid] <= u[i]) { 
-                count = mid + 1; 
-                left = mid + 1; 
-            } else {
-                right = mid - 1; 
+    string out = "";
+    if(x % 2 == 0) {
+        if(a > b) {
+            for(int i = 0;i < x / 2;i++) {
+                out += "01";
             }
-        } 
-        store.pb(count);
+
+            for(int i = 0;i < (b - x / 2);i++) {
+                out += '1';
+            }
+
+            for(int i = 0;i < (a - x / 2);i++) {
+                out += '0';
+            }
+        } else {
+            for(int i = 0;i < x / 2;i++) {
+                out += "10";
+            }
+
+            for(int i = 0;i < (a - x / 2);i++) {
+                out += '0';
+            }
+
+            for(int i = 0;i < (b - x / 2);i++) {
+                out += '1';
+            }
+        }
+    } else if(a > b) {
+        for(int i = 0;i < x / 2;i++) {
+            out += "01";
+        }
+
+        for(int i = 0;i < (a - x / 2);i++) {
+            out += '0';
+        }
+
+        for(int i = 0;i < (b - x / 2);i++) {
+            out += '1';
+        }
+    } else {
+        for(int i = 0;i < x / 2;i++) {
+            out += "10";
+        }
+
+        for(int i = 0;i < (b - x / 2);i++) {
+            out += '1';
+        }
+        
+        for(int i = 0;i < (a - x / 2);i++) {
+            out += '0';
+        }
     }
 
-    vpnt(store);
+    pf(out);
 }
 
 int main() {

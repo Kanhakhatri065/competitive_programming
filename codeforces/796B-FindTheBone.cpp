@@ -35,43 +35,32 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+const int N = 1e6 + 5;
+int isHole[N];
+
 void solve() {
-    ll n, m;
-    sc(n);
-    sc(m);
+    int n, m, k;
+    cin >> n >> m >> k;
 
-    vll v(n, 0);
-    forIn(v, n);
-
-    vll u(m, 0);
-    forIn(u, m);
-
-    srt(v);
-
-    ll count = 0;
-    ll left = 0;
-    ll right = n - 1;
-    ll mid;
-    vll store;
-    for(ll i = 0;i < m;i++) {
-        count = 0;
-        left = 0;
-        right = n - 1;
-
-        while (left <= right) { 
-            mid = (right + left) / 2; 
-  
-            if (v[mid] <= u[i]) { 
-                count = mid + 1; 
-                left = mid + 1; 
-            } else {
-                right = mid - 1; 
-            }
-        } 
-        store.pb(count);
+    int h;
+    for(int i = 0;i < m;i++) {
+        sc(h);
+        isHole[h] = 1;
     }
 
-    vpnt(store);
+    int pos = 1;
+    int u, v;
+    for(int i = 0;i < k;i++) {
+        cin >> u >> v;
+
+        if(u == pos && (!isHole[u])) {
+            pos = v;
+        } else if(v == pos && (!isHole[v])) {
+            pos = u;
+        }
+    }
+
+    pf(pos);   
 }
 
 int main() {

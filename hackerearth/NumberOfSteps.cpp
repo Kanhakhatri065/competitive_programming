@@ -35,43 +35,35 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+const int maxn = 5e3 + 17;
+int n, a[maxn], b[maxn];
+
 void solve() {
-    ll n, m;
-    sc(n);
-    sc(m);
-
-    vll v(n, 0);
-    forIn(v, n);
-
-    vll u(m, 0);
-    forIn(u, m);
-
-    srt(v);
-
-    ll count = 0;
-    ll left = 0;
-    ll right = n - 1;
-    ll mid;
-    vll store;
-    for(ll i = 0;i < m;i++) {
-        count = 0;
-        left = 0;
-        right = n - 1;
-
-        while (left <= right) { 
-            mid = (right + left) / 2; 
-  
-            if (v[mid] <= u[i]) { 
-                count = mid + 1; 
-                left = mid + 1; 
-            } else {
-                right = mid - 1; 
-            }
-        } 
-        store.pb(count);
+    cin >> n;
+	for(int i = 0; i < n; i++) {
+		cin >> a[i];
+    }
+	
+    for(int i = 0; i < n; i++) {
+		cin >> b[i];
     }
 
-    vpnt(store);
+	for(int x = *min_element(a, a + n); x >= 0; x--){
+		bool ok = 1;
+		int ans = 0;
+		for(int i = 0; i < n && ok; i++){
+			ok &= x == a[i] || b[i] > 0 && x % b[i] == a[i] % b[i];
+			
+            if(b[i]) {
+				ans += (a[i] - x) / b[i];
+            }
+		}
+		if(ok) {
+			pf(ans);
+            return;
+        }
+	}
+    pf(-1);
 }
 
 int main() {

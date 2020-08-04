@@ -35,45 +35,59 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
-void solve() {
-    ll n, m;
-    sc(n);
-    sc(m);
-
-    vll v(n, 0);
-    forIn(v, n);
-
-    vll u(m, 0);
-    forIn(u, m);
-
-    srt(v);
-
-    ll count = 0;
-    ll left = 0;
-    ll right = n - 1;
-    ll mid;
-    vll store;
-    for(ll i = 0;i < m;i++) {
-        count = 0;
-        left = 0;
-        right = n - 1;
-
-        while (left <= right) { 
-            mid = (right + left) / 2; 
-  
-            if (v[mid] <= u[i]) { 
-                count = mid + 1; 
-                left = mid + 1; 
-            } else {
-                right = mid - 1; 
-            }
-        } 
-        store.pb(count);
+void construct_seg_tree(vll &segtree, vll &a, int n) {
+    for(int i = 0;i < n;i++) {
+        segtree[n + i] = a[i];
     }
-
-    vpnt(store);
+ 
+    for(int i = n - 1;i >= 0;i--) {
+        segtree[i] = min(segtree[2 * i], segtree[2 * i + 1]);
+    }
 }
-
+ 
+ll range_query(vll &segtree, int left, int right, int  n) {
+    left += n;
+    right += n;
+ 
+    ll mn = 1e9;
+ 
+    while(left < right) {
+        if(left & 1) {
+            mn = min(mn, segtree[left]);
+            left++;
+        }
+ 
+        if(right & 1) {
+            right--;
+            mn = min(mn, segtree[right]);
+        }
+ 
+        left /= 2;
+        right /= 2;
+    }
+ 
+    return mn;
+}
+ 
+void solve() {
+    int n, q;
+    sc(n);
+    sc(q);
+ 
+    vll v(n);
+    forIn(v, n);
+ 
+    vll segtree(2 * n);
+    construct_seg_tree(segtree, v, n);
+ 
+    int left, right;
+    for(int i = 0;i < q;i++) {
+        cin >> left >> right;
+        left--;
+        pf(range_query(segtree, left,right, n));
+    }
+}
+ 
 int main() {
     FAST_IO
     solve();

@@ -35,43 +35,39 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+vector<int> pos[26];
 void solve() {
-    ll n, m;
+    int n;
     sc(n);
-    sc(m);
 
-    vll v(n, 0);
-    forIn(v, n);
+    string s;
+    sc(s);
 
-    vll u(m, 0);
-    forIn(u, m);
-
-    srt(v);
-
-    ll count = 0;
-    ll left = 0;
-    ll right = n - 1;
-    ll mid;
-    vll store;
-    for(ll i = 0;i < m;i++) {
-        count = 0;
-        left = 0;
-        right = n - 1;
-
-        while (left <= right) { 
-            mid = (right + left) / 2; 
-  
-            if (v[mid] <= u[i]) { 
-                count = mid + 1; 
-                left = mid + 1; 
-            } else {
-                right = mid - 1; 
-            }
-        } 
-        store.pb(count);
+    for(int i = 0;i < n;i++) {
+        pos[s[i] - 'a'].pb(i + 1);
     }
 
-    vpnt(store);
+    int m;
+    sc(m);
+    
+    string t;
+    while(m--) {
+        sc(t);
+        vector<int> cnt(26);
+        for(auto &c : t) {
+            cnt[c - 'a']++;
+        }
+
+        int ans = -1;
+        for(int i = 0;i < 26;i++) {
+            if(cnt[i] > 0) {
+                ans = max(ans, pos[i][cnt[i] - 1]);
+            }
+        }
+
+        pf(ans);
+    }
+
 }
 
 int main() {

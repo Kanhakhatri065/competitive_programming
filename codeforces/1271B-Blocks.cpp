@@ -35,42 +35,47 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+void change(string &s, int i ) {
+    s[i - 1] = (s[i - 1] == 'W' ? 'B' : 'W');
+    s[i] = (s[i] == 'W' ? 'B' : 'W');
+}
+
 void solve() {
-    ll n, m;
+    int n;
     sc(n);
-    sc(m);
+    string s;
+    sc(s);
 
-    vll v(n, 0);
-    forIn(v, n);
+    int w = count(all(s), 'W');
 
-    vll u(m, 0);
-    forIn(u, m);
-
-    srt(v);
-
-    ll count = 0;
-    ll left = 0;
-    ll right = n - 1;
-    ll mid;
-    vll store;
-    for(ll i = 0;i < m;i++) {
-        count = 0;
-        left = 0;
-        right = n - 1;
-
-        while (left <= right) { 
-            mid = (right + left) / 2; 
-  
-            if (v[mid] <= u[i]) { 
-                count = mid + 1; 
-                left = mid + 1; 
-            } else {
-                right = mid - 1; 
-            }
-        } 
-        store.pb(count);
+    if(w & 1 && (n - w) % 2 == 1) {
+        pf(-1);
+        return;
     }
 
+    if(w == 0) {
+        pf(0);
+        return;
+    }
+
+    vector<int> store;
+    if(w & 1) {
+        for(int i = 0;i < n;i++) {
+            if(s[i] == 'B') {
+                change(s, i + 1);
+                store.pb(i + 1);
+            }
+        }
+    } else {
+        for(int i = 0;i < n;i++) {
+            if(s[i] == 'W') {
+                change(s, i + 1);
+                store.pb(i + 1);
+            }
+        }
+    }
+
+    pf(int(store.size()));
     vpnt(store);
 }
 

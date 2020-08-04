@@ -35,47 +35,69 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
-void solve() {
-    ll n, m;
-    sc(n);
-    sc(m);
-
-    vll v(n, 0);
-    forIn(v, n);
-
-    vll u(m, 0);
-    forIn(u, m);
-
-    srt(v);
-
-    ll count = 0;
-    ll left = 0;
-    ll right = n - 1;
-    ll mid;
-    vll store;
-    for(ll i = 0;i < m;i++) {
-        count = 0;
-        left = 0;
-        right = n - 1;
-
-        while (left <= right) { 
-            mid = (right + left) / 2; 
-  
-            if (v[mid] <= u[i]) { 
-                count = mid + 1; 
-                left = mid + 1; 
-            } else {
-                right = mid - 1; 
-            }
-        } 
-        store.pb(count);
+ll kadane(int arr[], int n) {
+    ll currSum = 0LL, maxSum = INT_MIN;
+    for(int i = 0;i < n;i++) {
+        currSum += arr[i];
+        maxSum = max(maxSum, currSum);
+        if(currSum < 0) {
+            currSum = 0;
+        }
     }
 
-    vpnt(store);
+    return maxSum;
+}
+
+ll maxSubarraySum(int arr[], int n, int k) {
+    ll kadanes_sum = kadane(arr, n);
+    if(k == 1) {
+        return kadanes_sum;
+    }
+
+    ll currPrefixSum = 0LL, currSuffixSum = 0LL;
+    ll maxPrefixSum = INT_MIN, maxSuffixSum = INT_MIN;
+    for(int i = 0;i < n;i++) {
+        currPrefixSum += arr[i];
+        maxPrefixSum = max(maxPrefixSum, currPrefixSum);
+    }
+
+    ll totalSum = currPrefixSum;
+    for(int i = n - 1;i >= 0;i--) {
+        currSuffixSum += arr[i];
+        maxSuffixSum = max(maxSuffixSum, currSuffixSum);
+    }
+
+    ll ans = 0;
+    if(totalSum < 0) {
+        ans = max(maxSuffixSum + maxPrefixSum, kadanes_sum);
+    } else {
+        ans = max(maxPrefixSum + maxSuffixSum + (k - 2) * totalSum, kadanes_sum);
+    }
+
+    return ans;
+}
+
+void solve() {
+    int n, k;
+    cin >> n >> k;
+
+    int arr[n];
+    for(int i = 0;i < n;i++) {
+        sc(arr[i]);
+    }
+
+    ll ans = maxSubarraySum(arr, n, k);
+    pf(ans);
 }
 
 int main() {
     FAST_IO
-    solve();
+    int t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+
     return 0;
 }

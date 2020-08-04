@@ -35,47 +35,55 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
-void solve() {
-    ll n, m;
-    sc(n);
-    sc(m);
-
-    vll v(n, 0);
-    forIn(v, n);
-
-    vll u(m, 0);
-    forIn(u, m);
-
-    srt(v);
-
-    ll count = 0;
-    ll left = 0;
-    ll right = n - 1;
-    ll mid;
-    vll store;
-    for(ll i = 0;i < m;i++) {
-        count = 0;
-        left = 0;
-        right = n - 1;
-
-        while (left <= right) { 
-            mid = (right + left) / 2; 
+#include <ext/pb_ds/assoc_container.hpp> 
+#include <ext/pb_ds/tree_policy.hpp> 
+using namespace __gnu_pbds; 
   
-            if (v[mid] <= u[i]) { 
-                count = mid + 1; 
-                left = mid + 1; 
-            } else {
-                right = mid - 1; 
-            }
-        } 
-        store.pb(count);
+#define ordered_set tree<int, null_type,less<int>, rb_tree_tag,tree_order_statistics_node_update> 
+  
+void solve() {
+    int n;
+    sc(n);
+
+    int v[n + 1];
+    ordered_set s;    
+    for(int i = 1;i <= n;i++) {
+        sc(v[i]);
+        s.insert(i);
     }
 
-    vpnt(store);
+    ll sum = 0LL;
+    int cnt = 0;
+    int tmp_cnt;
+    for(int i = 1;i <= n;i++) {
+        if(v[i] != *s.begin()) {
+            tmp_cnt = s.order_of_key(v[i]);
+            s.erase(v[i]);
+            sum += (tmp_cnt) * 1000;
+            cnt++;
+        } else {
+            s.erase(*s.begin());
+        }    
+    }
+
+    ll avg = sum / cnt;
+    //cout << " sum : " << sum << " cnt : " << cnt;
+    //cout << " avg : " << avg << endl;
+    if(avg <= 2000) {
+        pf(avg);
+    } else {
+        pf("Too Much");
+    }
 }
 
 int main() {
     FAST_IO
-    solve();
+    int t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+
     return 0;
 }

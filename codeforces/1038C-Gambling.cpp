@@ -36,42 +36,68 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
 void solve() {
-    ll n, m;
+    int n;
     sc(n);
-    sc(m);
 
-    vll v(n, 0);
+    vector<int> v(n);
     forIn(v, n);
 
-    vll u(m, 0);
-    forIn(u, m);
+    vector<int> u(n);
+    forIn(u, n);
 
     srt(v);
+    srt(u);
 
-    ll count = 0;
-    ll left = 0;
-    ll right = n - 1;
-    ll mid;
-    vll store;
-    for(ll i = 0;i < m;i++) {
-        count = 0;
-        left = 0;
-        right = n - 1;
+    bool turn = 0;
+    ll a = 0LL, b = 0LL;
+    while(!v.empty() || !u.empty()) {
+        if(!turn) {
+            if(v.back() >= u.back()) {
+                if(!v.empty()) {
+                    a += v.back();
+                    v.pop_back();
+                } else if(!u.empty()) {
+                    u.pop_back();
+                } else {
+                    break;
+                }
 
-        while (left <= right) { 
-            mid = (right + left) / 2; 
-  
-            if (v[mid] <= u[i]) { 
-                count = mid + 1; 
-                left = mid + 1; 
             } else {
-                right = mid - 1; 
+                if(!u.empty()) {
+                    u.pop_back();
+                } else if(!v.empty()) {
+                    a += v.back();
+                    v.pop_back();
+                } else {
+                    break;
+                }
             }
-        } 
-        store.pb(count);
+            turn = 1;
+        } else {
+            if(u.back() >= v.back()) {
+                if(!u.empty()) {
+                    b += u.back();
+                    u.pop_back();
+                } else if(!v.empty()) {
+                    v.pop_back();
+                } else {
+                    break;
+                }
+            } else {
+                if(!v.empty()) {
+                    v.pop_back();
+                } else if(!u.empty()) {
+                    b += u.back();
+                    u.pop_back();
+                } else {
+                    break;
+                }
+            }
+            turn = 0;
+        }
     }
 
-    vpnt(store);
+    pf(a - b);
 }
 
 int main() {

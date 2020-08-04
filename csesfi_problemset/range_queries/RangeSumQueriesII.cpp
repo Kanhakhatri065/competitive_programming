@@ -35,43 +35,74 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
-void solve() {
-    ll n, m;
-    sc(n);
-    sc(m);
+struct BIT {
+    int N;
+    vll bit;
 
-    vll v(n, 0);
-    forIn(v, n);
-
-    vll u(m, 0);
-    forIn(u, m);
-
-    srt(v);
-
-    ll count = 0;
-    ll left = 0;
-    ll right = n - 1;
-    ll mid;
-    vll store;
-    for(ll i = 0;i < m;i++) {
-        count = 0;
-        left = 0;
-        right = n - 1;
-
-        while (left <= right) { 
-            mid = (right + left) / 2; 
-  
-            if (v[mid] <= u[i]) { 
-                count = mid + 1; 
-                left = mid + 1; 
-            } else {
-                right = mid - 1; 
-            }
-        } 
-        store.pb(count);
+    BIT(int n) {
+        this->N = n;
+        bit.assign(n + 1, 0);
     }
 
-    vpnt(store);
+    void updateBIT(int n, int idx, int val) {
+        idx += 1;
+
+        while(idx <= n) {
+            bit[idx] += val;
+            idx += (idx & (-idx));
+        }
+    }
+
+    BIT(vll a) : BIT(int(a.size())) {
+        for(int i = 0;i < (int)a.size();i++) {
+            updateBIT(N, i, a[i]);
+        }
+    }
+
+    ll getSum(int idx) {
+        ll sum = 0LL;
+
+        idx += 1;
+        while(idx > 0) {
+            sum += bit[idx];
+            idx -= (idx & (-idx));
+        }
+
+        return sum;
+    }
+};
+
+void solve() {
+    int n, q;
+    cin >> n >> q;
+
+    vll v(n);
+    forIn(v, n);
+
+    BIT b(v);
+
+    int type, l, r;
+    int dif;
+    ll ans;
+    while(q--) {
+        cin >> type >> l >> r;
+        if(type == 1) {
+            dif = r - v[l - 1];
+            v[l - 1] += dif;
+            b.updateBIT(n, l - 1, dif);
+        } else {
+            l--;
+            r--;
+
+            if(l == 0) {
+                ans = b.getSum(r);
+            } else {
+                ans = b.getSum(r) - b.getSum(l - 1);
+            }
+
+            pf(ans);
+        }
+    }
 }
 
 int main() {
