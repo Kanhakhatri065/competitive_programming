@@ -35,44 +35,56 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+const int N = 1e3 + 5;
+const int MX = INT_MAX;
+int v[N];
+int store[N];
+int n, k;
+int totalIneffciency(int idx) {
+    if(idx >= n) {
+        return MX;
+    }
+
+    if(store[idx] != -1) {
+        return store[idx];
+    }
+
+    int total = MX, current = 0, mn = MX, fetched = MX;
+    vector<int> fam(101);
+    for(int i = idx;i < n;i++) {
+        fam[v[i]]++;
+        if(fam[v[i]] >= 2) {
+            if(fam[v[i]] == 2) {
+                current += 2;
+            } else {
+                current++;
+            }
+        }
+
+        fetched = totalIneffciency(i + 1);
+        if(fetched != MX) {
+            fetched += current + k;
+        }
+
+        mn = min(mn, fetched);
+    }
+
+    total = current + k;
+    store[idx] = min(mn, total);
+    return store[idx];
+}
+
 void solve() {
-    int n;
-    sc(n);
+    cin >> n >> k;
+    
+    for(int i = 0;i < n;i++) {
+        sc(v[i]);
+    }
 
-    string s;
-    sc(s);
-	
-	vector<int> ans(n);
-	vector<int> pos0, pos1;
-	int newpos;
-	for(int i = 0;i < n;i++) {
-		newpos = pos0.size() + pos1.size();
-		if(s[i] == '0') {
-			if(pos1.empty()) {
-				pos0.pb(newpos);
-			} else {
-				newpos = pos1.back();
-				pos1.pop_back();
-				pos0.pb(newpos);
-			}
-		} else {
-			if(pos0.empty()) {
-				pos1.pb(newpos);
-			} else {
-				newpos = pos0.back();
-				pos0.pop_back();
-				pos1.pb(newpos);
-			}
-		}
+    mem(store, -1);
 
-		ans[i] = newpos;
-	}
-
-	pf(pos0.size() + pos1.size());
-	for(auto it : ans) {
-		cout << (it + 1) << " ";
-	}
-	cout << endl;
+    int ans = totalIneffciency(0);
+    pf(ans);
 }
 
 int main() {

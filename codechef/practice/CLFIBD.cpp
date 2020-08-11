@@ -35,44 +35,46 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
-void solve() {
-    int n;
-    sc(n);
+bool dynamic(int a, int b, int c) {
+    if(a + b == c || b + c == a || a + c == b) {
+        return true;
+    }
 
+    return false;
+}
+
+void solve() {
     string s;
     sc(s);
-	
-	vector<int> ans(n);
-	vector<int> pos0, pos1;
-	int newpos;
-	for(int i = 0;i < n;i++) {
-		newpos = pos0.size() + pos1.size();
-		if(s[i] == '0') {
-			if(pos1.empty()) {
-				pos0.pb(newpos);
-			} else {
-				newpos = pos1.back();
-				pos1.pop_back();
-				pos0.pb(newpos);
-			}
-		} else {
-			if(pos0.empty()) {
-				pos1.pb(newpos);
-			} else {
-				newpos = pos0.back();
-				pos0.pop_back();
-				pos1.pb(newpos);
-			}
-		}
 
-		ans[i] = newpos;
-	}
+    int cnt[26];
+    mem(cnt, 0);
 
-	pf(pos0.size() + pos1.size());
-	for(auto it : ans) {
-		cout << (it + 1) << " ";
-	}
-	cout << endl;
+    for(auto c : s) {
+        cnt[c - 'a']++;
+    }
+
+    vector<int> store;
+    for(int i = 0;i < 26;i++) {
+        if(cnt[i] != 0) {
+            store.pb(cnt[i]);
+        }
+    }
+
+    bool flag = true;
+
+    for(int i = 2;i < int(store.size());i++) {
+        if(!dynamic(store[i], store[i - 1], store[i - 2])) {
+            flag = false;
+            break;
+        }
+    }
+
+    if(flag) {
+        pf("Dynamic");
+    } else {
+        pf("Not");
+    }
 }
 
 int main() {

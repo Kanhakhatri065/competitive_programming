@@ -35,54 +35,72 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+#define int int64_t
+
+const int N = 1e5 + 1;
+const int INF = 1e18;
+
+int n, m;
+int d[N], pre[N];
+vector<pair<int, int>> g[N];
+priority_queue<pair<int, int>> q;
+void Dijkstra() {
+    fill(d, d + N, INF);
+ 
+    d[1] = 0;
+    pre[1] = -1;
+    q.emplace(0, 1);
+ 
+    while (!q.empty()) {
+        int u = q.top().second;
+        int du = -q.top().first;
+        q.pop();
+ 
+        if (du != d[u]) continue;
+ 
+        for (auto e : g[u]) {
+            int v = e.first;
+            int w = e.second;
+ 
+            if (d[v] > d[u] + w) {
+                d[v] = d[u] + w;
+                q.emplace(-d[v], v);
+                pre[v] = u;
+            }
+        }
+    }
+}
+
 void solve() {
-    int n;
-    sc(n);
-
-    string s;
-    sc(s);
-	
-	vector<int> ans(n);
-	vector<int> pos0, pos1;
-	int newpos;
-	for(int i = 0;i < n;i++) {
-		newpos = pos0.size() + pos1.size();
-		if(s[i] == '0') {
-			if(pos1.empty()) {
-				pos0.pb(newpos);
-			} else {
-				newpos = pos1.back();
-				pos1.pop_back();
-				pos0.pb(newpos);
-			}
-		} else {
-			if(pos0.empty()) {
-				pos1.pb(newpos);
-			} else {
-				newpos = pos0.back();
-				pos0.pop_back();
-				pos1.pb(newpos);
-			}
-		}
-
-		ans[i] = newpos;
+	cin >> n >> m;
+	while(m--) {
+		int u, v, c;
+		cin >> u >> v >> c;
+		g[u].emplace_back(v, c);
+		g[v].emplace_back(u, c);
 	}
 
-	pf(pos0.size() + pos1.size());
-	for(auto it : ans) {
-		cout << (it + 1) << " ";
+	Dijkstra();
+
+	if(d[n] == INF) {
+		pf(-1);
+		return;
+	}
+
+	stack<int> s;
+	for(int i = n ;i != -1;i = pre[i]) {
+		s.push(i);
+	}
+
+	while(!s.empty()) {
+		cout << s.top() << " ";
+		s.pop();
 	}
 	cout << endl;
 }
 
-int main() {
-    FAST_IO
-    int t;
-    sc(t);
-
-    while(t--) {
-        solve();
-    }
-
-    return 0;
+signed main() {
+	FAST_IO
+	solve();
+	return 0;
 }

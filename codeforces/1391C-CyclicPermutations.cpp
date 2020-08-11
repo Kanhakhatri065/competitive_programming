@@ -35,54 +35,37 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
-void solve() {
-    int n;
-    sc(n);
-
-    string s;
-    sc(s);
-	
-	vector<int> ans(n);
-	vector<int> pos0, pos1;
-	int newpos;
-	for(int i = 0;i < n;i++) {
-		newpos = pos0.size() + pos1.size();
-		if(s[i] == '0') {
-			if(pos1.empty()) {
-				pos0.pb(newpos);
-			} else {
-				newpos = pos1.back();
-				pos1.pop_back();
-				pos0.pb(newpos);
-			}
-		} else {
-			if(pos0.empty()) {
-				pos1.pb(newpos);
-			} else {
-				newpos = pos0.back();
-				pos0.pop_back();
-				pos1.pb(newpos);
-			}
-		}
-
-		ans[i] = newpos;
-	}
-
-	pf(pos0.size() + pos1.size());
-	for(auto it : ans) {
-		cout << (it + 1) << " ";
-	}
-	cout << endl;
+#define int long long
+int fact[1000006];
+const int mod = 1e9 + 7;
+int power(int x, int y, int p)
+{
+    int res = 1;
+    x = x % p;
+    if (x == 0) return 0;
+    while (y > 0)
+    {
+        if (y & 1)
+            res = (res * x) % p;
+        y = y >> 1;
+        x = (x * x) % p;
+    }
+    return res;
 }
 
-int main() {
-    FAST_IO
-    int t;
-    sc(t);
-
-    while(t--) {
-        solve();
+void solve() {
+    int n;
+    cin >> n;
+    fact[0] = 1;
+    for (int i = 1; i <= n + 2; i++) {
+        fact[i] = (fact[i - 1] * i) % mod;
     }
+    cout << ((fact[n] - power(2, n - 1, mod)) % mod + mod) % mod;
+    cout << endl;
+}
 
+int32_t main() {
+    FAST_IO
+    solve();
     return 0;
 }

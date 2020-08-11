@@ -39,50 +39,58 @@ void solve() {
     int n;
     sc(n);
 
-    string s;
-    sc(s);
-	
-	vector<int> ans(n);
-	vector<int> pos0, pos1;
-	int newpos;
-	for(int i = 0;i < n;i++) {
-		newpos = pos0.size() + pos1.size();
-		if(s[i] == '0') {
-			if(pos1.empty()) {
-				pos0.pb(newpos);
-			} else {
-				newpos = pos1.back();
-				pos1.pop_back();
-				pos0.pb(newpos);
-			}
-		} else {
-			if(pos0.empty()) {
-				pos1.pb(newpos);
-			} else {
-				newpos = pos0.back();
-				pos0.pop_back();
-				pos1.pb(newpos);
-			}
-		}
+    int k1, k2;
+    queue<int> q1, q2;
 
-		ans[i] = newpos;
-	}
+    sc(k1);
+    for(int i = 0;i < k1;i++) {
+        int x;
+        sc(x);
+        q1.push(x);
+    }
 
-	pf(pos0.size() + pos1.size());
-	for(auto it : ans) {
-		cout << (it + 1) << " ";
-	}
-	cout << endl;
+    sc(k2);
+    for(int i = 0;i < k2;i++) {
+        int x;
+        sc(x);
+        q2.push(x);
+    }
+
+    int cnt = 0;
+    while(!q1.empty() && !q2.empty()) {
+        if(q1.front() > q2.front()) {
+            q1.push(q2.front());
+            q2.pop();
+            q1.push(q1.front());
+            q1.pop();
+        } else {
+            q2.push(q1.front());
+            q1.pop();
+            q2.push(q2.front());
+            q2.pop();
+        }
+
+        cnt++;
+        if(cnt > 1000) {
+            break;
+        }
+    }
+
+    if(cnt > 1000) {
+        pf(-1);
+        return;
+    }
+
+    cout << cnt << " ";
+    if(q1.size()) {
+        cout << "1" << endl;
+    } else {
+        cout << "2" << endl;
+    }
 }
 
 int main() {
     FAST_IO
-    int t;
-    sc(t);
-
-    while(t--) {
-        solve();
-    }
-
+    solve();
     return 0;
 }

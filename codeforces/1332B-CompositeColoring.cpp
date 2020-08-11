@@ -39,46 +39,37 @@ void solve() {
     int n;
     sc(n);
 
-    string s;
-    sc(s);
-	
-	vector<int> ans(n);
-	vector<int> pos0, pos1;
-	int newpos;
-	for(int i = 0;i < n;i++) {
-		newpos = pos0.size() + pos1.size();
-		if(s[i] == '0') {
-			if(pos1.empty()) {
-				pos0.pb(newpos);
-			} else {
-				newpos = pos1.back();
-				pos1.pop_back();
-				pos0.pb(newpos);
-			}
-		} else {
-			if(pos0.empty()) {
-				pos1.pb(newpos);
-			} else {
-				newpos = pos0.back();
-				pos0.pop_back();
-				pos1.pb(newpos);
-			}
-		}
+    vector<int> v(n);
+    forIn(v, n);
 
-		ans[i] = newpos;
-	}
+    map<int, vector<int>> mp;
+    for(int i = 0;i < n;i++) {
+        for(int j = 2;j * j <= v[i];j++) {
+            if(v[i] % j == 0) {
+                mp[j].pb(i);
+                break;
+            }
+        }
+    }
 
-	pf(pos0.size() + pos1.size());
-	for(auto it : ans) {
-		cout << (it + 1) << " ";
-	}
-	cout << endl;
+    vector<int> ans(n);
+    int cur = 0;
+    for(auto it : mp) {
+        cur++;
+        for(auto j : it.ss) {
+            ans[j] = cur;
+        }
+    }
+
+    pf(int(mp.size()));
+    vpnt(ans);
 }
 
 int main() {
     FAST_IO
     int t;
     sc(t);
+
 
     while(t--) {
         solve();

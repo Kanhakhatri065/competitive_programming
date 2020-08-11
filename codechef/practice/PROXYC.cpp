@@ -41,38 +41,33 @@ void solve() {
 
     string s;
     sc(s);
-	
-	vector<int> ans(n);
-	vector<int> pos0, pos1;
-	int newpos;
-	for(int i = 0;i < n;i++) {
-		newpos = pos0.size() + pos1.size();
-		if(s[i] == '0') {
-			if(pos1.empty()) {
-				pos0.pb(newpos);
-			} else {
-				newpos = pos1.back();
-				pos1.pop_back();
-				pos0.pb(newpos);
-			}
-		} else {
-			if(pos0.empty()) {
-				pos1.pb(newpos);
-			} else {
-				newpos = pos0.back();
-				pos0.pop_back();
-				pos1.pb(newpos);
-			}
-		}
 
-		ans[i] = newpos;
-	}
+    int p = count(all(s), 'P');
+    int cnt = 0;
+    for(int i = 2;i < (n - 2);i++) {
+        if(s[i] == 'A') {
+            if((s[i - 1] == 'P' || s[i - 2] == 'P') && (s[i + 1] == 'P' || s[i + 2] == 'P')) {
+                cnt++;
+            }
+        }
+    }
 
-	pf(pos0.size() + pos1.size());
-	for(auto it : ans) {
-		cout << (it + 1) << " ";
-	}
-	cout << endl;
+    int mn = (3 * n) / 4;
+    if((3 * n) % 4) {
+        mn++;
+    }
+
+    mn -= p;
+    if(mn <= 0) {
+        pf(0);
+        return;
+    }
+
+    if(cnt >= mn) {
+        pf(mn);
+    } else {
+        pf(-1);
+    }
 }
 
 int main() {

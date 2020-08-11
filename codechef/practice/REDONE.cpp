@@ -35,44 +35,24 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+const int N = 1e6 + 5;
+int v[N];
+
+void precomputation() {
+    v[0] = 0;
+    v[1] = 1;
+    v[2] = 5;
+    v[3] = 23;
+    for(int i = 4;i <= 1e6;i++) {
+        v[i] = (((1LL * v[i - 1] * (i + 1)) % mod1) + i) % mod1;
+    }
+}
+
+int n;
 void solve() {
-    int n;
     sc(n);
 
-    string s;
-    sc(s);
-	
-	vector<int> ans(n);
-	vector<int> pos0, pos1;
-	int newpos;
-	for(int i = 0;i < n;i++) {
-		newpos = pos0.size() + pos1.size();
-		if(s[i] == '0') {
-			if(pos1.empty()) {
-				pos0.pb(newpos);
-			} else {
-				newpos = pos1.back();
-				pos1.pop_back();
-				pos0.pb(newpos);
-			}
-		} else {
-			if(pos0.empty()) {
-				pos1.pb(newpos);
-			} else {
-				newpos = pos0.back();
-				pos0.pop_back();
-				pos1.pb(newpos);
-			}
-		}
-
-		ans[i] = newpos;
-	}
-
-	pf(pos0.size() + pos1.size());
-	for(auto it : ans) {
-		cout << (it + 1) << " ";
-	}
-	cout << endl;
+    pf(v[n]);
 }
 
 int main() {
@@ -80,6 +60,7 @@ int main() {
     int t;
     sc(t);
 
+    precomputation();
     while(t--) {
         solve();
     }

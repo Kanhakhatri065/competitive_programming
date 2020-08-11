@@ -36,53 +36,34 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
 void solve() {
-    int n;
-    sc(n);
+    ll x;
+    sc(x);
 
-    string s;
-    sc(s);
-	
-	vector<int> ans(n);
-	vector<int> pos0, pos1;
-	int newpos;
-	for(int i = 0;i < n;i++) {
-		newpos = pos0.size() + pos1.size();
-		if(s[i] == '0') {
-			if(pos1.empty()) {
-				pos0.pb(newpos);
-			} else {
-				newpos = pos1.back();
-				pos1.pop_back();
-				pos0.pb(newpos);
-			}
-		} else {
-			if(pos0.empty()) {
-				pos1.pb(newpos);
-			} else {
-				newpos = pos0.back();
-				pos0.pop_back();
-				pos1.pb(newpos);
-			}
-		}
+    if(x == 1) {
+        cout << "1 1" << endl;
+        return;
+    }
 
-		ans[i] = newpos;
-	}
+    pll mn = {LONG_LONG_MAX, LONG_LONG_MAX};
+    bool flag = false;
+    for(ll i = 2;i * i <= x;i++) {
+        if(x % i == 0 && ((i * (x / i)) / __gcd(i, x / i) == x)) {
+            if(max(mn.ff, mn.ss) > max(i, x / i)) {
+                mn = {i, x / i};
+            }
+            flag = true;
+        }
+    }
 
-	pf(pos0.size() + pos1.size());
-	for(auto it : ans) {
-		cout << (it + 1) << " ";
-	}
-	cout << endl;
+    if(flag) {
+        cout << mn.ff << " " << mn.ss << endl;
+    } else {
+        cout << "1 " << x << endl;
+    }
 }
 
 int main() {
     FAST_IO
-    int t;
-    sc(t);
-
-    while(t--) {
-        solve();
-    }
-
+    solve();
     return 0;
 }

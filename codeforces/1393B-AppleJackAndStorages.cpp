@@ -35,54 +35,65 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+const int N = 1e5 + 5;
+int f[N];
 void solve() {
+    fill(f, f + N, 0);
     int n;
     sc(n);
 
-    string s;
-    sc(s);
-	
-	vector<int> ans(n);
-	vector<int> pos0, pos1;
-	int newpos;
-	for(int i = 0;i < n;i++) {
-		newpos = pos0.size() + pos1.size();
-		if(s[i] == '0') {
-			if(pos1.empty()) {
-				pos0.pb(newpos);
-			} else {
-				newpos = pos1.back();
-				pos1.pop_back();
-				pos0.pb(newpos);
-			}
-		} else {
-			if(pos0.empty()) {
-				pos1.pb(newpos);
-			} else {
-				newpos = pos0.back();
-				pos0.pop_back();
-				pos1.pb(newpos);
-			}
-		}
+    vector<int> v(n);
+    forIn(v, n);
 
-		ans[i] = newpos;
-	}
+    for(int i = 0;i < n;i++) {
+        f[v[i]]++;
+    }
 
-	pf(pos0.size() + pos1.size());
-	for(auto it : ans) {
-		cout << (it + 1) << " ";
-	}
-	cout << endl;
+    int c2 = 0, c4 = 0;
+    for(int i = 1;i <= 1e5;i++) {
+        c4 += (f[i] / 4);
+        c2 += (f[i] / 2);
+    }
+
+    int x;
+    char type;
+
+    int q;
+    sc(q);
+    while(q--) {
+        cin >> type >> x;
+        if(type == '+') {
+            f[x]++;
+            if(f[x] % 2 == 0) {
+                c2++;
+            }
+
+            if(f[x] % 4 == 0) {
+                c4++;
+            }
+        } else {
+            if(f[x] % 2 == 0) {
+                c2--;
+            }
+
+            if(f[x] % 4 == 0) {
+                c4--;
+            }
+
+            f[x]--;
+        }
+
+        if(c4 && c2 - 2 >= 2) {
+            yes;
+        } else {
+            no;
+        }
+    }
+  
 }
 
 int main() {
     FAST_IO
-    int t;
-    sc(t);
-
-    while(t--) {
-        solve();
-    }
-
+    solve();
     return 0;
 }

@@ -35,54 +35,58 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+int n, m, graph_length, max_length;
+vector<int> employees[101];
+vector<int> languages[101];
+int visited[101];
+void dfs(int employee) {
+    if(visited[employee]) {
+        return;
+    }
+
+    visited[employee] = 1;
+    for(int i=0;i<employees[employee].size();++i)
+        for(int j=0;j<languages[employees[employee][i]].size();++j)
+            dfs(languages[employees[employee][i]][j]);
+}
+
 void solve() {
-    int n;
-    sc(n);
+    cin >> n >> m;
+    int checkMute = 1;
+    mem(visited, 0);
+    for(int i=0;i<n;++i) {
+        visited[i]=0;
+        int num;
+        cin>>num;
+        if(num>0) {
+            checkMute=0;
+        }
+        for(int j=0;j<num;++j){
+            int lang;
+            cin>>lang;
+            employees[i].push_back(lang);
+            languages[lang].push_back(i);
+        }
+    }
+    
+    if(checkMute) {
+        pf(n);
+        return;
+    }
 
-    string s;
-    sc(s);
-	
-	vector<int> ans(n);
-	vector<int> pos0, pos1;
-	int newpos;
-	for(int i = 0;i < n;i++) {
-		newpos = pos0.size() + pos1.size();
-		if(s[i] == '0') {
-			if(pos1.empty()) {
-				pos0.pb(newpos);
-			} else {
-				newpos = pos1.back();
-				pos1.pop_back();
-				pos0.pb(newpos);
-			}
-		} else {
-			if(pos0.empty()) {
-				pos1.pb(newpos);
-			} else {
-				newpos = pos0.back();
-				pos0.pop_back();
-				pos1.pb(newpos);
-			}
-		}
+    int graphCount = 0;
+    for(int i = 0;i < n;i++) {
+        if(!visited[i]) {
+            graphCount++;
+            dfs(i);
+        }
+    }
 
-		ans[i] = newpos;
-	}
-
-	pf(pos0.size() + pos1.size());
-	for(auto it : ans) {
-		cout << (it + 1) << " ";
-	}
-	cout << endl;
+    pf(graphCount - 1);
 }
 
 int main() {
     FAST_IO
-    int t;
-    sc(t);
-
-    while(t--) {
-        solve();
-    }
-
+    solve();
     return 0;
 }

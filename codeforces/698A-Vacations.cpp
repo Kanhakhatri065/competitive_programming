@@ -39,50 +39,44 @@ void solve() {
     int n;
     sc(n);
 
-    string s;
-    sc(s);
-	
-	vector<int> ans(n);
-	vector<int> pos0, pos1;
-	int newpos;
-	for(int i = 0;i < n;i++) {
-		newpos = pos0.size() + pos1.size();
-		if(s[i] == '0') {
-			if(pos1.empty()) {
-				pos0.pb(newpos);
-			} else {
-				newpos = pos1.back();
-				pos1.pop_back();
-				pos0.pb(newpos);
-			}
-		} else {
-			if(pos0.empty()) {
-				pos1.pb(newpos);
-			} else {
-				newpos = pos0.back();
-				pos0.pop_back();
-				pos1.pb(newpos);
-			}
-		}
+    int a[n];
+    for(int i = 0;i < n;i++) {
+        sc(a[i]);
+    }
 
-		ans[i] = newpos;
-	}
+    int dp[n][3];
+    for(int i = 0;i < n;i++) {
+        for(int j = 0;j < 3;j++) {
+            dp[i][j] = INT_MAX;
+        }
+    }
 
-	pf(pos0.size() + pos1.size());
-	for(auto it : ans) {
-		cout << (it + 1) << " ";
-	}
-	cout << endl;
+    dp[0][0] = 1;
+    if(a[0] == 1 || a[0] == 3) {
+        dp[0][1] = 0;
+    }
+
+    if(a[0] == 2 || a[0] == 3) {
+        dp[0][2] = 0;
+    }
+
+    for(int i = 1;i < n;i++) {
+        dp[i][0] = 1 + min({dp[i - 1][0], dp[i - 1][1], dp[i - 1][2]});
+
+        if(a[i] == 1 || a[i] == 3) {
+            dp[i][1] = min(dp[i - 1][0], dp[i - 1][2]);
+        }
+
+        if(a[i] == 2 || a[i] == 3) {
+            dp[i][2] = min(dp[i - 1][0], dp[i - 1][1]);
+        }
+    }
+
+    pf(min({dp[n - 1][0], dp[n - 1][1], dp[n - 1][2]}));
 }
 
 int main() {
     FAST_IO
-    int t;
-    sc(t);
-
-    while(t--) {
-        solve();
-    }
-
+    solve();
     return 0;
 }

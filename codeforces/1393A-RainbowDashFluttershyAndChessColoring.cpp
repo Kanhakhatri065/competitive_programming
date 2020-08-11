@@ -39,40 +39,21 @@ void solve() {
     int n;
     sc(n);
 
-    string s;
-    sc(s);
-	
-	vector<int> ans(n);
-	vector<int> pos0, pos1;
-	int newpos;
-	for(int i = 0;i < n;i++) {
-		newpos = pos0.size() + pos1.size();
-		if(s[i] == '0') {
-			if(pos1.empty()) {
-				pos0.pb(newpos);
-			} else {
-				newpos = pos1.back();
-				pos1.pop_back();
-				pos0.pb(newpos);
-			}
-		} else {
-			if(pos0.empty()) {
-				pos1.pb(newpos);
-			} else {
-				newpos = pos0.back();
-				pos0.pop_back();
-				pos1.pb(newpos);
-			}
-		}
-
-		ans[i] = newpos;
-	}
-
-	pf(pos0.size() + pos1.size());
-	for(auto it : ans) {
-		cout << (it + 1) << " ";
-	}
-	cout << endl;
+    if(n == 1) {
+        pf(1);
+    } else if(n == 2) {
+        pf(2);
+    } else if(n == 3) {
+        pf(2);
+    } else if(n == 4) {
+        pf(3);
+    } else {
+        if(n & 1) {
+            pf((n + 1) / 2);
+        } else {
+            pf((n + 2) / 2);
+        }
+    }
 }
 
 int main() {

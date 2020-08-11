@@ -35,44 +35,41 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+const int N = 1e5 + 5;
+int a[N], suffix[N];
 void solve() {
     int n;
     sc(n);
 
-    string s;
-    sc(s);
-	
-	vector<int> ans(n);
-	vector<int> pos0, pos1;
-	int newpos;
-	for(int i = 0;i < n;i++) {
-		newpos = pos0.size() + pos1.size();
-		if(s[i] == '0') {
-			if(pos1.empty()) {
-				pos0.pb(newpos);
-			} else {
-				newpos = pos1.back();
-				pos1.pop_back();
-				pos0.pb(newpos);
-			}
-		} else {
-			if(pos0.empty()) {
-				pos1.pb(newpos);
-			} else {
-				newpos = pos0.back();
-				pos0.pop_back();
-				pos1.pb(newpos);
-			}
-		}
+    n++;
+    for(int i = 1;i <= n;i++) {
+        sc(a[i]);
+    }
 
-		ans[i] = newpos;
-	}
+    int power_of_2 = 1;
+    for(int i = n;i >= 1;i--) {
+        suffix[i] = (1LL * a[i] * power_of_2) % mod1;
 
-	pf(pos0.size() + pos1.size());
-	for(auto it : ans) {
-		cout << (it + 1) << " ";
-	}
-	cout << endl;
+        if(i < n) {
+            suffix[i] = (suffix[i + 1] + suffix[i]) % mod1;
+        }
+
+        power_of_2 = (power_of_2 * 2) % mod1;
+    }
+
+    int ans = 0, count_ways = 0;
+    power_of_2 = 1;
+    for(int i = 1;i < n;i++) {
+        count_ways = (1LL * power_of_2 * a[i]) % mod1;
+        count_ways = (1LL * count_ways * suffix[i + 1]) % mod1;
+
+        ans = (ans + count_ways) % mod1;
+        if(i >= 2) {
+            power_of_2 = (power_of_2 * 2) % mod1;
+        }
+    }
+
+    pf((2 * ans) % mod1);
 }
 
 int main() {

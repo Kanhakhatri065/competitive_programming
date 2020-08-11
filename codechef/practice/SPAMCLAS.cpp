@@ -35,44 +35,37 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+const int N = 1e5 + 5;
+int w[N], b[N];
 void solve() {
-    int n;
-    sc(n);
+    int n, minX, maxX;
+    cin >> n >> minX >> maxX;
 
-    string s;
-    sc(s);
-	
-	vector<int> ans(n);
-	vector<int> pos0, pos1;
-	int newpos;
-	for(int i = 0;i < n;i++) {
-		newpos = pos0.size() + pos1.size();
-		if(s[i] == '0') {
-			if(pos1.empty()) {
-				pos0.pb(newpos);
-			} else {
-				newpos = pos1.back();
-				pos1.pop_back();
-				pos0.pb(newpos);
-			}
-		} else {
-			if(pos0.empty()) {
-				pos1.pb(newpos);
-			} else {
-				newpos = pos0.back();
-				pos0.pop_back();
-				pos1.pb(newpos);
-			}
-		}
+    for(int i = 0;i < n;i++) {
+        sc(w[i]);
+        sc(b[i]);
+    }
 
-		ans[i] = newpos;
-	}
+    vector<int> val(2);
+    for(int x = 0;x < 2;x++) {
+        int res = x;
+        for(int i = 0;i < n;i++) {
+            res = (res * w[i] + b[i]) % 2;
+        }
+        val[x] = res;
+    }
 
-	pf(pos0.size() + pos1.size());
-	for(auto it : ans) {
-		cout << (it + 1) << " ";
-	}
-	cout << endl;
+    int even = 0;
+    if(val[minX % 2] == 0) {
+        even += (maxX - minX) / 2 + 1;
+    }
+
+    if(val[(minX + 1) % 2] == 0) {
+        even += (maxX - minX - 1) / 2 + 1;
+    }
+
+    int odd = maxX - minX + 1 - even;
+    cout << even << " " << odd << endl;
 }
 
 int main() {

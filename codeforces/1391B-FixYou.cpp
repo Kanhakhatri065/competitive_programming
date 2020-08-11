@@ -35,44 +35,32 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+const int N = 105;
+char arr[N][N];
 void solve() {
-    int n;
-    sc(n);
+    int n, m;
+    cin >> n >> m;
 
-    string s;
-    sc(s);
-	
-	vector<int> ans(n);
-	vector<int> pos0, pos1;
-	int newpos;
-	for(int i = 0;i < n;i++) {
-		newpos = pos0.size() + pos1.size();
-		if(s[i] == '0') {
-			if(pos1.empty()) {
-				pos0.pb(newpos);
-			} else {
-				newpos = pos1.back();
-				pos1.pop_back();
-				pos0.pb(newpos);
-			}
-		} else {
-			if(pos0.empty()) {
-				pos1.pb(newpos);
-			} else {
-				newpos = pos0.back();
-				pos0.pop_back();
-				pos1.pb(newpos);
-			}
-		}
+    for(int i = 0;i < n;i++) {
+        for(int j = 0;j < m;j++) {
+            sc(arr[i][j]);
+        }
+    }
 
-		ans[i] = newpos;
-	}
+    int cnt = 0;
+    for(int i = 0;i < m - 1;i++) {
+        if(arr[n - 1][i] == 'D') {
+            cnt++;
+        }
+    }
 
-	pf(pos0.size() + pos1.size());
-	for(auto it : ans) {
-		cout << (it + 1) << " ";
-	}
-	cout << endl;
+    for(int i = 0;i < n - 1;i++) {
+        if(arr[i][m - 1] == 'R') {
+            cnt++;
+        }
+    }
+
+    pf(cnt);
 }
 
 int main() {

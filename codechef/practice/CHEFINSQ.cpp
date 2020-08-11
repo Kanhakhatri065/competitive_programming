@@ -35,44 +35,52 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+const int N = 51;
+ll C[N];
+ll binomialCoeff(int n, int k) {
+    mem(C, 0);
+
+    C[0] = 1;
+    for(int i = 1;i <= n;i++) {
+        for(int j = min(i, k);j > 0;j--) {
+            C[j] = C[j] + C[j - 1];
+        }
+    }
+
+    return C[k];
+}
+
 void solve() {
-    int n;
+    int n, k;
     sc(n);
+    sc(k);
 
-    string s;
-    sc(s);
-	
-	vector<int> ans(n);
-	vector<int> pos0, pos1;
-	int newpos;
-	for(int i = 0;i < n;i++) {
-		newpos = pos0.size() + pos1.size();
-		if(s[i] == '0') {
-			if(pos1.empty()) {
-				pos0.pb(newpos);
-			} else {
-				newpos = pos1.back();
-				pos1.pop_back();
-				pos0.pb(newpos);
-			}
-		} else {
-			if(pos0.empty()) {
-				pos1.pb(newpos);
-			} else {
-				newpos = pos0.back();
-				pos0.pop_back();
-				pos1.pb(newpos);
-			}
-		}
+    vector<int> v(n);
+    forIn(v, n);
 
-		ans[i] = newpos;
-	}
+    srt(v);
 
-	pf(pos0.size() + pos1.size());
-	for(auto it : ans) {
-		cout << (it + 1) << " ";
-	}
-	cout << endl;
+    vector<int> store;
+    for(int i = 0;i < k;i++) {
+        store.pb(v[i]);
+    }
+
+    int mn = store.back();
+    int cnt1 = 0;
+    for(int i = 0;i < k;i++) {
+        if(store[i] == mn) {
+            cnt1++;
+        }
+    }
+
+    int cnt2 = 0;
+    for(int i = 0;i < n;i++) {
+        if(v[i] == mn) {
+            cnt2++;
+        }
+    }
+
+    pf(binomialCoeff(cnt2, cnt1));
 }
 
 int main() {

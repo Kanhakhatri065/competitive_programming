@@ -35,44 +35,52 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+const int MAX = 100, MAXN = 105;
+int a[MAXN];
 void solve() {
     int n;
     sc(n);
 
-    string s;
-    sc(s);
-	
-	vector<int> ans(n);
-	vector<int> pos0, pos1;
-	int newpos;
-	for(int i = 0;i < n;i++) {
-		newpos = pos0.size() + pos1.size();
-		if(s[i] == '0') {
-			if(pos1.empty()) {
-				pos0.pb(newpos);
-			} else {
-				newpos = pos1.back();
-				pos1.pop_back();
-				pos0.pb(newpos);
-			}
-		} else {
-			if(pos0.empty()) {
-				pos1.pb(newpos);
-			} else {
-				newpos = pos0.back();
-				pos0.pop_back();
-				pos1.pb(newpos);
-			}
-		}
+    for(int i = 0;i < n;i++) {
+        sc(a[i]);
+    }
 
-		ans[i] = newpos;
-	}
+    vector<pair<int, int>> cnts;
+    int cnt = 1, which = a[0];
+    for(int i = 1;i < n;i++) {
+        if(a[i] == a[i - 1]) {
+            cnt++;
+        } else {
+            cnts.pb({which, cnt});
+            which = a[i];
+            cnt = 1;
+        }
+    }
 
-	pf(pos0.size() + pos1.size());
-	for(auto it : ans) {
-		cout << (it + 1) << " ";
-	}
-	cout << endl;
+    if(cnt > 0) {
+        cnts.pb({which, cnt});
+    }
+
+    bool ok = true;
+    if(cnts.size() == 13) {
+        for(int i = 0;i < 13;i++) {
+            if(cnts[i] != cnts[13 - i - 1]) {
+                ok = false;
+            }
+
+            if(i < 7 && cnts[i].ff != i + 1) {
+                ok = false;
+            }
+        }
+    } else {
+        ok = false;
+    }
+
+    if(ok) {
+        pf("yes");
+    } else {
+        pf("no");
+    }
 }
 
 int main() {
