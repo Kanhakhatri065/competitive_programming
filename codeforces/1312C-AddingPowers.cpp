@@ -35,63 +35,53 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
-int main() {
-    int testcases;
-    cin >> testcases;
+const int INF = 0x3f3f3f;
+const int MX = 30;
+ll a[MX];
+void solve() {
+    int n, k;
+    sc(n);
+    sc(k);
 
-    string str;
-    while(testcases--) {
-        cin >> str;
+    for(int i = 0;i < n;i++) {
+        sc(a[i]);
+    }
 
-        int mid = 0;
-        string left = "";
-        string right = "";
-        if(str.size() % 2 == 0) {
-            mid = (str.size() / 2) - 1;
-            
-            for(int i = 0;i <= mid;i++) {
-                left += str[i];
+    bool flag = true;
+    unordered_set<ll> s;
+    for(int i = 0;i < n ;i++) {
+        ll c = 0;
+        while(a[i]) {
+            while(a[i] % k == 0) {
+                a[i] /= k;
+                c++;
             }
 
-            for(int i = mid + 1;i < str.size();i++) {
-                right += str[i];
-            }
-        } else {
-            mid = str.size() / 2;
-
-            for(int i = 0;i < mid;i++) {
-                left += str[i];
-            }
-
-            for(int i = mid+1;i < str.size();i++) {
-                right += str[i];
-            }
-        }
-
-        for(int i = 0;i < left.size();i++) {
-            for(int j = 0;j < right.size();j++) {
-                if(left[i] == right[j]) {
-                    right[j] = '*';
+            if(a[i] % k == 1) {
+                a[i]--;
+                if(s.count(c)) {
+                    flag = false;
                     break;
                 }
-            }    
-        }
-
-        int count = 0;
-        for(int i = 0;i < right.size();i++) {
-            if(right[i] == '*') {
-                count++;
+                s.insert(c);
+            } else {
+                flag = false;
+                break;
             }
         }
-
-        
-        
-        if(count == right.size()) {
-            cout << "YES" << endl;
-        } else {
-            cout << "NO" << endl;
-        }
-        
     }
+
+    flag ? yes : no;
+}
+
+int main() {
+    FAST_IO
+    int t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+
     return 0;
 }

@@ -35,63 +35,49 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
-int main() {
-    int testcases;
-    cin >> testcases;
-
-    string str;
-    while(testcases--) {
-        cin >> str;
-
-        int mid = 0;
-        string left = "";
-        string right = "";
-        if(str.size() % 2 == 0) {
-            mid = (str.size() / 2) - 1;
-            
-            for(int i = 0;i <= mid;i++) {
-                left += str[i];
-            }
-
-            for(int i = mid + 1;i < str.size();i++) {
-                right += str[i];
-            }
-        } else {
-            mid = str.size() / 2;
-
-            for(int i = 0;i < mid;i++) {
-                left += str[i];
-            }
-
-            for(int i = mid+1;i < str.size();i++) {
-                right += str[i];
-            }
-        }
-
-        for(int i = 0;i < left.size();i++) {
-            for(int j = 0;j < right.size();j++) {
-                if(left[i] == right[j]) {
-                    right[j] = '*';
-                    break;
-                }
-            }    
-        }
-
-        int count = 0;
-        for(int i = 0;i < right.size();i++) {
-            if(right[i] == '*') {
-                count++;
-            }
-        }
-
-        
-        
-        if(count == right.size()) {
-            cout << "YES" << endl;
-        } else {
-            cout << "NO" << endl;
-        }
-        
+bool cmp(pair<ll, pll> &a, pair<ll, pll> &b) {
+    if(a.ff == b.ff) {
+        return a.ss.ff < b.ss.ff;
     }
+
+    return a.ff > b.ff;
+}
+void solve() {
+    int n;
+    sc(n);
+
+    vll v(n);
+    forIn(v, n);
+
+    vector<pair<ll, pll>> vp;
+    ll c2, c3, tmp;
+    for(int i = 0;i < n;i++) {
+        c2 = 0;
+        c3 = 0;
+        tmp = v[i];
+        while(v[i] % 2 == 0) {
+            v[i] /= 2;
+            c2++;
+        }
+
+        c3 = 0;
+        while(v[i] % 3 == 0) {
+            v[i] /= 3;
+            c3++;
+        }
+
+        vp.pb({c3, {c2, tmp}});
+    }
+
+    sort(all(vp), cmp);
+    for(auto it : vp) {
+        cout << it.ss.ss << " ";
+    }
+    cout << endl;
+}
+
+int main() {
+    FAST_IO
+    solve();
     return 0;
 }

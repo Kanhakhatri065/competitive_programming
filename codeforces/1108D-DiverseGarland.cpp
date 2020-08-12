@@ -35,63 +35,40 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
-int main() {
-    int testcases;
-    cin >> testcases;
+void solve() {
+    int n;
+    sc(n);
 
-    string str;
-    while(testcases--) {
-        cin >> str;
+    string s;
+    sc(s);
 
-        int mid = 0;
-        string left = "";
-        string right = "";
-        if(str.size() % 2 == 0) {
-            mid = (str.size() / 2) - 1;
-            
-            for(int i = 0;i <= mid;i++) {
-                left += str[i];
-            }
-
-            for(int i = mid + 1;i < str.size();i++) {
-                right += str[i];
-            }
-        } else {
-            mid = str.size() / 2;
-
-            for(int i = 0;i < mid;i++) {
-                left += str[i];
-            }
-
-            for(int i = mid+1;i < str.size();i++) {
-                right += str[i];
-            }
+    int ans = 0;
+    for(int i = 0;i < n;i++) {
+        int j = i;
+        while(j < n && s[j] == s[i]) {
+            j++;
         }
 
-        for(int i = 0;i < left.size();i++) {
-            for(int j = 0;j < right.size();j++) {
-                if(left[i] == right[j]) {
-                    right[j] = '*';
-                    break;
-                }
-            }    
+        string q = "RGB";
+        q.erase(q.find(s[i]), 1);
+        if(j < n) {
+            q.erase(q.find(s[j]), 1);
         }
 
-        int count = 0;
-        for(int i = 0;i < right.size();i++) {
-            if(right[i] == '*') {
-                count++;
-            }
+        for(int k = i + 1;k < j;k += 2) {
+            ans++;
+            s[k] = q[0];
         }
 
-        
-        
-        if(count == right.size()) {
-            cout << "YES" << endl;
-        } else {
-            cout << "NO" << endl;
-        }
-        
+        i = j - 1;
     }
+
+    pf(ans);
+    pf(s);
+}
+
+int main() {
+    FAST_IO
+    solve();
     return 0;
 }

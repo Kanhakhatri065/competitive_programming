@@ -35,63 +35,49 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
-int main() {
-    int testcases;
-    cin >> testcases;
+void solve() {
+    int n, x;
+    cin >> n >> x;
 
-    string str;
-    while(testcases--) {
-        cin >> str;
+    vector<int> v(n);
+    forIn(v, n);
 
-        int mid = 0;
-        string left = "";
-        string right = "";
-        if(str.size() % 2 == 0) {
-            mid = (str.size() / 2) - 1;
-            
-            for(int i = 0;i <= mid;i++) {
-                left += str[i];
-            }
-
-            for(int i = mid + 1;i < str.size();i++) {
-                right += str[i];
-            }
+    int cnt = 0;
+    vector<int> store;
+    for(int i = 0;i < n;i++) {
+        if(v[i] >= x) {
+            cnt++;
         } else {
-            mid = str.size() / 2;
-
-            for(int i = 0;i < mid;i++) {
-                left += str[i];
-            }
-
-            for(int i = mid+1;i < str.size();i++) {
-                right += str[i];
-            }
+            store.pb(v[i]);
         }
-
-        for(int i = 0;i < left.size();i++) {
-            for(int j = 0;j < right.size();j++) {
-                if(left[i] == right[j]) {
-                    right[j] = '*';
-                    break;
-                }
-            }    
-        }
-
-        int count = 0;
-        for(int i = 0;i < right.size();i++) {
-            if(right[i] == '*') {
-                count++;
-            }
-        }
-
-        
-        
-        if(count == right.size()) {
-            cout << "YES" << endl;
-        } else {
-            cout << "NO" << endl;
-        }
-        
     }
+
+    if(!store.empty()) {
+        srt(store);
+    }
+
+    vpnt(store);
+    
+    int div;
+    for(int i = 0;i < store.size();i++) {
+        div = x / v[i];
+        if(i + div < store.size()) {
+            cnt++;
+            i += div - 1;
+        }
+    }
+
+    pf(cnt);
+}
+
+int main() {
+    FAST_IO
+    int t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+
     return 0;
 }

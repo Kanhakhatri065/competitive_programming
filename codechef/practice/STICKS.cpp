@@ -35,63 +35,48 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
-int main() {
-    int testcases;
-    cin >> testcases;
+void solve() {
+    int n;
+    sc(n);
 
-    string str;
-    while(testcases--) {
-        cin >> str;
+    vector<int> v(n);
+    forIn(v, n);
 
-        int mid = 0;
-        string left = "";
-        string right = "";
-        if(str.size() % 2 == 0) {
-            mid = (str.size() / 2) - 1;
-            
-            for(int i = 0;i <= mid;i++) {
-                left += str[i];
-            }
-
-            for(int i = mid + 1;i < str.size();i++) {
-                right += str[i];
-            }
-        } else {
-            mid = str.size() / 2;
-
-            for(int i = 0;i < mid;i++) {
-                left += str[i];
-            }
-
-            for(int i = mid+1;i < str.size();i++) {
-                right += str[i];
-            }
-        }
-
-        for(int i = 0;i < left.size();i++) {
-            for(int j = 0;j < right.size();j++) {
-                if(left[i] == right[j]) {
-                    right[j] = '*';
-                    break;
-                }
-            }    
-        }
-
-        int count = 0;
-        for(int i = 0;i < right.size();i++) {
-            if(right[i] == '*') {
-                count++;
-            }
-        }
-
-        
-        
-        if(count == right.size()) {
-            cout << "YES" << endl;
-        } else {
-            cout << "NO" << endl;
-        }
-        
+    map<int, int> mp;
+    for(int i = 0;i < n;i++) {
+        mp[v[i]]++;
     }
+
+    int x;
+    int cnt = 0;
+    vector<int> store;
+    for(auto it : mp) {
+        x = it.ss;
+        while(x >= 2) {
+            x -= 2;
+            store.pb(it.ff);
+            cnt++;
+        }
+    }
+
+    if(cnt < 2) {
+        pf(-1);
+    } else {
+        srt(store);
+
+        int area = store[store.size() - 2] * store[store.size() - 1];
+        pf(area);
+    }
+}
+
+int main() {
+    FAST_IO
+    int t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+
     return 0;
 }

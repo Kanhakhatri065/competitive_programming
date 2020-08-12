@@ -35,63 +35,66 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
-int main() {
-    int testcases;
-    cin >> testcases;
+const int N = 2e5;
+int p[N];
+int ans[N][2];
+int ans_cnt;
+bool judge(int a[], int n) {
+    static int used[N + 1];
+    mem(used, 0);
 
-    string str;
-    while(testcases--) {
-        cin >> str;
-
-        int mid = 0;
-        string left = "";
-        string right = "";
-        if(str.size() % 2 == 0) {
-            mid = (str.size() / 2) - 1;
-            
-            for(int i = 0;i <= mid;i++) {
-                left += str[i];
-            }
-
-            for(int i = mid + 1;i < str.size();i++) {
-                right += str[i];
-            }
-        } else {
-            mid = str.size() / 2;
-
-            for(int i = 0;i < mid;i++) {
-                left += str[i];
-            }
-
-            for(int i = mid+1;i < str.size();i++) {
-                right += str[i];
-            }
-        }
-
-        for(int i = 0;i < left.size();i++) {
-            for(int j = 0;j < right.size();j++) {
-                if(left[i] == right[j]) {
-                    right[j] = '*';
-                    break;
-                }
-            }    
-        }
-
-        int count = 0;
-        for(int i = 0;i < right.size();i++) {
-            if(right[i] == '*') {
-                count++;
-            }
-        }
-
-        
-        
-        if(count == right.size()) {
-            cout << "YES" << endl;
-        } else {
-            cout << "NO" << endl;
-        }
-        
+    for(int i = 0;i < n;i++) {
+        used[a[i]] = 1;
     }
+
+    for(int i = 1;i <= n;i++) {
+        if(!used[i]) {
+            return 0;
+        }
+    }
+
+    return 1;
+}
+
+bool judge(int len1, int n) {
+    return judge(p, len1) && judge(p + len1, n - len1);
+}
+
+void solve() {
+    ans_cnt = 0;
+    int n;
+    sc(n);
+
+    int ma = 0;
+    for(int i = 0;i < n;i++) {
+        sc(p[i]);
+        ma = max(ma, p[i]);
+    }
+
+    if(judge(n - ma, n)) {
+        ans[ans_cnt][0] = n - ma;
+        ans[ans_cnt++][1] = ma;
+    }
+
+    if(ma * 2 != n && judge(ma, n)) {
+        ans[ans_cnt][0] = ma;
+        ans[ans_cnt++][1] = n - ma;
+    }
+
+    pf(ans_cnt);
+    for(int i = 0;i < ans_cnt;i++) {
+        cout << ans[i][0] << " " << ans[i][1] << endl;
+    }
+}
+
+int main() {
+    FAST_IO
+    int t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+
     return 0;
 }
