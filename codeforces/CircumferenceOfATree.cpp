@@ -35,16 +35,67 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+const int MAX = 3e5 + 5;
+bool visited[MAX];
+vector<int> adj[MAX];
+
+int x;
+
+void addEdge(int src, int dest) {
+    adj[src].push_back(dest);
+    adj[dest].push_back(src);
+}
+
+void dfsutil(int node, int cnt, int &mx) {
+    visited[node] = true;
+    cnt++;
+
+    //cout << "mx : " << mx << endl;
+    //cout << node << " ";
+    for(auto i : adj[node]) {
+        if(!visited[i]) {
+            if(cnt >= mx) {
+                mx = cnt;
+                x = i;
+            }
+
+            dfsutil(i, cnt, mx);
+        }
+    }
+}
+
+void dfs(int node, int &mx) {
+    mem(visited, false);
+    int cnt = 0;
+
+    dfsutil(node, cnt + 1, mx);
+}
+
+int diameter() {
+    int mx = 0;
+
+    dfs(1, mx);
+
+    dfs(x, mx);
+
+    return mx;
+}
+
+
 void solve() {
     int n;
     sc(n);
 
-    int sum = 0;
-    f(i, 2, n) {
-        sum += (i * (i + 1));
+    int src, dest;
+    for(int i = 1;i < n;i++) {
+        cin >> src >> dest;
+        addEdge(src, dest);
     }
 
-    pf(sum);
+    int d = diameter();
+
+    int ans = 2 * d;
+    pf(ans);
 }
 
 int main() {

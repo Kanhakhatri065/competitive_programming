@@ -36,19 +36,45 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
 void solve() {
-    int n;
-    sc(n);
+    int cases = 0;
+    string s;
+    while(cin >> s) {
+        cases++;
 
-    int sum = 0;
-    f(i, 2, n) {
-        sum += (i * (i + 1));
+        int q;
+        cin >> q;
+
+        cout << "Case " << cases << ":" << endl;
+        while(q--) {
+            int x, y;
+            cin >> x >> y;
+
+            int mn = min(x, y);
+            int mx = max(x, y);
+
+            bool flag1 = true;
+            if(x != y) {
+                for(int i = mn + 1;i <= mx;i++) {
+                    if(s[i] != s[i - 1]) {
+                        flag1 = false;
+                        break;
+                    }
+                }
+            }
+
+            if(flag1) {
+                pf("Yes");
+            } else {
+                pf("No");
+            }
+        }
     }
-
-    pf(sum);
 }
 
 int main() {
     FAST_IO
+    //freopen("input.txt", "r", stdin);
+    //freopen("output.txt", "w",stdout);
     solve();
     return 0;
 }

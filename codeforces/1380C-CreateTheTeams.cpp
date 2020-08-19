@@ -42,32 +42,18 @@ void solve() {
     vector<int> v(n);
     forIn(v, n);
 
-    int cnt = 0;
-    vector<int> store;
-    for(int i = 0;i < n;i++) {
-        if(v[i] >= x) {
-            cnt++;
-        } else {
-            store.pb(v[i]);
-        }
-    }
-
-    if(!store.empty()) {
-        srt(store);
-    }
-
-    vpnt(store);
+    sort(all(v), greater<int>());
     
-    int div;
-    for(int i = 0;i < store.size();i++) {
-        div = x / v[i];
-        if(i + div < store.size()) {
-            cnt++;
-            i += div - 1;
+    int res = 0, cur = 1;
+    for(int i = 0;i < n;i++) {
+        if(v[i] * cur >= x) {
+            res++;
+            cur = 0;
         }
+        cur++;
     }
 
-    pf(cnt);
+    pf(res);
 }
 
 int main() {

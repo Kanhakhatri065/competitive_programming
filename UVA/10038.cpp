@@ -37,18 +37,43 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 /*----------------------------------------------------------------*/
 void solve() {
     int n;
-    sc(n);
+    while(cin >> n) {
+        int numbers[3000];
+        mem(numbers, 0);
 
-    int sum = 0;
-    f(i, 2, n) {
-        sum += (i * (i + 1));
+        int left, right;
+        cin >> right;
+
+        for(int i = 0;i < n - 1;i++) {
+            left = right;
+            cin >> right;
+
+            int diff = abs(right - left);
+            if(diff >= 1 && diff <= n - 1) {
+                numbers[diff] = 1;
+            }
+        }
+
+        bool flag = true;
+        for(int i = 1;i < n;i++) {
+            if(!numbers[i]) {
+                flag = false;
+                break;
+            }
+        }
+
+        if(flag) {
+            cout << "Jolly" << endl;
+        } else {
+            cout << "Not jolly" << endl;
+        }
     }
-
-    pf(sum);
 }
 
 int main() {
     FAST_IO
+    //freopen("input.txt", "r", stdin);
+    //freopen("output.txt", "w", stdout);
     solve();
     return 0;
 }

@@ -39,16 +39,32 @@ void solve() {
     int n;
     sc(n);
 
-    int sum = 0;
-    f(i, 2, n) {
-        sum += (i * (i + 1));
+    vector<int> v(n);
+    forIn(v, n);
+
+    int high = 0, low = 0;
+    for(int i = 1;i < n;i++) {
+        if(v[i] > v[i - 1]) {
+            high++;
+        } else if(v[i] < v[i - 1]) {
+            low++;
+        }
     }
 
-    pf(sum);
+    cout << high << " " << low << endl;
 }
 
 int main() {
     FAST_IO
-    solve();
+    //freopen("input.txt", "r", stdin);
+    //freopen("output.txt", "w", stdout);
+
+    int t;
+    sc(t);
+
+    for(int tt = 1;tt <= t;tt++) {
+        cout << "Case " << tt << ": ";
+        solve();
+    }
     return 0;
 }

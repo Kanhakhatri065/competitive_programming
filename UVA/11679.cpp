@@ -36,19 +36,46 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
 void solve() {
-    int n;
-    sc(n);
+    int b, n;
+    cin >> b >> n;
+    while(b != 0 && n != 0) {
+        int banks[b + 1];
+        for(int i = 1;i <= b;i++) {
+            sc(banks[i]);
+        }
 
-    int sum = 0;
-    f(i, 2, n) {
-        sum += (i * (i + 1));
+        int transactions[n][3];
+        for(int i = 0;i < n;i++) {
+            cin >> transactions[i][0] >> transactions[i][1] >> transactions[i][2];
+        }
+
+        bool flag = true;
+        for(int i = 0;i < n;i++) {
+            banks[transactions[i][0]] -= transactions[i][2];
+            banks[transactions[i][1]] += transactions[i][2];
+        }
+
+        for(int i = 1;i <= b;i++) {
+            if(banks[i] < 0) {
+                flag = false;
+                break;
+            }
+        }
+
+        if(flag) {
+            pf("S");
+        } else {
+            pf("N");
+        }
+
+        cin >> b >> n;
     }
-
-    pf(sum);
 }
 
 int main() {
     FAST_IO
+    //freopen("input.txt", "r", stdin);
+    //freopen("output.txt", "w", stdout);
     solve();
     return 0;
 }

@@ -39,16 +39,45 @@ void solve() {
     int n;
     sc(n);
 
-    int sum = 0;
-    f(i, 2, n) {
-        sum += (i * (i + 1));
+    vll v(n);
+    forIn(v, n);
+    ll odd = 0LL;
+    ll even = 0LL;
+
+    for(int i = 0;i < n;i++) {
+        
     }
 
+    ll mx = 0;
+    ll cur = 0;
+    for(int i = 1;i < n;i += 2) {
+        if(v[i] >= v[i - 1]) {
+            cur += (v[i] - v[i - 1]);
+        } else {
+            mx = max(mx, cur);
+            cur = 0;
+        }
+    }
+
+    mx = max(mx, cur);
+
+    ll sum = 0;
+    for(int i = 0;i < n;i += 2) {
+        sum += v[i];
+    }
+
+    sum += mx;
     pf(sum);
 }
 
 int main() {
     FAST_IO
-    solve();
+    int t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+
     return 0;
 }

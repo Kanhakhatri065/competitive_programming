@@ -35,20 +35,42 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
-void solve() {
-    int n;
-    sc(n);
+void solve() {  
+    ll n, b, h, w;
 
-    int sum = 0;
-    f(i, 2, n) {
-        sum += (i * (i + 1));
+    while(cin >> n >> b >> h >> w) {
+        ll cst = LONG_LONG_MAX;
+        bool flag = false;
+        ll p;
+        for(int i = 0;i < h;i++) {
+            sc(p);
+            vll v;
+            for(int j = 0;j < w;j++) {
+                ll x;
+                sc(x);
+                v.pb(x);
+            }
+
+            if(*max_element(all(v)) >= n) {
+                if(p * n <= b) {
+                    flag = true;
+                    cst = min(cst, p * n);
+                }
+            }
+        }
+
+        if(flag) {
+            pf(cst);
+        } else {
+            pf("stay home");
+        }
     }
-
-    pf(sum);
 }
 
 int main() {
     FAST_IO
+    //freopen("input.txt", "r", stdin);
+    //freopen("output.txt", "w", stdout);
     solve();
     return 0;
 }

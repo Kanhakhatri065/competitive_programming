@@ -36,15 +36,49 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
 void solve() {
-    int n;
-    sc(n);
+    int n, q;
+    cin >> n >> q;
 
-    int sum = 0;
-    f(i, 2, n) {
-        sum += (i * (i + 1));
+    set<pair<int, int>> cells;
+    int bad = 0;
+    while(q--) {
+        int row, col;
+        cin >> row >> col;
+
+        bool was_forbidden = (cells.count({row, col}) >= 1) ? true : false;
+        for(int r = row - 1;r <= row + 1;r++) {
+            if(r == row) {
+                continue;
+            }
+
+            for(int c = col - 1;c <= col + 1;c++) {
+
+                if(!(1 <= r && r <= 2 && 1 <= c && c <= n)) {
+                    continue;
+                }
+
+                if(cells.count({r, c})) {
+                    if(was_forbidden) {
+                        bad--;
+                    } else {
+                        bad++;
+                    }
+                }
+            }
+        }
+
+        if(cells.count({row, col})) {
+            cells.erase({row, col});
+        } else {
+            cells.insert({row, col});
+        }
+
+        if(bad) {
+            no;
+        } else {
+            yes;
+        }
     }
-
-    pf(sum);
 }
 
 int main() {

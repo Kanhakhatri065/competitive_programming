@@ -37,18 +37,52 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 /*----------------------------------------------------------------*/
 void solve() {
     int n;
-    sc(n);
+    int count = 0;
+    while(cin >> n) {
+        vector<string> v(n);
+        
+        for(int i = 0;i < n;i++) {
+            cin >> v[i];
+        }
 
-    int sum = 0;
-    f(i, 2, n) {
-        sum += (i * (i + 1));
+        string debitor, creditor;
+        int cnt = 0;
+        int amount;
+
+        map<string, int> mp;
+        for(int i = 0;i < n;i++) {
+            sc(debitor);
+            sc(amount);
+            sc(cnt);
+
+            if(cnt == 0) {
+                continue;
+            }
+
+            mp[debitor] += amount % cnt;
+            mp[debitor] -= amount;
+            for(int j = 0;j < cnt;j++) {
+                sc(creditor);
+                mp[creditor] += (amount / cnt);
+            }
+        }
+
+        if(count > 0) {
+            cout << endl;
+        }
+
+        for(int i = 0;i < n;i++) {
+            cout << v[i] << " " << mp[v[i]] << endl;
+        }
+
+        count++;
     }
-
-    pf(sum);
 }
 
 int main() {
     FAST_IO
+    //freopen("input.txt", "r", stdin);
+    //freopen("output.txt", "w", stdout);
     solve();
     return 0;
 }

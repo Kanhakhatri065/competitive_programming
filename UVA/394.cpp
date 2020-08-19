@@ -35,20 +35,76 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
-void solve() {
-    int n;
-    sc(n);
+typedef map<string, int> msi;
 
-    int sum = 0;
-    f(i, 2, n) {
-        sum += (i * (i + 1));
-    }
+struct Array {
+	int dim;
+	int base;
+	int size;
+	string name;
+	int U[10];
+	int L[10];
+	int C0;
+	int C[10];
+};
 
-    pf(sum);
-}
+int main(){
+	//freopen("input.txt", "r", stdin);
+    //freopen("output.txt", "w", stdout);
 
-int main() {
-    FAST_IO
-    solve();
-    return 0;
+	int N(0), R(0);
+
+	cin >> N >> R;
+
+	msi nameIndexMap;
+	vector<Array> arrays;
+	struct Array arr = {};
+
+	for (int i = 0; i < N; i++){
+		
+		cin >> arr.name;
+		cin	>> arr.base >> arr.size >> arr.dim;
+		
+		for (int d = 0; d < arr.dim; d++)
+			cin >> arr.L[d] >> arr.U[d];
+
+		//calculate constants
+		arr.C[arr.dim-1] = arr.size;
+		arr.C0 = arr.base - (arr.C[arr.dim-1]*arr.L[arr.dim-1]);
+		for (int j = arr.dim - 2; j >= 0; j--){
+			arr.C[j] = (arr.C[j+1])*(arr.U[j+1] - arr.L[j+1] + 1);
+			arr.C0 = arr.C0 - (arr.C[j] * arr.L[j]);
+		}
+		
+		nameIndexMap[arr.name] = i;
+		arrays.push_back(arr);
+	}
+
+	string arrName;
+	int indice(0);
+	long long address(0);
+	for (int i = 0; i < R; i++){
+		cin >> arrName;
+		indice = nameIndexMap[arrName];
+
+		cout << arrName << "[";
+
+		arr = arrays[indice];
+		address = arr.C0;
+		for (int j = 0; j < arr.dim; j++){
+			cin >> indice;
+			address += arr.C[j] * indice;
+
+			cout << indice;
+			if (j != (arr.dim - 1)){
+				cout << ", ";
+			} else{
+				cout << "]";
+			}
+		}
+
+		cout << " = " << address << endl;
+	}
+
+	return 0;
 }

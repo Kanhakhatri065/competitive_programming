@@ -36,19 +36,53 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
 void solve() {
-    int n;
-    sc(n);
+    int n, p;
+    int t = 0;
+    while(cin >> n >> p) {
+        if(!n && !p) {
+            break;
+        }
 
-    int sum = 0;
-    f(i, 2, n) {
-        sum += (i * (i + 1));
+        t++;
+
+        string line;
+        for(int i = 0;i < n;i++) {
+            cin.ignore();
+            getline(cin, line);
+        }
+
+        map<int, vector<pair<double, string>>> mp;
+        string s;
+        double price;
+        int req;
+        for(int i = 0;i < p;i++) {
+            getline(cin, s);
+            sc(price);
+            sc(req);
+
+            mp[req].pb({price, s});
+            cin.ignore();
+            for(int j = 0;j < req;j++) {
+                getline(cin, s);
+            }
+        }
+
+        auto it = mp.rbegin();
+        vector<pair<double, string>> tmp = it->ss;
+
+        srt(tmp);
+        if(t > 1) {
+            cout << endl;
+        }
+
+        cout << "RFP #" << t << endl;
+        cout << tmp[0].ss << endl;
     }
-
-    pf(sum);
 }
 
 int main() {
-    FAST_IO
+    //freopen("input.txt", "r", stdin);
+    //freopen("output.txt", "w", stdout);
     solve();
     return 0;
 }

@@ -36,42 +36,35 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
 void solve() {
-    ll n;
-    sc(n);
+    int n;
+    string song[] = {"Happy","birthday","to","you","Happy","birthday", "to","you","Happy","birthday","to","Rujia","Happy","birthday","to","you"};
+    
+    string names[105];
+    cin >> n;
 
-    double sq = round(sqrt(n / 2.0));
-    ll cnt = 0;
-
-    ll s, rest, restroot;
-    for(int i = 0;i <= sq;i++) {
-        s = i * i;
-        rest = n - s;
-
-        if(rest < s) {
-            continue;
-        }
-
-        restroot = sqrt(rest);
-        if(restroot * restroot == rest) {
-            cnt++;
-        }
+    for(int i = 0; i < n; i++) {
+        cin >> names[i];
     }
 
-    pf(cnt);   
+    int loop = 0;
+    if(n <= 16)loop = 1;
+    else if(n <= 32)loop = 2;
+    else if(n <= 48)loop = 3;
+    else if(n <= 64)loop = 4;
+    else if(n <= 80)loop = 5;
+    else if(n <= 96)loop = 6;
+    else loop = 7;
+    for(int i = 0, j = 0,k = 0; i < 16*loop; i++){
+        cout << names[j++] << ": " << song[k++] << endl;
+        if(j == n)j = 0;
+        if(k == 16)k = 0;
+    }
 }
 
 int main() {
     FAST_IO
-    freopen("input.txt", "r", stdin);
-    freopen("output.txt", "w", stdout);
-
-    int t;
-    sc(t);
-
-    for(int tt = 1;tt <= t;tt++) {
-        cout << "Case #" << tt << ": ";
-        solve();
-    }
-
+    //freopen("input.txt", "r", stdin);
+    //freopen("output.txt", "w", stdout);
+    solve();
     return 0;
 }

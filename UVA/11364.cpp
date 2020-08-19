@@ -39,16 +39,24 @@ void solve() {
     int n;
     sc(n);
 
-    int sum = 0;
-    f(i, 2, n) {
-        sum += (i * (i + 1));
-    }
+    vector<int> v(n);
+    forIn(v, n);
 
-    pf(sum);
+    int mn = *min_element(all(v));
+    int mx = *max_element(all(v));
+
+    int ans = (mx - mn) * 2;
+    pf(ans);
 }
 
 int main() {
     FAST_IO
-    solve();
+    int t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+
     return 0;
 }

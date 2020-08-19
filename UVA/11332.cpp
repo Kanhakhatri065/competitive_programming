@@ -35,20 +35,35 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
-void solve() {
-    int n;
-    sc(n);
-
+int g(string s) {
     int sum = 0;
-    f(i, 2, n) {
-        sum += (i * (i + 1));
+    for(auto c : s) {
+        sum += (c - '0');
     }
 
-    pf(sum);
+    if(sum < 10) {
+        return sum;
+    } else {
+        return g(to_string(sum));
+    }
+}
+
+void solve() {
+    string s;
+    sc(s);
+    while(s != "0") {
+        int ans = g(s);
+        pf(ans);
+
+        sc(s);
+    }
 }
 
 int main() {
     FAST_IO
+    //freopen("input.txt", "r", stdin);
+    //freopen("output.txt", "w", stdout);
+
     solve();
     return 0;
 }

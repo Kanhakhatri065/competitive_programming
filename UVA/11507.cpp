@@ -35,20 +35,58 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+map<string, map<string, string>> bends;
 void solve() {
-    int n;
-    sc(n);
+    int l;
+    while(cin >> l) {
+        if(!l) {
+            break;
+        }
 
-    int sum = 0;
-    f(i, 2, n) {
-        sum += (i * (i + 1));
+        vector<string> v(l - 1);
+        forIn(v, l - 1);
+
+        string wire = "+x";
+        for(int i = 0;i < l - 1;i++) {
+            if(v[i] != "No") {
+                wire = bends[wire][v[i]];
+            }
+        }
+
+        cout << wire << endl;
     }
-
-    pf(sum);
 }
 
 int main() {
     FAST_IO
+    //freopen("input.txt", "r",stdin);
+    //freopen("output.txt", "w", stdout);
+
+    bends["+x"]["+y"] = "+y";
+    bends["+x"]["-y"] = "-y";
+    bends["+x"]["+z"] = "+z";
+    bends["+x"]["-z"] = "-z";
+    bends["-x"]["+y"] = "-y";
+    bends["-x"]["-y"] = "+y";
+    bends["-x"]["+z"] = "-z";
+    bends["-x"]["-z"] = "+z";
+    bends["+y"]["+y"] = "-x";
+    bends["+y"]["-y"] = "+x";
+    bends["+y"]["+z"] = "+y";
+    bends["+y"]["-z"] = "+y";
+    bends["-y"]["+y"] = "+x";
+    bends["-y"]["-y"] = "-x";
+    bends["-y"]["+z"] = "-y";
+    bends["-y"]["-z"] = "-y";
+    bends["+z"]["+y"] = "+z";
+    bends["+z"]["-y"] = "+z";
+    bends["+z"]["+z"] = "-x";
+    bends["+z"]["-z"] = "+x";
+    bends["-z"]["+y"] = "-z";
+    bends["-z"]["-y"] = "-z";
+    bends["-z"]["+z"] = "+x";
+    bends["-z"]["-z"] = "-x";
+
     solve();
     return 0;
 }

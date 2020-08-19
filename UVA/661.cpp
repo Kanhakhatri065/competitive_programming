@@ -36,19 +36,59 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
 void solve() {
-    int n;
-    sc(n);
+    int n, m, c;
+    int t = 0;
+    int blank = 0;
+    while(cin >> n >> m >> c) {
+        if(!n && !m && !c) {
+            break;
+        }
+        t++;
 
-    int sum = 0;
-    f(i, 2, n) {
-        sum += (i * (i + 1));
+        vector<int> v(n + 1);
+        vector<int> vis(n + 1, false);
+        for(int i = 1;i <= n;i++) {
+            cin >> v[i];
+        }
+
+        int cnt = 0;
+        int mx = 0;
+        int x;
+        for(int i = 0;i < m;i++) {
+            sc(x);
+
+            if(vis[x]) {
+                vis[x] = false;
+                cnt -= v[x];
+                mx = max(mx, cnt);
+            } else {
+                vis[x] = true;
+                cnt += v[x];
+                mx = max(mx, cnt);
+            }
+
+            //cout << "mx : " << mx << endl;
+        }   
+
+
+        cout << "Sequence " << t << endl;
+        if(mx > c) {
+            cout << "Fuse was blown." << endl;
+        } else {
+            cout << "Fuse was not blown." << endl;
+            cout << "Maximal power consumption was " << mx << " amperes." << endl;
+        }
+
+        cout << endl;
+
+        blank++;
     }
-
-    pf(sum);
 }
 
 int main() {
     FAST_IO
+    //freopen("input.txt", "r", stdin);
+    //freopen("output.txt", "w", stdout);
     solve();
     return 0;
 }

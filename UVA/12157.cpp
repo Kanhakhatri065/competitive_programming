@@ -37,18 +37,40 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 /*----------------------------------------------------------------*/
 void solve() {
     int n;
-    sc(n);
+    cin >> n;
 
-    int sum = 0;
-    f(i, 2, n) {
-        sum += (i * (i + 1));
+    vector<int> v(n);
+    forIn(v, n);
+
+    int mile = 0, juice = 0;
+    for(int i = 0;i < n;i++) {
+        mile += (v[i] / 30) * 10;
+        mile += 10;
+
+        juice += (v[i] / 60) * 15;
+        juice += 15;
     }
-
-    pf(sum);
+    //cout << "Mile : " << mile << "Juice : " << juice << endl;
+    if(mile < juice) {
+        cout << "Mile " << mile << endl;
+    } else if(mile > juice) {
+        cout << "Juice " << juice << endl;
+    } else {
+        cout << "Mile Juice " << mile << endl;
+    }
 }
 
 int main() {
     FAST_IO
-    solve();
+    //freopen("input.txt", "r", stdin);
+    //freopen("output.txt", "w", stdout);
+
+    int t;
+    cin >> t;
+
+    for(int tt = 1;tt <= t;tt++) {
+        cout << "Case " << tt << ": ";
+        solve();
+    }
     return 0;
 }

@@ -39,16 +39,38 @@ void solve() {
     int n;
     sc(n);
 
-    int sum = 0;
-    f(i, 2, n) {
-        sum += (i * (i + 1));
+    int x, y;
+    cin >> x >> y;
+    int d = x - y;
+    bool flag = true;
+    for(int i = 0;i < n - 1;i++) {
+        cin >> x >> y;
+        int tmp = x - y;
+        if(tmp != d) {
+            flag = false;
+        }
     }
 
-    pf(sum);
+    if(flag) {
+        pf("yes");
+    } else {
+        pf("no");
+    }
 }
 
 int main() {
     FAST_IO
-    solve();
+    //freopen("input.txt", "r", stdin);
+    //freopen("output.txt", "w", stdout);
+
+    int t;
+    sc(t);
+
+    while(t--) {
+        solve();
+        if(t) {
+            cout << endl;
+        } 
+    }
     return 0;
 }

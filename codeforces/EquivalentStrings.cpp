@@ -36,15 +36,65 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
 void solve() {
-    int n;
-    sc(n);
+    string s, t;
+    cin >> s >> t;
 
-    int sum = 0;
-    f(i, 2, n) {
-        sum += (i * (i + 1));
+    int n = s.size();
+
+    bool flag = true;
+    if(n & 1) {
+        if(s != t) {
+            flag = false;
+        } 
+    } else {
+        int s1[26], s2[26];
+        mem(s1, 0);
+        mem(s2, 0);
+
+        int t1[26], t2[26];
+        mem(t1, 0);
+        mem(t2, 0);
+
+        for(int i = 0;i < n;i++) {
+            if(i < n / 2) {
+                s1[s[i] - 'a']++;
+                t1[t[i] - 'a']++;
+            } else {
+                s2[s[i] - 'a']++;
+                t2[t[i] - 'a']++;
+            }
+        }
+
+        bool flag1 = true;
+        for(int i = 0;i < 26;i++) {
+            if(s1[i] != t1[i]) {
+                flag1 = false;
+            }
+
+            if(s2[i] != t2[i]) {
+                flag1 = false;
+            }
+        }
+
+        bool flag2 = true;
+        for(int i = 0;i < 26;i++) {
+            if(s1[i] != t2[i]) {
+                flag2 = false;
+            }
+
+            if(s2[i] != t1[i]) {
+                flag2 = false;
+            }
+        }
+
+        if(flag1 | flag2) {
+            flag = true;
+        } else {
+            flag = false;
+        }
     }
 
-    pf(sum);
+    flag ? yes : no;
 }
 
 int main() {

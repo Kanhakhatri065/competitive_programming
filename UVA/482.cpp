@@ -35,20 +35,59 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
-void solve() {
-    int n;
-    sc(n);
+void read_int_array(vector<int>& numbers) {
+    string line;
+    getline(cin, line);
+    istringstream is(line);
 
-    int sum = 0;
-    f(i, 2, n) {
-        sum += (i * (i + 1));
-    }
+    numbers = vector<int>(istream_iterator<int>(is), istream_iterator<int>());
+}
 
-    pf(sum);
+void read_double_array(vector<string> &numbers) {
+    string line;
+    getline(cin, line);
+    istringstream is(line);
+
+    numbers = vector<string>(istream_iterator<string>(is), istream_iterator<string>());
 }
 
 int main() {
     FAST_IO
-    solve();
+    //freopen("input.txt", "r", stdin);
+    //freopen("output.txt", "w", stdout);
+
+    bool first = true;
+
+    int t;
+    cin >> t;
+
+    cin.ignore();
+    string blank_line;
+    while(t--) {
+        getline(cin, blank_line);
+        if(!first) {
+            cout << endl;
+        }
+
+        first = false;
+
+        vector<int> position;
+        read_int_array(position);
+
+        vector<string> permuted_line;
+        read_double_array(permuted_line);
+
+        vector<string> original(int(permuted_line.size()));
+
+
+        for(int i = 0;i < int(permuted_line.size());i++) {
+            original[position[i] - 1] = permuted_line[i];
+        }
+
+        for(int i = 0;i < int(original.size());i++) {
+            cout << original[i] << endl;
+        }
+    }
+
     return 0;
 }

@@ -35,20 +35,44 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
-void solve() {
-    int n;
-    sc(n);
-
-    int sum = 0;
-    f(i, 2, n) {
-        sum += (i * (i + 1));
-    }
-
-    pf(sum);
-}
-
 int main() {
     FAST_IO
-    solve();
+    //freopen("input.txt", "r", stdin);
+    //freopen("output.txt", "w", stdout);
+
+    string s;
+    int ax1,ax2;    
+    
+    while(cin>>s){
+        ax1=-1;
+        string out = "";
+        for(int i = 0;i < int(s.size());i++) {
+            if(s[i]=='C'||s[i]=='G'||s[i]=='J'||s[i]=='K'||s[i]=='Q'||s[i]=='S'||s[i]=='X'||s[i]=='Z') {
+                ax2=2;
+            } else if(s[i]=='B'||s[i]=='F'||s[i]=='P'||s[i]=='V') {
+                ax2=1;
+            } else if(s[i]=='D'||s[i]=='T') {
+                ax2=3;
+            } else if(s[i]=='M'||s[i]=='N') {
+                ax2=5;
+            } else if(s[i]=='L') {
+                ax2=4;
+            } else if(s[i]=='R') {
+                ax2=6;
+            } else {
+                ax2=-1;
+            }
+
+            if(ax2!=ax1 && ax2!=-1) {
+                out += to_string(ax2);
+                //cout<<ax2;
+            }
+
+            ax1=ax2;
+        }
+
+        pf(out);
+    }
+
     return 0;
 }

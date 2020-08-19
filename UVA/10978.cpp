@@ -35,20 +35,34 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
-void solve() {
-    int n;
-    sc(n);
-
-    int sum = 0;
-    f(i, 2, n) {
-        sum += (i * (i + 1));
-    }
-
-    pf(sum);
-}
-
 int main() {
     FAST_IO
-    solve();
+    //freopen("input.txt", "r", stdin);
+    //freopen("output.txt", "w", stdout);
+
+    int cards;
+    while(cin >> cards && cards) {
+        string name, words;
+
+        int currentIndex = -1;
+        vector<string> deck(cards, "");
+
+        for(int i = 0;i < cards;i++) {
+            cin >> name >> words;
+            int length = words.length();
+
+            while(length) {
+                currentIndex = (currentIndex + 1) % cards;
+                if(deck[currentIndex] == "") {
+                    length--;
+                }
+            }
+
+            deck[currentIndex] = name;
+        }
+
+        vpnt(deck);
+    }
+
     return 0;
 }

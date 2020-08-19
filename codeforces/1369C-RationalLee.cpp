@@ -39,8 +39,8 @@ typedef vector<pair<ll,ll>>vpll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
-vector<int> x[(int)2e5 + 7];
-
+const int N = 2e5 + 5;
+vector<int> x[N];
 void solve() {
     int n, k;
     sc(n);

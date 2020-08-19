@@ -39,9 +39,11 @@ void solve() {
     int n;
     sc(n);
 
-    int sum = 0;
-    f(i, 2, n) {
-        sum += (i * (i + 1));
+    ll sum = 0;
+    ll a, b, c;
+    while(n--) {
+        cin >> a >> b >> c;
+        sum += (a * c);
     }
 
     pf(sum);
@@ -49,6 +51,12 @@ void solve() {
 
 int main() {
     FAST_IO
-    solve();
+    int t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+
     return 0;
 }

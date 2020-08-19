@@ -7,7 +7,7 @@ typedef long long ll;typedef unsigned long long ull;
 #define sc(a) cin >> a
 #define pf(a) cout << a << endl
 /*** Loops ***/
-#define for0(num) for(ll i = 0; i < num; i++)
+#define f(i, p, num) for(ll i = p; i < num; i++)
 #define forIn(arr, num) for(ll i = 0; i < num; i++) cin >> arr[i];
 #define vpnt(ans) for(ll i = 0; i < ans.size(); i++) cout << ans[i] << (i + 1 < ans.size() ? ' ' : '\n');
 /*** Define Values ***/
@@ -18,17 +18,13 @@ typedef long long ll;typedef unsigned long long ull;
 #define pb push_back
 #define ff first
 #define ss second
-#define mp make_pair
 #define mem(name, value) memset(name, value, sizeof(name))
-#define pp pair
 /*** STLs ***/
 typedef vector<ll>vll;typedef set<ll>sll;typedef multiset<ll>msll;
-typedef queue<ll>qll;typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
-typedef vector<pair<ll,ll>>vpll;
+typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 /*** Sorts ***/
 #define all(v) (v).begin(), (v).end()
 #define srt(v) sort(all(v))
-#define srtGreat(v) sort(all(v), greater<ll>())
 /*** Bit-Stuff ***/
 #define GET_SET_BITS(a) (__builtin_popcount(a))
 #define GET_SET_BITSLL(a) ( __builtin_popcountll(a))
@@ -38,31 +34,28 @@ typedef vector<pair<ll,ll>>vpll;
 /*** Some Prints ***/
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
-/*** Swapping ***/
-void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
-void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
-/*** comparators ***/
-#define MX(x,y) x>y?x:y
-#define MN(x,y) x>y?y:x
 /*----------------------------------------------------------------*/
+void solve() {
+    ll a, b, n;
+    sc(a);
+    sc(b);
+    sc(n);
+
+    vll v(3, 0);
+    v[0] = a;
+    v[1] = b;
+    v[2] = a ^ b;
+
+    pf(v[n % 3]);
+}
 
 int main() {
     FAST_IO
-    ll testcases;
-    sc(testcases);
+    int t;
+    sc(t);
 
-    ll a, b, n;
-    while(testcases--) {
-        sc(a);
-        sc(b);
-        sc(n);
-
-        vll v(3, 0);
-        v[0] = a;
-        v[1] = b;
-        v[2] = a ^ b;
-
-        pf(v[n % 3]);
+    while(t--) {
+        solve();
     }
     
     return 0;

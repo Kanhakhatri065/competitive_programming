@@ -39,16 +39,26 @@ void solve() {
     int n;
     sc(n);
 
-    int sum = 0;
-    f(i, 2, n) {
-        sum += (i * (i + 1));
-    }
+    vector<int> v(n);
+    forIn(v, n);
 
-    pf(sum);
+    pf(*max_element(all(v)));
 }
 
 int main() {
     FAST_IO
-    solve();
+    //freopen("input.txt", "r", stdin);
+    //freopen("output.txt", "w", stdout);
+
+    int t;
+    sc(t);
+
+    int i = 0;
+    while(t--) {
+        i++;
+        cout << "Case " << i << ": ";
+        solve();
+    }
+
     return 0;
 }

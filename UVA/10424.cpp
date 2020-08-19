@@ -35,20 +35,59 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
-void solve() {
-    int n;
-    sc(n);
-
-    int sum = 0;
-    f(i, 2, n) {
-        sum += (i * (i + 1));
+int digit_sum(int n) {
+    if(n < 10) {
+        return n;
     }
 
-    pf(sum);
+    int sum = 0;
+    while(n != 0) {
+        sum += (n % 10);
+        n /= 10;
+    }
+
+    return digit_sum(sum);
+}
+
+void solve() {
+    string s, t;
+    while(getline(cin, s)) {
+        getline(cin, t);
+        int sum1 = 0;
+        for(auto c : s) {
+            if(c >= 'A' && c <= 'Z') {
+                sum1 += (c - 'A') + 1;
+            } else if(c >= 'a' && c <= 'z') {
+                sum1 += (c - 'a') + 1;
+            }
+        }
+
+        int n = digit_sum(sum1);
+
+        int sum2 = 0;
+        for(auto c : t) {
+            if(c >= 'A' && c <= 'Z') {
+                sum2 += (c - 'A') + 1;
+            } else if(c >= 'a' && c <= 'z') {
+                sum2 += (c - 'a') + 1;
+            }
+        }
+
+        int m = digit_sum(sum2);
+        if(n > m) {
+            swap(n, m);
+        }
+
+        float ratio = (float(n) / float(m)) * 100;
+        cout << fixed << setprecision(2) << ratio;
+        cout << " %" << endl;
+    }
 }
 
 int main() {
     FAST_IO
+    //freopen("input.txt", "r", stdin);
+    //freopen("output.txt", "w", stdout);
     solve();
     return 0;
 }

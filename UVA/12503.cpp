@@ -39,16 +39,53 @@ void solve() {
     int n;
     sc(n);
 
-    int sum = 0;
-    f(i, 2, n) {
-        sum += (i * (i + 1));
+    vector<string> arr(n + 1);
+    vector<int> pos(n + 1);
+    string s, t;
+    int x;
+    for(int i = 1;i <= n;i++) {
+        cin >> s;
+        if(s == "SAME") {
+            cin >> t >> x;
+        } else {
+            x = i;
+        }
+
+        arr[i] = s;
+        pos[i] = x;
     }
 
-    pf(sum);
+    int p = 0;
+    for(int i = 1;i <= n;i++) {
+        x = i;
+
+        while(arr[x] == "SAME") {
+            x = pos[x];
+            //cout << "x : " << x << endl;
+        }
+
+        if(arr[x] == "LEFT") {
+            p--;
+        } else if(arr[x] == "RIGHT") {
+            p++;
+        }
+        //cout << "p : " << p << endl;
+    }
+
+    pf(p);
 }
 
 int main() {
     FAST_IO
-    solve();
+    //freopen("input.txt", "r", stdin);
+    //freopen("output.txt","w", stdout);
+
+    int t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+
     return 0;
 }

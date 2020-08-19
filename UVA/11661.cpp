@@ -37,18 +37,44 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 /*----------------------------------------------------------------*/
 void solve() {
     int n;
-    sc(n);
+    while(cin >> n) {
+        if(!n) {
+            break;
+        }
 
-    int sum = 0;
-    f(i, 2, n) {
-        sum += (i * (i + 1));
+        string s;
+        sc(s);
+
+        int cnt = count(all(s), 'Z');
+        if(cnt) {
+            pf(0);
+            continue;
+        }
+
+        int prev_r = -1, prev_d = -1;
+        int mn = INT_MAX;
+        for(int i = 0;i < n;i++) {
+            if(s[i] == 'R') {
+                prev_r = i;
+                if(prev_d != -1) {
+                    mn = min(mn, abs(prev_r - prev_d));
+                }
+            } else if(s[i] == 'D') {
+                prev_d = i;
+                if(prev_r != -1) {
+                    mn = min(mn, abs(prev_d - prev_r));
+                }
+            }
+        }
+
+        pf(mn);
     }
-
-    pf(sum);
 }
 
 int main() {
     FAST_IO
+    //freopen("input.txt", "r", stdin);
+    //freopen("output.txt", "w", stdout);
     solve();
     return 0;
 }

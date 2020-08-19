@@ -39,12 +39,25 @@ void solve() {
     int n;
     sc(n);
 
-    int sum = 0;
-    f(i, 2, n) {
-        sum += (i * (i + 1));
-    }
+    int cases = 0;
+    while(n) {
+        cases++;
 
-    pf(sum);
+        vector<int> v(n);
+        forIn(v, n);
+
+        int zero = 0, pos = 0;
+        for(int i = 0;i < n;i++) {
+            if(v[i]) {
+                pos++;
+            } else {
+                zero++;
+            }
+        }
+
+        cout << "Case " << cases << ": " << (pos - zero) << endl;
+        sc(n);
+    }
 }
 
 int main() {

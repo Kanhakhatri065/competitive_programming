@@ -37,18 +37,39 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 /*----------------------------------------------------------------*/
 void solve() {
     int n;
-    sc(n);
-
-    int sum = 0;
-    f(i, 2, n) {
-        sum += (i * (i + 1));
+    while(cin >> n, n) {
+        cin.ignore();
+        vector<int> spaces(n);
+        int minSpaces = -1;
+        
+        string line;
+        
+        for (int i = 0; i < n; ++i) {
+            getline(cin, line);
+            int spaceCount = 0;
+            for (string::const_iterator iter = line.begin(); iter != line.end(); ++iter) {
+                if (*iter != 'X')
+                    ++spaceCount;
+            }
+            
+            spaces[i] = spaceCount;
+            if (spaceCount < minSpaces || minSpaces == -1)
+                minSpaces = spaceCount;
+        }
+        
+        int total = 0;
+        for (int i = 0; i < n; ++i) {
+            total += spaces[i] - minSpaces;
+        }
+            
+        cout << total << '\n';
     }
-
-    pf(sum);
 }
 
 int main() {
     FAST_IO
+    //freopen("input.txt", "r", stdin);
+    //freopen("output.txt", "w", stdout);
     solve();
     return 0;
 }

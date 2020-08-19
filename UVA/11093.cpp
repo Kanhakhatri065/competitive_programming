@@ -36,19 +36,46 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
 void solve() {
-    int n;
-    sc(n);
+    ll n;
+    cin >> n;
 
-    int sum = 0;
-    f(i, 2, n) {
-        sum += (i * (i + 1));
+    vll v(n);
+    forIn(v, n);
+
+    vll u(n);
+    forIn(u, n);
+
+    ll sum = 0, mn = LONG_LONG_MAX;
+    for(int i = 0;i < n;i++) {
+        sum += (v[i] - u[i]);
+        mn = min(mn, sum);
     }
 
-    pf(sum);
+    int idx = 0;
+    while(mn < 0 && idx < n) {
+        mn -= (v[idx] - u[idx++]);
+    }
+
+    if(idx == n || sum < 0) {
+        cout << "Not possible" << endl;
+    } else {
+        cout << "Possible from station " << (idx + 1) << endl;
+    }
 }
 
 int main() {
     FAST_IO
-    solve();
+    //freopen("input.txt", "r", stdin);
+    //freopen("output.txt", "w", stdout);
+
+    int t;
+    sc(t);
+
+    int tt = 0;
+    while(t--) {
+        cout << "Case " << (++tt) << ": ";
+        solve();
+    }
+
     return 0;
 }

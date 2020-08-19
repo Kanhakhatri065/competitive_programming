@@ -37,18 +37,39 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 /*----------------------------------------------------------------*/
 void solve() {
     int n;
-    sc(n);
+    bool first = true;
 
-    int sum = 0;
-    f(i, 2, n) {
-        sum += (i * (i + 1));
+    int cases = 0;
+    while(cin >> n) {
+        if(!n) {
+            break;
+        }
+
+        cases++;
+        first = false;
+
+        vector<int> v(n);
+        forIn(v, n);
+
+        int sum = accumulate(all(v), 0);
+        int av = sum / n;
+
+        int cnt = 0;
+        for(int i = 0;i < n;i++) {
+            if(v[i] < av) {
+                cnt += (av - v[i]);
+            }
+        }
+
+        cout << "Set #" << cases << endl;
+        cout << "The minimum number of moves is " << cnt << ".\n" << endl;
     }
-
-    pf(sum);
 }
 
 int main() {
     FAST_IO
+    //freopen("input.txt", "r", stdin);
+    //freopen("output.txt", "w", stdout);
     solve();
     return 0;
 }

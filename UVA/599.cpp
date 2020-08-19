@@ -35,39 +35,89 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
-void solve() {
-    int n;
-    sc(n);
+int nSets;
+map<char, char> p;
+map<char, int> r, sizes;
 
-    vector<int> v(n);
-    forIn(v, n);
+void init() {
+    nSets = 0;
+    p.clear();
+    r.clear();
+    sizes.clear();
+}
 
-    int l, r;
-    int flag = 0;
-    f(i, 0, n - 1) {
-        if(abs(v[i] - v[i + 1]) > 1) {
-            flag = 1;
-            l = i + 1;
-            r = i + 2;
-        }
+char getSet(char i) {
+    if(p.find(i) == p.end()) {
+        p[i] = i;
+        r[i] = 0;
+        sizes[i] = 1;
+        nSets++;
+        return i;
     }
 
-    if(flag) {
-        yes;
-        cout << l << " " << r << endl;
+    return (p[i] == i) ? i : (p[i] = getSet(p[i]));
+}
+
+bool sameSet(char i, char j) {
+    return getSet(i) == getSet(j);
+}
+
+void joinSet(char i, char j) {
+    if(sameSet(i, j)) {
+        return;
+    }
+
+    nSets--;
+    char a = getSet(i), b = getSet(j);
+
+    if(r[a] < r[b]) {
+        p[a] = b;
+        sizes[b] += sizes[a];
     } else {
-        no;
+        p[b] = a;
+        sizes[a] += sizes[b];
+
+        if(r[a] == r[b]) {
+            r[a]++;
+        }
     }
 }
 
-int main() {
-    FAST_IO
-    int t;
-    sc(t);
+int t;
+vector<pair<char, char>> edges;
+string s;
 
+int main() {
+    sc(t);
+    getline(cin, s);
     while(t--) {
-        solve();
+        edges.clear();
+        while(getline(cin, s) && s[0] != '*') {
+            edges.pb({s[1], s[3]});
+        }
+        
+        getline(cin, s);
+        init();
+
+        for(auto c : s) {
+            if(c != ',') {
+                getSet(c);
+            }
+        }
+
+        for(auto e : edges) {
+            joinSet(e.ff, e.ss);
+        }
+
+        int acorns = 0;
+        for(auto pp : p) {
+            if(pp.ff == pp.ss && sizes[pp.ff] == 1) {
+                acorns++;
+            }
+        }
+        cout << "There are " << nSets-acorns << " tree(s) and " << acorns << " acorn(s)." << endl;
     }
+
 
     return 0;
 }
