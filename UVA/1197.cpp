@@ -35,67 +35,78 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+const int MAX = 30002;
+int parents[MAX], ranks[MAX];
+
+void make_sets(int number_of_elements) {
+    for(int i = 0;i < number_of_elements;i++) {
+        parents[i] = i;
+        ranks[i] = 1;
+    }
+}
+
+int find_set(int element) {
+    if(element != parents[element]) {
+        element = find_set(parents[element]);
+    }
+
+    return parents[element];
+}
+
+void set_union(int i, int j) {
+    int x = find_set(i), y = find_set(j);
+
+    if(x == y) {
+        return;
+    } 
+
+    if(ranks[x] > ranks[y]) {
+        ranks[x] += ranks[y];
+        parents[y] = x;
+    } else {
+        ranks[y] += ranks[x];
+        parents[x] = y;
+    }
+
+}
+
 void solve() {
-    string str;
-    sc(str);
     
-
-    int mid = 0;
-    string left = "";
-    string right = "";
-    if(str.size() % 2 == 0) {
-        mid = (str.size() / 2) - 1;
-        
-        for(int i = 0;i <= mid;i++) {
-            left += str[i];
+    int persons, queries, gSize, ele, person;
+    int zeroParent, tot;
+    while(cin >> persons >> queries) {
+        tot = 0;
+        if(!persons && !queries) {
+            break;
         }
 
-        for(int i = mid + 1;i < str.size();i++) {
-            right += str[i];
-        }
-    } else {
-        mid = str.size() / 2;
+        make_sets(persons);
 
-        for(int i = 0;i < mid;i++) {
-            left += str[i];
-        }
+        while(queries--) {
+            cin >> gSize;
 
-        for(int i = mid+1;i < str.size();i++) {
-            right += str[i];
-        }
-    }
-
-    for(int i = 0;i < left.size();i++) {
-        for(int j = 0;j < right.size();j++) {
-            if(left[i] == right[j]) {
-                right[j] = '*';
-                break;
+            cin >> ele;
+            for(int i = 1;i < gSize;i++) {
+                cin >> person;
+                set_union(ele, person);
             }
-        }    
-    }
-
-    int count = 0;
-    for(int i = 0;i < right.size();i++) {
-        if(right[i] == '*') {
-            count++;
         }
-    }
-    
-    if(count == right.size()) {
-        yes;
-    } else {
-        no;
+
+        zeroParent = find_set(0);
+        for(int i = 0;i < persons;i++) {
+            if(find_set(i) == zeroParent) {
+                tot++;
+            }
+        }
+
+        pf(tot);
     }
 }
 
 int main() {
     FAST_IO
-    int t;
-    sc(t);
-
-    while(t--) {
-        solve();
-    }
-
+    //freopen("input.txt", "r", stdin);
+    //freopen("output.txt", "w", stdout);
+    solve();
     return 0;
 }

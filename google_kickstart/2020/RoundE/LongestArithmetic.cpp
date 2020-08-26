@@ -36,56 +36,25 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
 void solve() {
-    string str;
-    sc(str);
-    
+    ll n;
+    sc(n);
 
-    int mid = 0;
-    string left = "";
-    string right = "";
-    if(str.size() % 2 == 0) {
-        mid = (str.size() / 2) - 1;
-        
-        for(int i = 0;i <= mid;i++) {
-            left += str[i];
-        }
+    vll v(n);
+    forIn(v, n);
 
-        for(int i = mid + 1;i < str.size();i++) {
-            right += str[i];
-        }
-    } else {
-        mid = str.size() / 2;
-
-        for(int i = 0;i < mid;i++) {
-            left += str[i];
-        }
-
-        for(int i = mid+1;i < str.size();i++) {
-            right += str[i];
+    ll cnt = 2, mx = 2, diff = v[1] - v[0];
+    for(ll i = 2;i < n;i++) {
+        if(v[i] - v[i - 1] == diff) {
+            cnt++;
+        } else {
+            mx = max(mx, cnt);
+            cnt = 2;
+            diff = v[i] - v[i - 1];
         }
     }
 
-    for(int i = 0;i < left.size();i++) {
-        for(int j = 0;j < right.size();j++) {
-            if(left[i] == right[j]) {
-                right[j] = '*';
-                break;
-            }
-        }    
-    }
-
-    int count = 0;
-    for(int i = 0;i < right.size();i++) {
-        if(right[i] == '*') {
-            count++;
-        }
-    }
-    
-    if(count == right.size()) {
-        yes;
-    } else {
-        no;
-    }
+    mx = max(mx, cnt);
+    pf(mx);
 }
 
 int main() {
@@ -93,7 +62,8 @@ int main() {
     int t;
     sc(t);
 
-    while(t--) {
+    for(int tt = 1;tt <= t;tt++) {
+        cout << "Case #" << tt << ": ";
         solve();
     }
 

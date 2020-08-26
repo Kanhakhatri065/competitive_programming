@@ -35,67 +35,71 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+vector<int> p;
+vector<int> r;
+
+void make_set(int n) {
+    p.resize(n + 1);
+    r.resize(n + 1);
+
+    for(int i = 0;i <= n;i++) {
+        p[i] = i;
+        r[i] = 1;
+    }
+}
+
+int find_set(int i) {
+    return p[i] == i ? i : find_set(p[i]);
+}
+
+void union_set(int i, int j) {
+    int x = find_set(i), y = find_set(j);
+
+    if(x == y) {
+        return;
+    }
+
+    if(r[x] > r[y]) {
+        r[x] += r[y];
+        p[y] = x;
+    } else {
+        r[y] += r[x];
+        p[x] = y;
+    }
+}
+
 void solve() {
-    string str;
-    sc(str);
-    
+    int n, m, cases = 0;
 
-    int mid = 0;
-    string left = "";
-    string right = "";
-    if(str.size() % 2 == 0) {
-        mid = (str.size() / 2) - 1;
-        
-        for(int i = 0;i <= mid;i++) {
-            left += str[i];
+    while(cin >> n >> m) {
+        cases++;
+        if(!n && !m) {
+            break;
         }
 
-        for(int i = mid + 1;i < str.size();i++) {
-            right += str[i];
-        }
-    } else {
-        mid = str.size() / 2;
+        make_set(n);
 
-        for(int i = 0;i < mid;i++) {
-            left += str[i];
+        int i, j;
+        while(m--) {
+            cin >> i >> j;
+            union_set(i, j);
         }
 
-        for(int i = mid+1;i < str.size();i++) {
-            right += str[i];
-        }
-    }
-
-    for(int i = 0;i < left.size();i++) {
-        for(int j = 0;j < right.size();j++) {
-            if(left[i] == right[j]) {
-                right[j] = '*';
-                break;
+        int cnt = 0;
+        for(int i = 1;i <= n;i++) {
+            if(p[i] == i) {
+                cnt++;
             }
-        }    
-    }
-
-    int count = 0;
-    for(int i = 0;i < right.size();i++) {
-        if(right[i] == '*') {
-            count++;
         }
-    }
-    
-    if(count == right.size()) {
-        yes;
-    } else {
-        no;
+
+        cout << "Case " << cases << ": " << cnt << endl;
     }
 }
 
 int main() {
     FAST_IO
-    int t;
-    sc(t);
-
-    while(t--) {
-        solve();
-    }
-
+    //freopen("input.txt", "r", stdin);
+    //  freopen("output.txt", "w", stdout);
+    solve();
     return 0;
 }

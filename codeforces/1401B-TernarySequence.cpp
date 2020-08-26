@@ -36,56 +36,24 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
 void solve() {
-    string str;
-    sc(str);
+    ll x1, y1, z1;
+    cin >> x1 >> y1 >> z1;
+
+    ll x2, y2, z2;
+    cin >> x2 >> y2 >> z2;
     
+    ll pos = min(z1, y2);
+    z1 -= min(z1, y2);
 
-    int mid = 0;
-    string left = "";
-    string right = "";
-    if(str.size() % 2 == 0) {
-        mid = (str.size() / 2) - 1;
-        
-        for(int i = 0;i <= mid;i++) {
-            left += str[i];
-        }
+    z2 -= x1;
+    z2 -= z1;
 
-        for(int i = mid + 1;i < str.size();i++) {
-            right += str[i];
-        }
-    } else {
-        mid = str.size() / 2;
-
-        for(int i = 0;i < mid;i++) {
-            left += str[i];
-        }
-
-        for(int i = mid+1;i < str.size();i++) {
-            right += str[i];
-        }
+    if(z2 < 0) {
+        z2 = 0;
     }
 
-    for(int i = 0;i < left.size();i++) {
-        for(int j = 0;j < right.size();j++) {
-            if(left[i] == right[j]) {
-                right[j] = '*';
-                break;
-            }
-        }    
-    }
-
-    int count = 0;
-    for(int i = 0;i < right.size();i++) {
-        if(right[i] == '*') {
-            count++;
-        }
-    }
-    
-    if(count == right.size()) {
-        yes;
-    } else {
-        no;
-    }
+    ll ans = (pos * 2) - (z2 * 2);
+    pf(ans);
 }
 
 int main() {

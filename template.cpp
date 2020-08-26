@@ -7,21 +7,15 @@ typedef long long ll;typedef unsigned long long ull;
 #define sc(a) cin >> a
 #define pf(a) cout << a << endl
 /*** Loops ***/
-#define f(i, p, num) for(ll i = p; i < num; i++)
 #define forIn(arr, num) for(ll i = 0; i < num; i++) cin >> arr[i];
 #define vpnt(ans) for(ll i = 0; i < ans.size(); i++) cout << ans[i] << (i + 1 < ans.size() ? ' ' : '\n');
 /*** Define Values ***/
-#define mod1 1000000007
-#define mod2 998244353
-#define eps 1e-7
+#define mod 1000000007
 /*** Abbrevations **/
 #define pb push_back
 #define ff first
 #define ss second
 #define mem(name, value) memset(name, value, sizeof(name))
-/*** STLs ***/
-typedef vector<ll>vll;typedef set<ll>sll;typedef multiset<ll>msll;
-typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 /*** Sorts ***/
 #define all(v) (v).begin(), (v).end()
 #define srt(v) sort(all(v))

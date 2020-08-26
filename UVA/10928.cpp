@@ -35,61 +35,52 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+vector<vector<int>> vec;
+void readData(string str, int node) {
+    stringstream ss;
+    int number;
+
+    ss << str;
+    while(ss >> number) {
+        vec[node].pb(number);
+    }
+}
+
 void solve() {
+    int places;
+    sc(places);
+
+    vec.assign(places + 1, vector<int>());
     string str;
-    sc(str);
     
+    getline(cin, str);
+    for(int i = 1;i <= places;i++) {
+        getline(cin, str);
+        readData(str, i);
+    }
+    getline(cin, str);
 
-    int mid = 0;
-    string left = "";
-    string right = "";
-    if(str.size() % 2 == 0) {
-        mid = (str.size() / 2) - 1;
-        
-        for(int i = 0;i <= mid;i++) {
-            left += str[i];
-        }
+    int mn = INT_MAX;
+    for(int j = 1;j < vec.size();j++) {
+        int tmp = vec[j].size();
+        mn = min(mn, tmp);
+    }
 
-        for(int i = mid + 1;i < str.size();i++) {
-            right += str[i];
-        }
-    } else {
-        mid = str.size() / 2;
-
-        for(int i = 0;i < mid;i++) {
-            left += str[i];
-        }
-
-        for(int i = mid+1;i < str.size();i++) {
-            right += str[i];
+    vector<int> res;
+    for(int i = 1;i < vec.size();i++) {
+        if(vec[i].size() == mn) {
+            res.pb(i);
         }
     }
 
-    for(int i = 0;i < left.size();i++) {
-        for(int j = 0;j < right.size();j++) {
-            if(left[i] == right[j]) {
-                right[j] = '*';
-                break;
-            }
-        }    
-    }
-
-    int count = 0;
-    for(int i = 0;i < right.size();i++) {
-        if(right[i] == '*') {
-            count++;
-        }
-    }
-    
-    if(count == right.size()) {
-        yes;
-    } else {
-        no;
-    }
+    vpnt(res);
 }
 
 int main() {
     FAST_IO
+    //freopen("input.txt", "r", stdin);
+    //freopen("output.txt", "w", stdout);
+
     int t;
     sc(t);
 

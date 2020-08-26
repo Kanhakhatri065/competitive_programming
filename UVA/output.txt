@@ -1,3 +1,9 @@
+<<<<<<< HEAD
 OK
 Change bit (2,3)
 Corrupt
+=======
+There are 640 black pixels.
+There are 512 black pixels.
+There are 384 black pixels.
+>>>>>>> fec6f1c2720ef8d77d4e293ebb1483a4555dddc9

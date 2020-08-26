@@ -36,55 +36,33 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
 void solve() {
-    string str;
-    sc(str);
-    
+    int n, k;
+    cin >> n >> k;
 
-    int mid = 0;
-    string left = "";
-    string right = "";
-    if(str.size() % 2 == 0) {
-        mid = (str.size() / 2) - 1;
-        
-        for(int i = 0;i <= mid;i++) {
-            left += str[i];
-        }
+    vector<int> v(n);
+    forIn(v, n);
 
-        for(int i = mid + 1;i < str.size();i++) {
-            right += str[i];
-        }
+    int mx = *max_element(all(v));
+    bool flag = true;
+    int cnt = 0;
+    if(mx > k) {
+        flag = false;
     } else {
-        mid = str.size() / 2;
-
-        for(int i = 0;i < mid;i++) {
-            left += str[i];
-        }
-
-        for(int i = mid+1;i < str.size();i++) {
-            right += str[i];
-        }
-    }
-
-    for(int i = 0;i < left.size();i++) {
-        for(int j = 0;j < right.size();j++) {
-            if(left[i] == right[j]) {
-                right[j] = '*';
-                break;
+        int sum = 0;
+        cnt = 1;
+        for(int i = 0;i < n;i++) {
+            sum += v[i];
+            if(sum > k) {
+                cnt++;
+                sum = v[i];
             }
-        }    
-    }
-
-    int count = 0;
-    for(int i = 0;i < right.size();i++) {
-        if(right[i] == '*') {
-            count++;
         }
     }
-    
-    if(count == right.size()) {
-        yes;
+
+    if(flag) {
+        pf(cnt);
     } else {
-        no;
+        pf(-1);
     }
 }
 

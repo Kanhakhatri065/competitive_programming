@@ -7,21 +7,15 @@ typedef long long ll;typedef unsigned long long ull;
 #define sc(a) cin >> a
 #define pf(a) cout << a << endl
 /*** Loops ***/
-#define f(i, p, num) for(ll i = p; i < num; i++)
 #define forIn(arr, num) for(ll i = 0; i < num; i++) cin >> arr[i];
 #define vpnt(ans) for(ll i = 0; i < ans.size(); i++) cout << ans[i] << (i + 1 < ans.size() ? ' ' : '\n');
 /*** Define Values ***/
-#define mod1 1000000007
-#define mod2 998244353
-#define eps 1e-7
+#define mod 1000000007
 /*** Abbrevations **/
 #define pb push_back
 #define ff first
 #define ss second
 #define mem(name, value) memset(name, value, sizeof(name))
-/*** STLs ***/
-typedef vector<ll>vll;typedef set<ll>sll;typedef multiset<ll>msll;
-typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 /*** Sorts ***/
 #define all(v) (v).begin(), (v).end()
 #define srt(v) sort(all(v))
@@ -35,67 +29,50 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
-void solve() {
-    string str;
-    sc(str);
-    
+const int len = 32;
+int mat[len][len];
+int cnt;
+char quad;
 
-    int mid = 0;
-    string left = "";
-    string right = "";
-    if(str.size() % 2 == 0) {
-        mid = (str.size() / 2) - 1;
-        
-        for(int i = 0;i <= mid;i++) {
-            left += str[i];
-        }
-
-        for(int i = mid + 1;i < str.size();i++) {
-            right += str[i];
-        }
-    } else {
-        mid = str.size() / 2;
-
-        for(int i = 0;i < mid;i++) {
-            left += str[i];
-        }
-
-        for(int i = mid+1;i < str.size();i++) {
-            right += str[i];
-        }
-    }
-
-    for(int i = 0;i < left.size();i++) {
-        for(int j = 0;j < right.size();j++) {
-            if(left[i] == right[j]) {
-                right[j] = '*';
-                break;
+void build(char q, int c, int r, int w) {
+    cin >> q;
+    if(q == 'p') {
+        build(q, c + w / 2, r, w / 2);
+        build(q, c, r, w / 2);
+        build(q, c, r + w / 2, w / 2);
+        build(q, c + w / 2, r + w / 2, w / 2);
+    } else if(q == 'f') {
+        for(int i = r;i < (r + w);i++) {
+            for(int j = c;j < (c + w);j++) {
+                if(mat[i][j] == 0) {
+                    mat[i][j] = 1;
+                    cnt++;
+                }
             }
-        }    
-    }
-
-    int count = 0;
-    for(int i = 0;i < right.size();i++) {
-        if(right[i] == '*') {
-            count++;
         }
     }
-    
-    if(count == right.size()) {
-        yes;
-    } else {
-        no;
-    }
+}
+
+void solve() {
+    cnt = 0;
+    mem(mat, 0);
+    build(quad, 0, 0, 32);
+    build(quad, 0, 0, 32);
+    cout << "There are " << cnt << " black pixels." << endl;
 }
 
 int main() {
     FAST_IO
+    //freopen("input.txt", "r", stdin);
+    //freopen("output.txt", "w", stdout);
+    
     int t;
     sc(t);
 
     while(t--) {
         solve();
     }
+
 
     return 0;
 }

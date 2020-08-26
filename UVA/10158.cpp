@@ -35,67 +35,75 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+#define F(ss) find(ss)
+#define TWIN(ff) ((ff % 2) ? (ff + 1) : (ff - 1))
+#define T(ff) TWIN(ff)
+#define ENEMIES(a, b) ((F(b) == F(T(a))) || (F(a) == F(T(b))))
+#define FRIENDS(a, b) ((F(a) == F(b)) || (F(T(a)) == F(T(b))))
+
+vector<int> p;
+void init(int N) {
+    p.assign(N + 1, 0);
+    for(int i = 1;i < N + 1;i++) {
+        p[i] = i;
+    }
+}
+
+int find(int a) {
+    return p[a] == a ? a : (p[a] = find(p[a]));
+}
+
+void Union(int a, int b) {
+    p[find(a)] = find(b);
+}
+
 void solve() {
-    string str;
-    sc(str);
-    
+    int n;
+    sc(n);
 
-    int mid = 0;
-    string left = "";
-    string right = "";
-    if(str.size() % 2 == 0) {
-        mid = (str.size() / 2) - 1;
-        
-        for(int i = 0;i <= mid;i++) {
-            left += str[i];
+    init(2 * n);
+    int c, f1, f2;
+    while(cin >> c >> f1 >> f2) {
+        if(!c && !f1 && !f2) {
+            break;
         }
 
-        for(int i = mid + 1;i < str.size();i++) {
-            right += str[i];
-        }
-    } else {
-        mid = str.size() / 2;
+        f1 = 2 * f1 + 1, f2 = 2 * f2 + 1;
 
-        for(int i = 0;i < mid;i++) {
-            left += str[i];
-        }
-
-        for(int i = mid+1;i < str.size();i++) {
-            right += str[i];
-        }
-    }
-
-    for(int i = 0;i < left.size();i++) {
-        for(int j = 0;j < right.size();j++) {
-            if(left[i] == right[j]) {
-                right[j] = '*';
-                break;
+        if(c == 1) {
+            if(ENEMIES(f1, f2)) {
+                pf(-1);
+            } else {
+                Union(f1, f2);
+                Union(T(f1), T(f2));
             }
-        }    
-    }
-
-    int count = 0;
-    for(int i = 0;i < right.size();i++) {
-        if(right[i] == '*') {
-            count++;
+        } else if(c == 2) {
+            if(FRIENDS(f1, f2)) {
+                pf(-1);
+            } else {
+                Union(f1, T(f2));
+                Union(T(f1), f2);
+            }
+        } else if(c == 3) {
+            if(FRIENDS(f1, f2)) {
+                pf(1);
+            } else {
+                pf(0);
+            }
+        } else {
+            if(ENEMIES(f1, f2)) {
+                pf(1);
+            } else {
+                pf(0);
+            }
         }
-    }
-    
-    if(count == right.size()) {
-        yes;
-    } else {
-        no;
     }
 }
 
 int main() {
     FAST_IO
-    int t;
-    sc(t);
-
-    while(t--) {
-        solve();
-    }
-
+    //freopen("input.txt", "r", stdin);
+    //freopen("output.txt", "w", stdout);
+    solve();
     return 0;
 }
