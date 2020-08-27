@@ -36,60 +36,50 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
 void solve() {
-    string str;
-    sc(str);
-    
+    int n, m;
+    cin >> n >> m;
 
-    int mid = 0;
-    string left = "";
-    string right = "";
-    if(str.size() % 2 == 0) {
-        mid = (str.size() / 2) - 1;
-        
-        for(int i = 0;i <= mid;i++) {
-            left += str[i];
-        }
+    vector<int> edges[m];
+    for(int i = 0;i < n;i++) {
+        for(int j = 0;j < m;j++) {
+            int a;
+            cin >> a;
 
-        for(int i = mid + 1;i < str.size();i++) {
-            right += str[i];
-        }
-    } else {
-        mid = str.size() / 2;
-
-        for(int i = 0;i < mid;i++) {
-            left += str[i];
-        }
-
-        for(int i = mid+1;i < str.size();i++) {
-            right += str[i];
-        }
-    }
-
-    for(int i = 0;i < left.size();i++) {
-        for(int j = 0;j < right.size();j++) {
-            if(left[i] == right[j]) {
-                right[j] = '*';
-                break;
+            if(a) {
+                edges[j].pb(i);
             }
-        }    
-    }
-
-    int count = 0;
-    for(int i = 0;i < right.size();i++) {
-        if(right[i] == '*') {
-            count++;
         }
     }
-    
-    if(count == right.size()) {
-        yes;
+
+    bool flag = true;
+    for(int i = 0;i < m;i++) {
+        if(edges[i].size() != 2) {
+            flag = 0;
+            break;
+        }
+    }
+
+    if(flag) {
+        set<pair<int, int>> verticesPair;
+        for(int i = 0;i < m;i++) {
+            verticesPair.insert({edges[i][0], edges[i][1]});
+        }
+
+        if(verticesPair.size() != m) {
+            pf("No");
+        } else {
+            pf("Yes");
+        }
     } else {
-        no;
+        pf("No");
     }
 }
 
 int main() {
     FAST_IO
+    //freopen("input.txt", "r", stdin);
+    //freopen("output.txt", "w", stdout);
+
     int t;
     sc(t);
 

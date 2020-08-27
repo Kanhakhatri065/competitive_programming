@@ -36,55 +36,24 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
 void solve() {
-    string str;
-    sc(str);
-    
+    string s, t;
+    cin >> s >> t;
 
-    int mid = 0;
-    string left = "";
-    string right = "";
-    if(str.size() % 2 == 0) {
-        mid = (str.size() / 2) - 1;
-        
-        for(int i = 0;i <= mid;i++) {
-            left += str[i];
-        }
+    int n = int(s.size());
 
-        for(int i = mid + 1;i < str.size();i++) {
-            right += str[i];
-        }
-    } else {
-        mid = str.size() / 2;
-
-        for(int i = 0;i < mid;i++) {
-            left += str[i];
-        }
-
-        for(int i = mid+1;i < str.size();i++) {
-            right += str[i];
-        }
-    }
-
-    for(int i = 0;i < left.size();i++) {
-        for(int j = 0;j < right.size();j++) {
-            if(left[i] == right[j]) {
-                right[j] = '*';
-                break;
+    bool flag = true;
+    for(int i = 0;i < n;i++) {
+        if(s[i] != '?' && t[i] != '?') {
+            if(s[i] != t[i]) {
+                flag = false;
             }
-        }    
-    }
-
-    int count = 0;
-    for(int i = 0;i < right.size();i++) {
-        if(right[i] == '*') {
-            count++;
         }
     }
-    
-    if(count == right.size()) {
-        yes;
+
+    if(flag) {
+        pf("Yes");
     } else {
-        no;
+        pf("No");
     }
 }
 

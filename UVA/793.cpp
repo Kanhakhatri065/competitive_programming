@@ -35,66 +35,70 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
-void solve() {
-    string str;
-    sc(str);
-    
+map<int, int> mp;
+void initialize(int n) {
+    for(int i = 1;i <= n;i++) {
+        mp[i] = i;
+    }
+}
 
-    int mid = 0;
-    string left = "";
-    string right = "";
-    if(str.size() % 2 == 0) {
-        mid = (str.size() / 2) - 1;
-        
-        for(int i = 0;i <= mid;i++) {
-            left += str[i];
-        }
-
-        for(int i = mid + 1;i < str.size();i++) {
-            right += str[i];
-        }
-    } else {
-        mid = str.size() / 2;
-
-        for(int i = 0;i < mid;i++) {
-            left += str[i];
-        }
-
-        for(int i = mid+1;i < str.size();i++) {
-            right += str[i];
-        }
+int find_set(int x) {
+    if(mp[x] == x) {
+        return x;
     }
 
-    for(int i = 0;i < left.size();i++) {
-        for(int j = 0;j < right.size();j++) {
-            if(left[i] == right[j]) {
-                right[j] = '*';
-                break;
-            }
-        }    
+    return find_set(mp[x]);
+}
+
+void union_set(int a, int b) {
+    int x = find_set(a), y = find_set(b);
+    mp[x] = y;
+}
+
+bool is_interconnected(int x, int y) {
+    if(find_set(x) == find_set(y)) {
+        return true;
     }
 
-    int count = 0;
-    for(int i = 0;i < right.size();i++) {
-        if(right[i] == '*') {
-            count++;
-        }
-    }
-    
-    if(count == right.size()) {
-        yes;
-    } else {
-        no;
-    }
+    return false;
 }
 
 int main() {
     FAST_IO
-    int t;
-    sc(t);
+    //freopen("input.txt", "r", stdin);
+    //freopen("output.txt", "w", stdout);
 
+    char str[100000], type;
+    int x, y, n, t;
+
+    scanf("%d\n", &t);
     while(t--) {
-        solve();
+        scanf("%d\n", &n);
+        int cnt1 = 0, cnt2 = 0;
+
+        initialize(n);
+        while(fgets(str, sizeof(str), stdin)) {
+            if(str[0] == '\n') {
+                break;
+            }
+
+            sscanf(str, "%c%d%d", &type, &x, &y);
+            if(type == 'c') {
+                union_set(x, y);
+            } else if(type == 'q') {
+                if(is_interconnected(x, y)) {
+                    cnt1++;
+                } else {
+                    cnt2++;
+                }
+            }
+
+        }
+
+        cout << cnt1 << "," << cnt2 << endl;
+        if(t > 0) {
+            cout << endl;
+        }
     }
 
     return 0;

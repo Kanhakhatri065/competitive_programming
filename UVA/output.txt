@@ -1,2 +1,3 @@
-Case 1: Not possible
-Case 2: Possible from station 4
+There are 640 black pixels.
+There are 512 black pixels.
+There are 384 black pixels.

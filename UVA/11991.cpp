@@ -35,67 +35,42 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+const int MAX = 1e6 + 5;
+vector<int> vec[MAX];
 void solve() {
-    string str;
-    sc(str);
-    
+    int n, m;
+    while(cin >> n >> m) {
+        vector<int> v(n);
+        forIn(v, n);
 
-    int mid = 0;
-    string left = "";
-    string right = "";
-    if(str.size() % 2 == 0) {
-        mid = (str.size() / 2) - 1;
-        
-        for(int i = 0;i <= mid;i++) {
-            left += str[i];
+        int mx = *max_element(all(v));
+        int mn = *min_element(all(v));
+
+        for(int i = 0;i < n;i++) {
+            vec[v[i]].pb(i + 1);
         }
 
-        for(int i = mid + 1;i < str.size();i++) {
-            right += str[i];
-        }
-    } else {
-        mid = str.size() / 2;
+        int k, element;
+        while(m--) {
+            cin >> k >> element;
 
-        for(int i = 0;i < mid;i++) {
-            left += str[i];
-        }
-
-        for(int i = mid+1;i < str.size();i++) {
-            right += str[i];
-        }
-    }
-
-    for(int i = 0;i < left.size();i++) {
-        for(int j = 0;j < right.size();j++) {
-            if(left[i] == right[j]) {
-                right[j] = '*';
-                break;
+            if(int(vec[element].size()) < k) {
+                pf(0);
+            } else {
+                pf(vec[element][k - 1]);
             }
-        }    
-    }
-
-    int count = 0;
-    for(int i = 0;i < right.size();i++) {
-        if(right[i] == '*') {
-            count++;
         }
-    }
-    
-    if(count == right.size()) {
-        yes;
-    } else {
-        no;
+
+        for(int i = mn;i <= mx;i++) {
+            vec[i].clear();
+        }
     }
 }
 
 int main() {
     FAST_IO
-    int t;
-    sc(t);
-
-    while(t--) {
-        solve();
-    }
-
+    //freopen("input.txt", "r", stdin);
+    //freopen("output.txt", "w", stdout);
+    solve();
     return 0;
 }

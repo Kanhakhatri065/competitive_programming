@@ -36,55 +36,46 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
 void solve() {
-    string str;
-    sc(str);
-    
+    int n, a, b, c;
+    cin >> n >> a >> b >> c;
 
-    int mid = 0;
-    string left = "";
-    string right = "";
-    if(str.size() % 2 == 0) {
-        mid = (str.size() / 2) - 1;
-        
-        for(int i = 0;i <= mid;i++) {
-            left += str[i];
-        }
-
-        for(int i = mid + 1;i < str.size();i++) {
-            right += str[i];
+    if((a + b - c) > n || (a + b - c == 1 && n >= 2)) {
+        pf("IMPOSSIBLE");
+    } else if(n == 1) {
+        pf(1);
+    } else if(n == 2) {
+        if(c == 2) {
+            pf("1 1");
+        } else if(a == 2) {
+            pf("1 2");
+        } else if(b == 2) {
+            pf("2 1");
+        } else {
+            assert(false);
         }
     } else {
-        mid = str.size() / 2;
+        vector<int> res;
+        res.reserve(n);
 
-        for(int i = 0;i < mid;i++) {
-            left += str[i];
+        for(int i = 0;i < a - c;i++) {
+            res.pb(2);
         }
 
-        for(int i = mid+1;i < str.size();i++) {
-            right += str[i];
+        for(int i = 0;i < c;i++) {
+            res.pb(3);
         }
-    }
 
-    for(int i = 0;i < left.size();i++) {
-        for(int j = 0;j < right.size();j++) {
-            if(left[i] == right[j]) {
-                right[j] = '*';
-                break;
-            }
-        }    
-    }
-
-    int count = 0;
-    for(int i = 0;i < right.size();i++) {
-        if(right[i] == '*') {
-            count++;
+        for(int i = 0;i < b - c;i++) {
+            res.pb(2);
         }
-    }
-    
-    if(count == right.size()) {
-        yes;
-    } else {
-        no;
+
+        int extra = n - (a + b - c);
+
+        if(extra > 0) {
+            res.insert(res.begin() + 1, extra, 1);
+        }
+
+        vpnt(res);
     }
 }
 
@@ -93,7 +84,8 @@ int main() {
     int t;
     sc(t);
 
-    while(t--) {
+    for(int tt = 1;tt <= t;tt++) {
+        cout << "Case #" << tt << ": ";
         solve();
     }
 

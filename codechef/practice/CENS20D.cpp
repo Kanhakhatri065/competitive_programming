@@ -36,56 +36,31 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
 void solve() {
-    string str;
-    sc(str);
-    
+    int n;
+    sc(n);
 
-    int mid = 0;
-    string left = "";
-    string right = "";
-    if(str.size() % 2 == 0) {
-        mid = (str.size() / 2) - 1;
-        
-        for(int i = 0;i <= mid;i++) {
-            left += str[i];
-        }
+    vector<int> v(n);
+    forIn(v, n);
 
-        for(int i = mid + 1;i < str.size();i++) {
-            right += str[i];
-        }
-    } else {
-        mid = str.size() / 2;
-
-        for(int i = 0;i < mid;i++) {
-            left += str[i];
-        }
-
-        for(int i = mid+1;i < str.size();i++) {
-            right += str[i];
+    int arr[n][n];
+    for(int i = 0;i < n;i++) {
+        for(int j = 0;j < n;j++) {
+            arr[i][j] = v[i] & v[j];
         }
     }
 
-    for(int i = 0;i < left.size();i++) {
-        for(int j = 0;j < right.size();j++) {
-            if(left[i] == right[j]) {
-                right[j] = '*';
-                break;
+    int cnt = 0;
+    for(int i = 0;i < n;i++) {
+        for(int j = 0;j < n;j++) {
+            if(i != j && i < j) {
+                if(arr[i][j] == v[i]) {
+                    cnt++;
+                }
             }
-        }    
-    }
-
-    int count = 0;
-    for(int i = 0;i < right.size();i++) {
-        if(right[i] == '*') {
-            count++;
         }
     }
-    
-    if(count == right.size()) {
-        yes;
-    } else {
-        no;
-    }
+
+    pf(cnt);
 }
 
 int main() {

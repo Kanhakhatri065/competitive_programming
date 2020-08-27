@@ -36,55 +36,41 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
 void solve() {
-    string str;
-    sc(str);
+    int n;
+    sc(n);
+
+    int mn = INT_MAX;
+    vector<int> v(n), u(n);
+    for(int i = 0;i < n;i++) {
+        sc(v[i]);
+        u[i] = v[i];
+        mn = min(mn, v[i]);
+    }
+
+    srt(v);
     
-
-    int mid = 0;
-    string left = "";
-    string right = "";
-    if(str.size() % 2 == 0) {
-        mid = (str.size() / 2) - 1;
-        
-        for(int i = 0;i <= mid;i++) {
-            left += str[i];
-        }
-
-        for(int i = mid + 1;i < str.size();i++) {
-            right += str[i];
-        }
-    } else {
-        mid = str.size() / 2;
-
-        for(int i = 0;i < mid;i++) {
-            left += str[i];
-        }
-
-        for(int i = mid+1;i < str.size();i++) {
-            right += str[i];
+    vector<int> store;
+    bool flag = 0;
+    for(int i = 0;i < n;i++) {
+        if(v[i] != u[i]) {
+            flag = 1;
+            store.pb(u[i]);
         }
     }
 
-    for(int i = 0;i < left.size();i++) {
-        for(int j = 0;j < right.size();j++) {
-            if(left[i] == right[j]) {
-                right[j] = '*';
-                break;
+    if(flag) {
+        flag = 0;
+        if(int(store.size()) > 1) {
+            for(auto it : store) {
+                if(it % mn != 0) {
+                    flag = 1;
+                }
             }
-        }    
-    }
-
-    int count = 0;
-    for(int i = 0;i < right.size();i++) {
-        if(right[i] == '*') {
-            count++;
         }
-    }
-    
-    if(count == right.size()) {
-        yes;
+
+        flag ? no : yes;    
     } else {
-        no;
+        yes;
     }
 }
 
@@ -96,6 +82,5 @@ int main() {
     while(t--) {
         solve();
     }
-
     return 0;
 }

@@ -35,61 +35,65 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
-void solve() {
-    string str;
-    sc(str);
-    
-
-    int mid = 0;
-    string left = "";
-    string right = "";
-    if(str.size() % 2 == 0) {
-        mid = (str.size() / 2) - 1;
-        
-        for(int i = 0;i <= mid;i++) {
-            left += str[i];
-        }
-
-        for(int i = mid + 1;i < str.size();i++) {
-            right += str[i];
-        }
-    } else {
-        mid = str.size() / 2;
-
-        for(int i = 0;i < mid;i++) {
-            left += str[i];
-        }
-
-        for(int i = mid+1;i < str.size();i++) {
-            right += str[i];
-        }
-    }
-
-    for(int i = 0;i < left.size();i++) {
-        for(int j = 0;j < right.size();j++) {
-            if(left[i] == right[j]) {
-                right[j] = '*';
-                break;
-            }
-        }    
-    }
-
-    int count = 0;
-    for(int i = 0;i < right.size();i++) {
-        if(right[i] == '*') {
-            count++;
-        }
-    }
-    
-    if(count == right.size()) {
-        yes;
-    } else {
-        no;
+map<int, int> mp1, mp2;
+void initialize(int n) {
+    for(int i = 1;i <= n;i++) {
+        mp1[i] = i;
     }
 }
 
+int find_set(int x) {
+    if(mp1[x] == x) {
+        return x;
+    }
+
+    return find_set(mp1[x]);
+}
+
+void union_set(int i, int j) {
+    int x = find_set(i), y = find_set(j);
+    mp1[x] = y;
+}
+
+bool isInterconnected(int i, int j) {
+    if(find_set(i) == find_set(j)) {
+        return true;
+    }
+
+    return false;
+}
+
+void solve() {
+    int n, m;
+    cin >> n >> m;
+
+    initialize(n);
+
+    int x, y;
+    for(int i = 1;i <= m;i++) {
+        cin >> x >> y;
+        union_set(x, y);
+    }
+
+    for(int i = 1;i <= n;i++) {
+        mp2[find_set(i)]++;
+    }
+
+    int cnt = 0;
+    for(auto it : mp2) {
+        cnt = max(cnt, it.ss);
+    }
+
+    cout << cnt << endl;
+    mp1.clear();
+    mp2.clear();
+}   
+
 int main() {
     FAST_IO
+    //freopen("input.txt", "r", stdin);
+    //freopen("output.txt", "w", stdout);
+
     int t;
     sc(t);
 

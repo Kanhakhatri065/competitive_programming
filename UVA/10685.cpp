@@ -35,67 +35,63 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+const int MAX = 5e3 + 2;
+int p[MAX], ranks[MAX];
+
+int findp(int x) {
+    return p[x] == x ? x : findp(p[x]);
+}
+
+void joint(int x, int y) {
+    x = findp(x), y = findp(y);
+
+    if(x != y) {
+        p[x] = y;
+        ranks[y] += ranks[x];
+    }
+}
+
 void solve() {
-    string str;
-    sc(str);
-    
+    int c, r;
+    string cmd;
 
-    int mid = 0;
-    string left = "";
-    string right = "";
-    if(str.size() % 2 == 0) {
-        mid = (str.size() / 2) - 1;
-        
-        for(int i = 0;i <= mid;i++) {
-            left += str[i];
+    while(cin >> c >> r) {
+        if(!c && !r) {
+            break;
         }
 
-        for(int i = mid + 1;i < str.size();i++) {
-            right += str[i];
-        }
-    } else {
-        mid = str.size() / 2;
-
-        for(int i = 0;i < mid;i++) {
-            left += str[i];
+        map<string, int> mp;
+        for(int i = 0;i < c;i++) {
+            sc(cmd);
+            mp[cmd] = i;
+            p[i] = i;
+            ranks[i] = 1;
         }
 
-        for(int i = mid+1;i < str.size();i++) {
-            right += str[i];
-        }
-    }
+        int j, k;
+        for(int i = 0;i < r;i++) {
+            sc(cmd);
+            j = mp[cmd];
 
-    for(int i = 0;i < left.size();i++) {
-        for(int j = 0;j < right.size();j++) {
-            if(left[i] == right[j]) {
-                right[j] = '*';
-                break;
-            }
-        }    
-    }
+            sc(cmd);
+            k = mp[cmd];
 
-    int count = 0;
-    for(int i = 0;i < right.size();i++) {
-        if(right[i] == '*') {
-            count++;
+            joint(j, k);
         }
-    }
-    
-    if(count == right.size()) {
-        yes;
-    } else {
-        no;
+
+        int ans = 0;
+        for(int i = 0;i < c;i++) {
+            ans = max(ans, ranks[i]);
+        }
+
+        pf(ans);
     }
 }
 
 int main() {
     FAST_IO
-    int t;
-    sc(t);
-
-    while(t--) {
-        solve();
-    }
-
+    //freopen("input.txt", "r", stdin);
+    //freopen("output.txt", "w", stdout);
+    solve();
     return 0;
 }

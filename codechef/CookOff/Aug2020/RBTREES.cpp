@@ -35,57 +35,48 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
+vector<vector<int>> adj;
+string s;
+ll ans;
+int dfs(int root, int par, int color) {
+    int curr = 0, c = s[root] - '0';
+    for(auto it : adj[root]) {
+        if(it != par) {
+            curr += dfs(it, root, color ^ 1);
+        }
+    }
+
+    if(c ^ color) {
+        curr += (c == 0) ? 1 : -1;
+    }
+
+    ans += abs(curr);
+    return curr;
+}
+
 void solve() {
-    string str;
-    sc(str);
-    
+    ll n, fans = LLONG_MAX;
+    sc(n);
+    ans = 0;
 
-    int mid = 0;
-    string left = "";
-    string right = "";
-    if(str.size() % 2 == 0) {
-        mid = (str.size() / 2) - 1;
-        
-        for(int i = 0;i <= mid;i++) {
-            left += str[i];
-        }
+    adj.clear();
+    adj.resize(n);
 
-        for(int i = mid + 1;i < str.size();i++) {
-            right += str[i];
-        }
-    } else {
-        mid = str.size() / 2;
-
-        for(int i = 0;i < mid;i++) {
-            left += str[i];
-        }
-
-        for(int i = mid+1;i < str.size();i++) {
-            right += str[i];
-        }
+    int u, v;
+    for(int i = 1;i < n;i++) {
+        cin >> u >> v;
+        u--, v--;
+        adj[u].pb(v);
+        adj[v].pb(u);
     }
 
-    for(int i = 0;i < left.size();i++) {
-        for(int j = 0;j < right.size();j++) {
-            if(left[i] == right[j]) {
-                right[j] = '*';
-                break;
-            }
-        }    
+    sc(s);
+    for(int rcolor = 0, tmp = dfs(0, 0, rcolor);(rcolor < 2);rcolor++, ans = 0, tmp = dfs(0, 0, rcolor)) {
+        fans = tmp == 0 ? min(fans, ans) : fans;
     }
 
-    int count = 0;
-    for(int i = 0;i < right.size();i++) {
-        if(right[i] == '*') {
-            count++;
-        }
-    }
-    
-    if(count == right.size()) {
-        yes;
-    } else {
-        no;
-    }
+    //cout << "ans : ";
+    cout << ((fans == LLONG_MAX) ? -1 : fans) << endl;
 }
 
 int main() {

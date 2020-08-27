@@ -35,64 +35,58 @@ typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
 /*----------------------------------------------------------------*/
-void solve() {
-    string str;
-    sc(str);
-    
+const int MAX = 1e5 + 5;
+int par[MAX], group[MAX];
 
-    int mid = 0;
-    string left = "";
-    string right = "";
-    if(str.size() % 2 == 0) {
-        mid = (str.size() / 2) - 1;
-        
-        for(int i = 0;i <= mid;i++) {
-            left += str[i];
-        }
+int find_set(int n) {
+    return par[n] == n ? n : find_set(par[n]);
+}
 
-        for(int i = mid + 1;i < str.size();i++) {
-            right += str[i];
-        }
-    } else {
-        mid = str.size() / 2;
-
-        for(int i = 0;i < mid;i++) {
-            left += str[i];
-        }
-
-        for(int i = mid+1;i < str.size();i++) {
-            right += str[i];
-        }
+void union_set(int u, int v) {
+    u = find_set(u), v = find_set(v);
+    if(u != v) {
+        par[v] = u;
+        group[u] += group[v];
     }
+    cout << group[u] << endl;
+}
 
-    for(int i = 0;i < left.size();i++) {
-        for(int j = 0;j < right.size();j++) {
-            if(left[i] == right[j]) {
-                right[j] = '*';
-                break;
-            }
-        }    
-    }
+void solve() {  
+    int n;
+    sc(n);
 
-    int count = 0;
-    for(int i = 0;i < right.size();i++) {
-        if(right[i] == '*') {
-            count++;
+    map<string, int> mp;
+    string s1, s2;
+
+    int a = 0;
+    int x, y;
+    for(int i = 0;i < n;i++) {
+        cin >> s1 >> s2;
+        if(mp.find(s1) == mp.end()) {
+            par[a] = a;
+            group[a] = 1;
+            mp[s1] = a++;
         }
-    }
-    
-    if(count == right.size()) {
-        yes;
-    } else {
-        no;
+
+        if(mp.find(s2) == mp.end()) {
+            par[a] = a;
+            group[a] = 1;
+            mp[s2] = a++;
+        }
+
+        x = mp[s1], y = mp[s2];
+        union_set(x, y);
     }
 }
 
 int main() {
     FAST_IO
+    //freopen("input.txt", "r", stdin);
+    //freopen("output.txt", "w", stdout);
+
     int t;
     sc(t);
-
+    
     while(t--) {
         solve();
     }
