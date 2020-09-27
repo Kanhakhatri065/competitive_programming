@@ -25,43 +25,48 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
+set<int> divisors(int n) {
+    set<int> s;
+    for(int i = 1;i * i <= n;i++) {
+        if(n % i == 0) {
+            s.insert(i);
+            s.insert(n / i);
+        }
+    }
+
+    return s;
+}
+
 void solve() {
-    string str;
-    sc(str);
+    int n;
+    sc(n);
 
-    int n = int(str.size());
+    vector<int> v(n);
+    forIn(v, n);
 
-    stack<char> s;
-    s.push(str[0]);
-    for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
-            if(str[i] == s.top()) {
-                s.pop();
-            } else {
-                s.push(str[i]);
+    bool flag = true;
+    for(int i = 0;i < n;i++) {
+        if(v[i] != i + 1) {
+            set<int> divs = divisors(i + 1);
+
+            if(divs.find(v[i]) == divs.end()) {
+                flag = false;
+                break;
             }
-        } else {
-            s.push(str[i]);
         }
     }
 
-    if(s.empty()) {
-        pf("Empty String");
-    } else {
-        string out = "";
-        while(!s.empty()) {
-            out += s.top();
-            s.pop();
-        }
-
-        reverse(all(out));
-
-        pf(out);
-    }
+    flag ? yes : no;
 }
 
 int main() {
     go();
-    solve();
+    int t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+    
     return 0;
 }

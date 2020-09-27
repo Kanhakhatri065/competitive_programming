@@ -32,21 +32,20 @@ void solve() {
     int n = int(str.size());
 
     stack<char> s;
-    s.push(str[0]);
-    for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
+    for(int i = 0;i < n;i++) {
+        if(s.empty()) {
+            s.push(str[i]);
+        } else {
             if(str[i] == s.top()) {
                 s.pop();
             } else {
                 s.push(str[i]);
             }
-        } else {
-            s.push(str[i]);
         }
     }
 
     if(s.empty()) {
-        pf("Empty String");
+        pf("KHALI");
     } else {
         string out = "";
         while(!s.empty()) {
@@ -55,13 +54,18 @@ void solve() {
         }
 
         reverse(all(out));
-
         pf(out);
     }
 }
 
 int main() {
     go();
-    solve();
+    int t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+
     return 0;
 }

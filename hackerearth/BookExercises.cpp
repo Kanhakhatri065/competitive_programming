@@ -25,38 +25,47 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
-void solve() {
-    string str;
-    sc(str);
+struct book {
+    int ex;
+    string name;
+};
 
-    int n = int(str.size());
-
-    stack<char> s;
-    s.push(str[0]);
-    for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
-            if(str[i] == s.top()) {
-                s.pop();
-            } else {
-                s.push(str[i]);
-            }
-        } else {
-            s.push(str[i]);
-        }
+void printMin(stack<book*> &s, stack<book*> &sMin) {
+    int cnt = 0;
+    while(s.top() != sMin.top()) {
+        s.pop();
+        sMin.pop();
+        cnt++;
     }
 
-    if(s.empty()) {
-        pf("Empty String");
-    } else {
-        string out = "";
-        while(!s.empty()) {
-            out += s.top();
-            s.pop();
+    cout << cnt << " " << s.top()->name << endl;
+    s.pop();
+    sMin.pop();
+}
+
+void solve() {
+    stack<book*> s, sMin;
+    int n;
+    sc(n);
+
+    while(n--) {
+        book *b = new book;
+        cin >> b->ex;
+        if(b->ex == -1) {
+            printMin(s, sMin);
+        } else {
+            cin >> b->name;
+            if(b->ex != 0) {
+                s.push(b);
+                if(!sMin.empty() && sMin.top()->ex >= b->ex) {
+                    sMin.push(b);
+                } else if(sMin.empty()) {
+                    sMin.push(b);
+                } else {
+                    sMin.push(sMin.top());
+                }
+            }
         }
-
-        reverse(all(out));
-
-        pf(out);
     }
 }
 

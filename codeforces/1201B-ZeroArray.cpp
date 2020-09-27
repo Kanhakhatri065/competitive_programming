@@ -26,38 +26,24 @@ void go() {
 }
 /*----------------------------------------------------------------*/
 void solve() {
-    string str;
-    sc(str);
+    int n;
+    sc(n);
 
-    int n = int(str.size());
-
-    stack<char> s;
-    s.push(str[0]);
-    for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
-            if(str[i] == s.top()) {
-                s.pop();
-            } else {
-                s.push(str[i]);
-            }
-        } else {
-            s.push(str[i]);
-        }
+    int mx = 0;
+    ll sum = 0;
+    int x;
+    for(int i = 0;i < n;i++) {
+        sc(x);
+        sum += x;
+        mx = max(mx, x);
     }
 
-    if(s.empty()) {
-        pf("Empty String");
-    } else {
-        string out = "";
-        while(!s.empty()) {
-            out += s.top();
-            s.pop();
-        }
-
-        reverse(all(out));
-
-        pf(out);
+    bool flag = true;
+    if(sum & 1 || sum < 2LL * mx) {
+        flag = false;
     }
+
+    flag ? yes : no;
 }
 
 int main() {

@@ -26,42 +26,48 @@ void go() {
 }
 /*----------------------------------------------------------------*/
 void solve() {
-    string str;
-    sc(str);
+    int n, k;
+    cin >> n >> k;
 
-    int n = int(str.size());
+    vector<pair<ll, ll>> v(n);
+    for(int i = 0;i < n;i++) {
+        cin >> v[i].first >> v[i].second;
+    }
 
-    stack<char> s;
-    s.push(str[0]);
-    for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
-            if(str[i] == s.top()) {
-                s.pop();
-            } else {
-                s.push(str[i]);
+    sort(all(v));
+
+    int i = 0;
+    ll current = v[i].first;
+    ll ans = 0, diff, cnt;
+    while(i < n) {
+        if(current >= v[i].second) {
+            i++;
+        } else if(current >= v[i].first && current < v[i].second) {
+            diff = v[i].second - current;
+            cnt = diff / k;
+            if(diff % k) {
+                cnt++;
             }
-        } else {
-            s.push(str[i]);
+
+            current += cnt * k;
+            ans += cnt;
+        } else if(current < v[i].first) {
+            current = v[i].first;
         }
     }
 
-    if(s.empty()) {
-        pf("Empty String");
-    } else {
-        string out = "";
-        while(!s.empty()) {
-            out += s.top();
-            s.pop();
-        }
-
-        reverse(all(out));
-
-        pf(out);
-    }
+    pf(ans);
 }
 
 int main() {
     go();
-    solve();
+    int t;
+    sc(t);
+
+    for(int tt = 1;tt <= t;tt++) {
+        cout << "Case #" << tt << ": ";
+        solve();
+    }
+
     return 0;
 }

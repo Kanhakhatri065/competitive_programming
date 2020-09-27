@@ -25,43 +25,46 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
+int solve(const string &s, int x, int y) {
+    int res = 0;
+    for(auto c : s) {
+        if(c - '0' == x) {
+            res++;
+            swap(x, y);
+        }
+    }
+
+    if(x != y && res & 1) {
+        res--;
+    }
+
+    return res;
+}
+
 void solve() {
-    string str;
-    sc(str);
+    string s;
+    sc(s);
 
-    int n = int(str.size());
-
-    stack<char> s;
-    s.push(str[0]);
-    for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
-            if(str[i] == s.top()) {
-                s.pop();
-            } else {
-                s.push(str[i]);
-            }
-        } else {
-            s.push(str[i]);
+    int n = int(s.size());
+    int ans = 0;
+    for(int i = 0;i < 10;i++) {
+        for(int j = 0;j < 10;j++) {
+            ans = max(ans, solve(s, i, j));
         }
     }
 
-    if(s.empty()) {
-        pf("Empty String");
-    } else {
-        string out = "";
-        while(!s.empty()) {
-            out += s.top();
-            s.pop();
-        }
-
-        reverse(all(out));
-
-        pf(out);
-    }
+    ans = n - ans;
+    pf(ans);
 }
 
 int main() {
     go();
-    solve();
+    int t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+
     return 0;
 }

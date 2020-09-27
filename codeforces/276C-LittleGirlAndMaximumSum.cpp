@@ -26,38 +26,41 @@ void go() {
 }
 /*----------------------------------------------------------------*/
 void solve() {
-    string str;
-    sc(str);
+    int n, q;
+    cin >> n >> q;
 
-    int n = int(str.size());
+    ll arr[n];
+    for(int i = 0;i < n;i++) {
+        cin >> arr[i];
+    }
 
-    stack<char> s;
-    s.push(str[0]);
-    for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
-            if(str[i] == s.top()) {
-                s.pop();
-            } else {
-                s.push(str[i]);
-            }
-        } else {
-            s.push(str[i]);
+    ll res[n];
+    ll cnt[n] = {0};
+
+    sort(arr, arr + n, greater<ll>());
+    for(int i = 1;i <= q;i++) {
+        int l, r;
+        cin >> l >> r;
+        l--, r--;
+        cnt[l]++;
+        if(r + 1 < n) {
+            cnt[r + 1]--;
         }
     }
 
-    if(s.empty()) {
-        pf("Empty String");
-    } else {
-        string out = "";
-        while(!s.empty()) {
-            out += s.top();
-            s.pop();
-        }
-
-        reverse(all(out));
-
-        pf(out);
+    ll v = 0;
+    for(int i = 0;i < n;i++) {
+        v += cnt[i];
+        res[i] = v;
     }
+
+    sort(res, res + n, greater<ll>());
+    ll sum = 0LL;
+    for(int i = 0;i < n;i++) {
+        sum += res[i] * arr[i];
+    }
+
+    pf(sum);
 }
 
 int main() {

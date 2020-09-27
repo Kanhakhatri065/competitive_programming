@@ -1,65 +1,47 @@
+/*** I came, I saw, I conquered. ***/
 #include <bits/stdc++.h>
-
 using namespace std;
-
-typedef long long int ll;
-
-/*
-int main() {
-    long long int size, operations;
-    cin >> size >> operations;
-
-    vector<ll> v(size, 0);
-    for(ll i = 0;i < size;i++) {
-        cin >> v[i];
-    }
-
-    if(operations > size) {
-        cout << "-1" << endl;
-    } else {
-        long long int last_max = v[0];
-        v.erase(v.begin());
-
-        ll temp;
-        for(long long int i = 1;i < operations;i++) {
-            temp = v[0];
-
-            v.erase(v.begin());
-
-            if(temp > last_max) {
-                last_max = temp;
-            }
-        }
-
-        cout << last_max << endl;
-    }
-    return 0;
+typedef long long ll;typedef unsigned long long ull;
+#define sc(a) cin >> a
+#define pf(a) cout << a << endl
+#define forIn(arr, num) for(ll i = 0; i < num; i++) cin >> arr[i];
+#define vpnt(ans) for(ll i = 0; i < ans.size(); i++) cout << ans[i] << (i + 1 < ans.size() ? ' ' : '\n');
+#define mod 1000000007
+#define pb push_back
+#define all(v) (v).begin(), (v).end()
+#define GET_SET_BITS(a) (__builtin_popcount(a))
+#define GET_SET_BITSLL(a) ( __builtin_popcountll(a))
+#define GET_TRAIL_ZERO(a) (__builtin_ctz(a))
+#define GET_LEAD_ZERO(a) (__builtin_clz(a))
+#define GET_PARITY(a) (__builtin_parity(a))
+#define no cout << "NO" << endl
+#define yes cout << "YES" << endl
+void go() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
+#ifndef ONLINE_JUDGE
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+#endif
 }
-*/
+/*----------------------------------------------------------------*/
+void solve() {
+    ll n, k;
+    cin >> n >> k;
+
+    
+    if(n==1&&k%2!=0){cout<<-1;return;}
+    long long arr[n+1]={0},m=0;
+    for(int i=1;i<=n;i++) sc(arr[i]);
+    if(k<=n)m=max(*max_element(arr+1,arr+k),arr[k+1]);
+    else{
+        m=*max_element(arr,arr+n+1);
+    }
+    cout<<m << endl;
+}
 
 int main() {
-    ll size, operations;
-    cin >> size >> operations;
-
-    ll m = 0;
-
-    ll arr[size];
-    for(ll i = 0;i < size;i++) {
-        cin >> arr[i];
-        m = max(arr[i], m);
-    }
-
-    if(operations == size || (size == 1 && operations % 2 == 1)) {
-        cout << "-1 " << endl;
-    } else if(operations > size + 1) {
-        cout << m << endl;
-    } else {
-        m = -1;
-        for(ll i = 0;i < operations - 1;i++) {
-            m = max(m, arr[i]);
-        }
-        cout << m << endl;
-    }
-
+    go();
+    solve();
     return 0;
 }

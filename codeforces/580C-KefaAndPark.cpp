@@ -25,39 +25,52 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
-void solve() {
-    string str;
-    sc(str);
-
-    int n = int(str.size());
-
-    stack<char> s;
-    s.push(str[0]);
-    for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
-            if(str[i] == s.top()) {
-                s.pop();
-            } else {
-                s.push(str[i]);
-            }
-        } else {
-            s.push(str[i]);
-        }
-    }
-
-    if(s.empty()) {
-        pf("Empty String");
+const int MAX = 1e5 + 5;
+int n, m;
+int cats[MAX];
+vector<int> adj[MAX];
+bool visited[MAX];
+int cnt;
+void dfs(int v, int consecutive_cats) {
+    visited[v] = 1;
+    if(cats[v] == 1) {
+        consecutive_cats++;
     } else {
-        string out = "";
-        while(!s.empty()) {
-            out += s.top();
-            s.pop();
-        }
-
-        reverse(all(out));
-
-        pf(out);
+        consecutive_cats = 0;
     }
+
+    if(consecutive_cats > m) {
+        return;
+    }
+
+    if(v != 1 && int(adj[v].size()) == 1) {
+        cnt++;
+    }
+
+    for(int it : adj[v]) {
+        if(!visited[it]) {
+            dfs(it, consecutive_cats);
+        }
+    }
+}
+
+void solve() {
+    cin >> n >> m;
+    
+    for(int i = 1;i <= n;i++) {
+        sc(cats[i]);
+    }
+
+    int src, dest;
+    for(int i = 1;i < n;i++) {
+        cin >> src >> dest;
+        adj[src].pb(dest);
+        adj[dest].pb(src);
+    }
+
+    cnt = 0;
+    dfs(1, 0);
+    pf(cnt);
 }
 
 int main() {

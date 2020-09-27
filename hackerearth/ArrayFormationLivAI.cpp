@@ -25,43 +25,44 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
-void solve() {
-    string str;
-    sc(str);
-
-    int n = int(str.size());
-
-    stack<char> s;
-    s.push(str[0]);
-    for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
-            if(str[i] == s.top()) {
-                s.pop();
-            } else {
-                s.push(str[i]);
+const int MAX = 1e6 + 5;
+bool sieve[MAX];
+void precomputation() {
+    memset(sieve, true, sizeof(sieve));
+    sieve[0] = sieve[1] = false;
+    for(int i = 2;i < MAX;i++) {
+        if(sieve[i]) {
+            for(int j = 2 * i;j < MAX;j += i) {
+                sieve[j] = false;
             }
+        }
+    }
+}
+
+void solve() {
+    int n;
+    sc(n);
+
+    vector<int> v(n);
+    forIn(v, n);
+
+    vector<int> primes, composite;
+    for(int i = 0;i < n;i++) {
+        if(sieve[v[i]]) {
+            primes.pb(v[i]);
         } else {
-            s.push(str[i]);
+            composite.pb(v[i]);
         }
     }
 
-    if(s.empty()) {
-        pf("Empty String");
-    } else {
-        string out = "";
-        while(!s.empty()) {
-            out += s.top();
-            s.pop();
-        }
-
-        reverse(all(out));
-
-        pf(out);
-    }
+    reverse(all(composite));
+    vpnt(primes);
+    vpnt(composite);
 }
 
 int main() {
     go();
+    precomputation();
     solve();
     return 0;
 }

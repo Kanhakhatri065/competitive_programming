@@ -26,38 +26,19 @@ void go() {
 }
 /*----------------------------------------------------------------*/
 void solve() {
-    string str;
-    sc(str);
+    int n;
+    sc(n);
 
-    int n = int(str.size());
-
-    stack<char> s;
-    s.push(str[0]);
-    for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
-            if(str[i] == s.top()) {
-                s.pop();
-            } else {
-                s.push(str[i]);
-            }
-        } else {
-            s.push(str[i]);
-        }
+    ll d = 1, abc = 0;
+    ll nzd, nzabc;
+    for(int i = 1;i <= n;i++) {
+        nzd = abc * 3LL % mod;
+        nzabc = (abc * 2LL + d) % mod;
+        d = nzd;
+        abc = nzabc;
     }
 
-    if(s.empty()) {
-        pf("Empty String");
-    } else {
-        string out = "";
-        while(!s.empty()) {
-            out += s.top();
-            s.pop();
-        }
-
-        reverse(all(out));
-
-        pf(out);
-    }
+    pf(d);
 }
 
 int main() {

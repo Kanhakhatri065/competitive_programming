@@ -26,42 +26,34 @@ void go() {
 }
 /*----------------------------------------------------------------*/
 void solve() {
-    string str;
-    sc(str);
+    int n;
+    sc(n);
 
-    int n = int(str.size());
+    vector<int> v(n);
+    forIn(v, n);
 
-    stack<char> s;
-    s.push(str[0]);
-    for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
-            if(str[i] == s.top()) {
-                s.pop();
-            } else {
-                s.push(str[i]);
-            }
-        } else {
-            s.push(str[i]);
-        }
-    }
+    int sum = accumulate(all(v), 0);
 
-    if(s.empty()) {
-        pf("Empty String");
+    bool flag;
+    if(sum == 0) {
+        flag = true;
+    } else if(sum < 0) {
+        flag = false;
     } else {
-        string out = "";
-        while(!s.empty()) {
-            out += s.top();
-            s.pop();
-        }
-
-        reverse(all(out));
-
-        pf(out);
+        flag = true;
     }
+
+    flag ? yes : no;
 }
 
 int main() {
     go();
-    solve();
+    int t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+
     return 0;
 }

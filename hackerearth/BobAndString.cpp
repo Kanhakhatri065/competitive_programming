@@ -26,42 +26,37 @@ void go() {
 }
 /*----------------------------------------------------------------*/
 void solve() {
-    string str;
-    sc(str);
+    string s, t;
+    cin >> s >> t;
 
-    int n = int(str.size());
+    int a[26], b[26];
+    memset(a, 0, sizeof(a));
+    memset(b, 0, sizeof(b));
 
-    stack<char> s;
-    s.push(str[0]);
-    for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
-            if(str[i] == s.top()) {
-                s.pop();
-            } else {
-                s.push(str[i]);
-            }
-        } else {
-            s.push(str[i]);
-        }
+    for(char c : s) {
+        a[c - 'a']++;
     }
 
-    if(s.empty()) {
-        pf("Empty String");
-    } else {
-        string out = "";
-        while(!s.empty()) {
-            out += s.top();
-            s.pop();
-        }
-
-        reverse(all(out));
-
-        pf(out);
+    for(char c : t) {
+        b[c - 'a']++;
     }
+
+    ll cnt = 0;
+    for(int i = 0;i < 26;i++) {
+        cnt += abs(a[i] - b[i]);
+    }
+
+    pf(cnt);
 }
 
 int main() {
     go();
-    solve();
+    int t;
+    sc(t);
+    
+    while(t--) {
+        solve();
+    }
+
     return 0;
 }

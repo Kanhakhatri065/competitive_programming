@@ -26,42 +26,45 @@ void go() {
 }
 /*----------------------------------------------------------------*/
 void solve() {
-    string str;
-    sc(str);
+	int n;
+	sc(n);
 
-    int n = int(str.size());
+	char arr[n][n];
+	for(int i = 0;i < n;i++) {
+		for(int j = 0;j < n;j++) {
+			sc(arr[i][j]);
+		}
+	}
 
-    stack<char> s;
-    s.push(str[0]);
-    for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
-            if(str[i] == s.top()) {
-                s.pop();
-            } else {
-                s.push(str[i]);
-            }
-        } else {
-            s.push(str[i]);
-        }
-    }
+	for(int i = 0;i < n;i++) {
+		int k = n - 1;
+		while(arr[i][k] == '.' && k >= 0) {
+			arr[i][k] = 'Y';
+			k--;
+		}
+	}
 
-    if(s.empty()) {
-        pf("Empty String");
-    } else {
-        string out = "";
-        while(!s.empty()) {
-            out += s.top();
-            s.pop();
-        }
+	int res = 0;
+	for(int i = 0;i < n;i++) {
+		int k = n - 1;
+		while((arr[k][i] == 'Y' || arr[k][i] == '.') && k >=  0) {
+			if(arr[k][i] == 'Y') {
+				res++;
+			}
+			k--;
+		}
+	}
 
-        reverse(all(out));
-
-        pf(out);
-    }
+	pf(res);
 }
 
 int main() {
-    go();
-    solve();
-    return 0;
+	int t;
+	sc(t);
+	
+	while(t--) {
+		solve();
+	}
+
+	return 0;
 }

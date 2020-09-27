@@ -26,37 +26,40 @@ void go() {
 }
 /*----------------------------------------------------------------*/
 void solve() {
+    int n, q;
+    cin >> n >> q;
+
     string str;
     sc(str);
 
-    int n = int(str.size());
-
-    stack<char> s;
-    s.push(str[0]);
-    for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
-            if(str[i] == s.top()) {
-                s.pop();
-            } else {
-                s.push(str[i]);
-            }
-        } else {
-            s.push(str[i]);
+    int arr[n + 1][26];
+    memset(arr, 0, sizeof(arr));
+    for(int i = 1;i <= n;i++) {
+        arr[i][str[i - 1] - 'a']++;
+        for(int j = 0;j < 26;j++) {
+            arr[i][j] += arr[i - 1][j];
         }
     }
 
-    if(s.empty()) {
-        pf("Empty String");
-    } else {
-        string out = "";
-        while(!s.empty()) {
-            out += s.top();
-            s.pop();
+    int temp_arr[26];
+    char ans;
+    int cnt, l, r, k;
+    while(q--) {
+        cin >> l >> r >> k;
+        for(int i = 0;i < 26;i++) {
+            temp_arr[i] = arr[r][i] - arr[l - 1][i];
         }
 
-        reverse(all(out));
+        cnt = 0;
+        for(int i = 0;i < 26;i++) {
+            if(cnt + temp_arr[i] >= k) {
+                ans = char(i + 97);
+                break;
+            }
+            cnt += temp_arr[i];
+        }
 
-        pf(out);
+        pf(ans);
     }
 }
 

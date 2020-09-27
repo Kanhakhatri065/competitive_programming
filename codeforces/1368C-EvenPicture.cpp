@@ -26,37 +26,23 @@ void go() {
 }
 /*----------------------------------------------------------------*/
 void solve() {
-    string str;
-    sc(str);
+    int n;
+    sc(n);
 
-    int n = int(str.size());
-
-    stack<char> s;
-    s.push(str[0]);
-    for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
-            if(str[i] == s.top()) {
-                s.pop();
-            } else {
-                s.push(str[i]);
-            }
+    int ans = n * 3 + 4;
+    pf(ans);
+    for(int i = 0;i <= (n + 1);i++) {
+        if(i == 0) {
+            cout << i << " " << i << endl;
+            cout << (i + 1) << " " << i << endl;
+        } else if(i == n + 1) {
+            cout << (i - 1) << " " << i << endl;
+            cout << i << " " << i << endl;
         } else {
-            s.push(str[i]);
+            cout << (i - 1) << " " << i << endl;
+            cout << i << " " << i << endl;
+            cout << (i + 1) << " " << i << endl;
         }
-    }
-
-    if(s.empty()) {
-        pf("Empty String");
-    } else {
-        string out = "";
-        while(!s.empty()) {
-            out += s.top();
-            s.pop();
-        }
-
-        reverse(all(out));
-
-        pf(out);
     }
 }
 

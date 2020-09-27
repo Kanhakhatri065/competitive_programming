@@ -26,42 +26,49 @@ void go() {
 }
 /*----------------------------------------------------------------*/
 void solve() {
-    string str;
-    sc(str);
+    string s;
+    sc(s);
 
-    int n = int(str.size());
+    int n = int(s.size());
+    int x;
+    sc(x);
 
-    stack<char> s;
-    s.push(str[0]);
-    for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
-            if(str[i] == s.top()) {
-                s.pop();
-            } else {
-                s.push(str[i]);
+    string w(n, '1');
+
+    for(int i = 0;i < n;i++) {
+        if(s[i] == '0') {
+            if(i + x < n) {
+                w[i + x] = '0';
             }
-        } else {
-            s.push(str[i]);
+
+            if(i - x >= 0) {
+                w[i - x] = '0';
+            }
         }
     }
 
-    if(s.empty()) {
-        pf("Empty String");
-    } else {
-        string out = "";
-        while(!s.empty()) {
-            out += s.top();
-            s.pop();
+    for(int i = 0;i < n;i++) {
+        bool one = false;
+        one = one || (i - x >= 0 && w[i - x] == '1');
+        one = one || (i + x < n && w[i + x] == '1');
+
+        if(s[i] != one + '0') {
+            pf(-1);
+            return;
         }
-
-        reverse(all(out));
-
-        pf(out);
     }
+
+    pf(w);
 }
 
 int main() {
     go();
-    solve();
+    int t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+
     return 0;
 }

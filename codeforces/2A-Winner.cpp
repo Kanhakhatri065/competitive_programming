@@ -25,38 +25,31 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
+const int MAX = 1e3 + 5;
+string names[MAX];
+int score[MAX];
 void solve() {
-    string str;
-    sc(str);
+    int n;
+    sc(n);
 
-    int n = int(str.size());
-
-    stack<char> s;
-    s.push(str[0]);
-    for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
-            if(str[i] == s.top()) {
-                s.pop();
-            } else {
-                s.push(str[i]);
-            }
-        } else {
-            s.push(str[i]);
-        }
+    map<string, int> man;
+    for(int i = 0;i < n;i++) {
+        cin >> names[i] >> score[i];
+        man[names[i]] += score[i];
     }
 
-    if(s.empty()) {
-        pf("Empty String");
-    } else {
-        string out = "";
-        while(!s.empty()) {
-            out += s.top();
-            s.pop();
+    int mx = -1;
+    for(int i = 0;i < n;i++) {
+        mx = max(mx, man[names[i]]);
+    }
+
+    map<string, int> b;
+    for(int i = 0;i < n;i++) {
+        b[names[i]] += score[i];
+        if(b[names[i]] >= mx && man[names[i]] >= mx) {
+            pf(names[i]);
+            break;
         }
-
-        reverse(all(out));
-
-        pf(out);
     }
 }
 

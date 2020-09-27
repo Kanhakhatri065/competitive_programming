@@ -26,37 +26,23 @@ void go() {
 }
 /*----------------------------------------------------------------*/
 void solve() {
-    string str;
-    sc(str);
+    int n, q;
+    cin >> n >> q;
 
-    int n = int(str.size());
-
-    stack<char> s;
-    s.push(str[0]);
-    for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
-            if(str[i] == s.top()) {
-                s.pop();
-            } else {
-                s.push(str[i]);
-            }
+    set<int> s;
+    int type, val;
+    while(q--) {
+        cin >> type >> val;
+        if(type == 1) {
+            s.insert(val);
         } else {
-            s.push(str[i]);
+            auto it = s.lower_bound(val);
+            if(it != s.end()) {
+                pf((*it));
+            } else {
+                pf(-1);
+            }
         }
-    }
-
-    if(s.empty()) {
-        pf("Empty String");
-    } else {
-        string out = "";
-        while(!s.empty()) {
-            out += s.top();
-            s.pop();
-        }
-
-        reverse(all(out));
-
-        pf(out);
     }
 }
 

@@ -26,42 +26,36 @@ void go() {
 }
 /*----------------------------------------------------------------*/
 void solve() {
-    string str;
-    sc(str);
+    int n;
+    sc(n);
 
-    int n = int(str.size());
-
-    stack<char> s;
-    s.push(str[0]);
+    vector<int> indegree(n);
     for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
-            if(str[i] == s.top()) {
-                s.pop();
-            } else {
-                s.push(str[i]);
-            }
-        } else {
-            s.push(str[i]);
+        int u, v;
+        cin >> u >> v;
+        u--, v--;
+
+        indegree[v]++;
+    }
+
+    int cnt = 0;
+    for(auto it : indegree) {
+        if(it == 0) {
+            cnt++;
         }
     }
 
-    if(s.empty()) {
-        pf("Empty String");
-    } else {
-        string out = "";
-        while(!s.empty()) {
-            out += s.top();
-            s.pop();
-        }
-
-        reverse(all(out));
-
-        pf(out);
-    }
+    pf((cnt - 1));
 }
 
 int main() {
     go();
-    solve();
+    int t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+
     return 0;
 }

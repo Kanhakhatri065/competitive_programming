@@ -25,43 +25,56 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
+bool cmp(pair<ll, string> a, pair<ll, string> b) {
+    if(a.first == b.first) {
+        return a.second < b.second;
+    }
+
+    return a.first > b.first;
+}
 void solve() {
+    int n;
+    sc(n);
+
+    int x;
     string str;
-    sc(str);
+    map<string, vector<int>> mp;
+    for(int i = 0;i < n;i++) {
+        cin >> str >> x;
+        mp[str].pb(x);
+    }
 
-    int n = int(str.size());
-
-    stack<char> s;
-    s.push(str[0]);
-    for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
-            if(str[i] == s.top()) {
-                s.pop();
-            } else {
-                s.push(str[i]);
+    vector<pair<ll, string>> store;
+    ll sum = 0, cnt = 0;
+    for(auto it : mp) {
+        vector<int> tmp = it.second;
+        sort(all(tmp), greater<int>());
+        sum = 0;
+        cnt = 0;
+        for(auto j : tmp) {
+            if(cnt == 3) {
+                break;
             }
-        } else {
-            s.push(str[i]);
-        }
-    }
-
-    if(s.empty()) {
-        pf("Empty String");
-    } else {
-        string out = "";
-        while(!s.empty()) {
-            out += s.top();
-            s.pop();
+            sum += j;
+            cnt++;
         }
 
-        reverse(all(out));
-
-        pf(out);
+        store.push_back({sum, it.first});
     }
+
+    sort(all(store), cmp);
+
+    cout << store.front().second << " " << store.front().first << endl;
 }
 
 int main() {
     go();
-    solve();
+    int t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+
     return 0;
 }

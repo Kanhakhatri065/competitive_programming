@@ -25,39 +25,59 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
+const int MAX = 2e5 + 5;
+int n, m;
+int deg[MAX];
+bool used[MAX];
+vector<int> comp;
+vector<int> g[MAX];
+void dfs(int v) {
+    used[v] = true;
+    comp.pb(v);
+
+    for(auto it : g[v]) {
+        if(!used[it]) {
+            dfs(it);
+        }
+    }
+}
+
 void solve() {
-    string str;
-    sc(str);
+    cin >> n >> m;
+    memset(deg, 0, sizeof(deg));
+    memset(used, false, sizeof(used));
 
-    int n = int(str.size());
+    int src, dest;
+    for(int i = 0;i < m;i++) {
+        cin >> src >> dest;
+        src--, dest--;
+        g[src].pb(dest);
+        g[dest].pb(src);
 
-    stack<char> s;
-    s.push(str[0]);
-    for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
-            if(str[i] == s.top()) {
-                s.pop();
-            } else {
-                s.push(str[i]);
+        deg[src]++;
+        deg[dest]++;
+    }
+
+    int ans = 0;
+    for(int i = 0;i < n;i++) {
+        if(!used[i]) {
+            if(!comp.empty()) {
+                comp.clear();
             }
-        } else {
-            s.push(str[i]);
+            
+            dfs(i);
+            bool ok = true;
+            for(auto it : comp) {
+                ok &= (deg[it] == 2);
+            }
+
+            if(ok) {
+                ans++;
+            }
         }
     }
 
-    if(s.empty()) {
-        pf("Empty String");
-    } else {
-        string out = "";
-        while(!s.empty()) {
-            out += s.top();
-            s.pop();
-        }
-
-        reverse(all(out));
-
-        pf(out);
-    }
+    pf(ans);
 }
 
 int main() {

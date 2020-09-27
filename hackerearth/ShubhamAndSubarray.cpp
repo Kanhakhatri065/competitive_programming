@@ -25,49 +25,57 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
-const int MAX = 2e5 + 5;
-vector<int> adj[MAX];
-void solve() {
-    int n, q;
-    cin >> n >> q;
-
-    vector<int> v(n);
-    forIn(v, n);
-
-    set<int> st;
-    for(int i = 0;i < n;i++) {
-        st.insert(v[i]);
-        adj[v[i]].pb(i);
+const int MAX = 1005;
+ll arr[MAX], power1[MAX], power2[MAX], seen[MAX], base1 = 127, base2 = 129, mod1 = mod, mod2 = mod + 2;
+set<pair<ll, ll>> s;
+inline ll add(ll x, ll y, ll modulus) {
+    x += y;
+    if(x >= modulus) {
+        x -= modulus;
     }
 
-    int y, z;
-    char type;
-    int cnt;
-    while(q--) {
-        cin >> y >> z >> type;
-        if(y > n - 1 || st.find(z) == st.end()) {
-            pf(-1);
-        } else {
-            cnt = INT_MAX;
-            for(auto it : adj[z]) {
-                if(type == 'L') {
-                    if(it <= y) {
-                        cnt = min(cnt, abs(it - y));
-                    } else {
-                        cnt = min(cnt, n - abs(it - y));
-                    }
-                } else {
-                    if(it >= y) {
-                        cnt = min(cnt, abs(it - y));
-                    } else {
-                        cnt = min(cnt, n - abs(it - y));
-                    }
-                }
+    return x;
+}
+
+inline ll mul(ll x, ll y, ll modulus) {
+    return (x * y) % modulus;
+}
+
+void solve() {
+    power1[0] = 1;
+    power2[0] = 1;
+
+    for(int i = 1;i <= 1000;i++) {
+        power1[i] = mul(power1[i - 1], base1, mod1);
+        power2[i] = mul(power2[i - 1], base2, mod2);
+    }
+
+    int n;
+    sc(n);
+
+    for(int i = 1;i <= n;i++) {
+        sc(arr[i]);
+    }
+
+    int hash_val1, hash_val2;
+    for(int i = 1;i <= n;i++) {
+        hash_val1 = 0, hash_val2 = 0;
+        for(int j = i;j <= n;j++) {
+            if(!seen[arr[j]]) {
+                hash_val1 = add(hash_val1, power1[arr[j]], mod1);
+                hash_val2 = add(hash_val2, power2[arr[j]], mod2);
             }
 
-            pf(cnt);
+            seen[arr[j]] = 1;
+            s.insert({hash_val1, hash_val2});
+        }
+
+        for(int j = 1;j <= n;j++) {
+            seen[arr[j]] = 0;
         }
     }
+
+    pf(int(s.size()));
 }
 
 int main() {

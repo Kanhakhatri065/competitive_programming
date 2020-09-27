@@ -25,39 +25,30 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
+typedef long double ld;
+const int MAX = 2e5 + 15;
+int n;
+vector<int> g[MAX];
+ld dfs(int v = 0, int p = -1){
+	ld sum = 0;
+	for(auto u : g[v])
+		if(u != p)
+			sum += dfs(u, v) + 1;
+	return sum ? sum / (g[v].size() - (p != -1)) : 0;
+}
+
 void solve() {
-    string str;
-    sc(str);
+    sc(n);
 
-    int n = int(str.size());
-
-    stack<char> s;
-    s.push(str[0]);
+    int src, dest;
     for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
-            if(str[i] == s.top()) {
-                s.pop();
-            } else {
-                s.push(str[i]);
-            }
-        } else {
-            s.push(str[i]);
-        }
+        cin >> src >> dest;
+        src--, dest--;
+        g[src].pb(dest);
+        g[dest].pb(src);
     }
 
-    if(s.empty()) {
-        pf("Empty String");
-    } else {
-        string out = "";
-        while(!s.empty()) {
-            out += s.top();
-            s.pop();
-        }
-
-        reverse(all(out));
-
-        pf(out);
-    }
+    cout << fixed << setprecision(7) << dfs() << endl;
 }
 
 int main() {

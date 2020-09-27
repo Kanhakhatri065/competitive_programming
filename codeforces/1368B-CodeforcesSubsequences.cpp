@@ -25,39 +25,43 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
+void printt(char ch,long long int times)
+{
+    for(int i=0;i<times;i++)
+    {
+        cout<<ch;
+    }
+}
+ 
 void solve() {
-    string str;
-    sc(str);
-
-    int n = int(str.size());
-
-    stack<char> s;
-    s.push(str[0]);
-    for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
-            if(str[i] == s.top()) {
-                s.pop();
-            } else {
-                s.push(str[i]);
-            }
-        } else {
-            s.push(str[i]);
-        }
+    ll k;
+    cin>>k;
+ 
+    ll ar[10]={0};
+    for(ll i=0;i<10;i++)
+        ar[i]=1;
+    ll cur=1,idx=0;
+ 
+    while(cur<k)
+    {
+        cur/=ar[idx];
+        ar[idx]++;
+        cur*=ar[idx];
+        idx=(idx+1)%10;
     }
 
-    if(s.empty()) {
-        pf("Empty String");
-    } else {
-        string out = "";
-        while(!s.empty()) {
-            out += s.top();
-            s.pop();
-        }
-
-        reverse(all(out));
-
-        pf(out);
-    }
+    printt('c',ar[0]);
+    printt('o',ar[1]);
+    printt('d',ar[2]);
+    printt('e',ar[3]);
+    printt('f',ar[4]);
+    printt('o',ar[5]);
+    printt('r',ar[6]);
+    printt('c',ar[7]);
+    printt('e',ar[8]);
+    printt('s',ar[9]);
+ 
+    return ;
 }
 
 int main() {

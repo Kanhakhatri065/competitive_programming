@@ -25,49 +25,59 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
-const int MAX = 2e5 + 5;
-vector<int> adj[MAX];
+int grid[2501][2501];
 void solve() {
-    int n, q;
-    cin >> n >> q;
+    int n, m;
+    cin >> n >> m;
 
-    vector<int> v(n);
-    forIn(v, n);
-
-    set<int> st;
+    string str;
     for(int i = 0;i < n;i++) {
-        st.insert(v[i]);
-        adj[v[i]].pb(i);
-    }
-
-    int y, z;
-    char type;
-    int cnt;
-    while(q--) {
-        cin >> y >> z >> type;
-        if(y > n - 1 || st.find(z) == st.end()) {
-            pf(-1);
-        } else {
-            cnt = INT_MAX;
-            for(auto it : adj[z]) {
-                if(type == 'L') {
-                    if(it <= y) {
-                        cnt = min(cnt, abs(it - y));
-                    } else {
-                        cnt = min(cnt, n - abs(it - y));
-                    }
-                } else {
-                    if(it >= y) {
-                        cnt = min(cnt, abs(it - y));
-                    } else {
-                        cnt = min(cnt, n - abs(it - y));
-                    }
-                }
-            }
-
-            pf(cnt);
+        cin >> str;
+        for(int j = 0;j < m;j++) {
+            grid[i][j] = str[j] - '0';
         }
     }
+
+    int sum;
+    for(int i = 0;i < n;i++) {
+        sum = 0;
+        for(int j = 0;j < m;j++) {
+            sum += grid[i][j];
+            grid[i][j] = sum;
+            if(i - 1 >= 0) {
+                grid[i][j] += grid[i - 1][j];
+            }
+        }
+    }
+
+    int ans = 2500 * 2500, gsum;
+    for(int i = 2;i <= max(n, m);i++) {
+        sum = gsum = 0;
+        for(int j = 0;j < n;j += i) {
+            for(int k = 0;k < m;k += i) {
+                int x = min(j + i - 1, n - 1);
+                int y = min(k + i - 1, m - 1);
+                sum = grid[x][y];
+
+                if(j - 1 >= 0 && k - 1 >= 0) {
+                    sum += grid[j - 1][k - 1];
+                }
+
+                if(j - 1 >= 0) {
+                    sum -= grid[j - 1][y];
+                }
+
+                if(k - 1 >= 0) {
+                    sum -= grid[x][k - 1];
+                }
+
+                gsum += min(sum, i * i - sum);
+            }
+        }
+        ans = min(ans, gsum);
+    }
+
+    pf(ans);
 }
 
 int main() {

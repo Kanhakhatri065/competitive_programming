@@ -25,38 +25,45 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
+typedef int64_t badaint;
+const badaint INF = 1e17;
+inline badaint mul(badaint a, badaint b) {
+    return (INF / a > b) ? a * b : INF;
+}
+
+inline badaint add(badaint a, badaint b) {
+    return (a + b >= INF ? INF : a + b);
+}
+
 void solve() {
-    string str;
-    sc(str);
+    int n;
+    sc(n);
 
-    int n = int(str.size());
+    vector<int> v(n);
+    forIn(v, n);
 
-    stack<char> s;
-    s.push(str[0]);
-    for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
-            if(str[i] == s.top()) {
-                s.pop();
-            } else {
-                s.push(str[i]);
-            }
-        } else {
-            s.push(str[i]);
-        }
-    }
+    sort(all(v));
 
-    if(s.empty()) {
-        pf("Empty String");
+    if(n <= 2) {
+        pf(v[0] - 1);
     } else {
-        string out = "";
-        while(!s.empty()) {
-            out += s.top();
-            s.pop();
+        badaint ans = accumulate(all(v), 0LL) - n;
+
+        for(int x = 1;;x++) {
+            badaint curPow = 1, curCost = 0;
+            for(int i = 0;i < n;i++) {
+                curCost = add(curCost, abs(v[i] - curPow));
+                curPow = mul(curPow, x);
+            }
+
+            if(curPow == INF || curPow / x > ans + v.back()) {
+                break;
+            }
+
+            ans = min(ans, curCost);
         }
 
-        reverse(all(out));
-
-        pf(out);
+        pf(ans);
     }
 }
 

@@ -26,38 +26,53 @@ void go() {
 }
 /*----------------------------------------------------------------*/
 void solve() {
-    string str;
-    sc(str);
+    int n, m;
+    cin >> n >> m;
 
-    int n = int(str.size());
+    int cnt[m];
+    memset(cnt, 0, sizeof(cnt));
 
-    stack<char> s;
-    s.push(str[0]);
-    for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
-            if(str[i] == s.top()) {
-                s.pop();
-            } else {
-                s.push(str[i]);
+    ll p;
+    for(int i = 0;i < n;i++) {
+        cin >> p;
+        cnt[p - (p / m) * m]++;
+    }
+
+    ll ans = 0;
+    for(int i = 0;i < m;i++) {
+        if(cnt[i] == 0) {
+            continue;
+        }
+
+        for(int j = i;j < m;j++) {
+            if(cnt[j] == 0) {
+                continue;
             }
-        } else {
-            s.push(str[i]);
+
+            int k = m + m - i - j;
+            if(k == 2 * m) {
+                k = 0;
+            }
+
+            if(k >= m) {
+                k -= m;
+            }
+
+            if(k < j || cnt[k] == 0) {
+                continue;
+            } else if(i == j && j == k) {
+                ans += (cnt[i] - 1) * (cnt[i] - 2) * cnt[i] / 6;
+            } else if(i == j) {
+                ans += (cnt[k]) * (cnt[i] - 1) * cnt[i] / 2;
+            } else if(j == k) {
+                ans += (cnt[i]) * (cnt[j] - 1) * (cnt[j]) / 2;
+            } else {
+                ans += cnt[i] * cnt[j] * cnt[k];
+            }
         }
     }
 
-    if(s.empty()) {
-        pf("Empty String");
-    } else {
-        string out = "";
-        while(!s.empty()) {
-            out += s.top();
-            s.pop();
-        }
-
-        reverse(all(out));
-
-        pf(out);
-    }
+    pf(ans);
 }
 
 int main() {

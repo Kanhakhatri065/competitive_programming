@@ -25,38 +25,38 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
+const int MAX = 1e5 + 5;
+vector<int> v[MAX];
+int ans[MAX];
 void solve() {
-    string str;
-    sc(str);
+    int n;
+    sc(n);
 
-    int n = int(str.size());
-
-    stack<char> s;
-    s.push(str[0]);
     for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
-            if(str[i] == s.top()) {
-                s.pop();
-            } else {
-                s.push(str[i]);
-            }
-        } else {
-            s.push(str[i]);
-        }
+        int src, dest;
+        cin >> src >> dest;
+
+        v[src].pb(i);
+        v[dest].pb(i);
+        ans[i] = -1;
     }
 
-    if(s.empty()) {
-        pf("Empty String");
-    } else {
-        string out = "";
-        while(!s.empty()) {
-            out += s.top();
-            s.pop();
+    pair<int, int> mx(0, 0);
+    for(int i = 1;i <= n;i++) {
+        mx = max(mx, {int(v[i].size()), i});
+    }
+
+    int cur = 0;
+    for(int i : v[mx.second]) {
+        ans[i] = cur++;
+    }
+
+    for(int i = 1;i < n;i++) {
+        if(ans[i] == -1) {
+            ans[i] = cur++;
         }
 
-        reverse(all(out));
-
-        pf(out);
+        pf(ans[i]);
     }
 }
 

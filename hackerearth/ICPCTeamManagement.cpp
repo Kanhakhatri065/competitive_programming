@@ -26,42 +26,40 @@ void go() {
 }
 /*----------------------------------------------------------------*/
 void solve() {
+    int n, k;
+    cin >> n >> k;
+
     string str;
-    sc(str);
 
-    int n = int(str.size());
+    map<int, int> mp;
+    for(int i = 0;i < n;i++) {
+        sc(str);
+        mp[int(str.size())]++;
+    }
 
-    stack<char> s;
-    s.push(str[0]);
-    for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
-            if(str[i] == s.top()) {
-                s.pop();
-            } else {
-                s.push(str[i]);
-            }
-        } else {
-            s.push(str[i]);
+    bool flag = true;
+    for(auto it : mp) {
+        if(it.second % k) {
+            flag = false;
+            break;
         }
     }
 
-    if(s.empty()) {
-        pf("Empty String");
+    if(flag) {
+        pf("Possible");
     } else {
-        string out = "";
-        while(!s.empty()) {
-            out += s.top();
-            s.pop();
-        }
-
-        reverse(all(out));
-
-        pf(out);
+        pf("Not possible");
     }
 }
 
 int main() {
     go();
-    solve();
+    int t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+
     return 0;
 }

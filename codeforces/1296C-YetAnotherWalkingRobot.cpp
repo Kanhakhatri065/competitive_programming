@@ -26,42 +26,52 @@ void go() {
 }
 /*----------------------------------------------------------------*/
 void solve() {
-    string str;
-    sc(str);
+    int n;
+    sc(n);
 
-    int n = int(str.size());
+    string s;
+    sc(s);
 
-    stack<char> s;
-    s.push(str[0]);
-    for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
-            if(str[i] == s.top()) {
-                s.pop();
-            } else {
-                s.push(str[i]);
-            }
+    int l = -1, r = n;
+    map<pair<int, int>, int> mp;
+    pair<int, int> cur = {0, 0};
+    mp[cur] = 0;
+
+    for(int i = 0;i < n;i++) {
+        if(s[i] == 'L') {
+            cur.first--;
+        } else if(s[i] == 'R') {
+            cur.first++;
+        } else if(s[i] == 'U') {
+            cur.second++;
         } else {
-            s.push(str[i]);
+            cur.second--;
         }
+
+
+        if(mp.count(cur)) {
+            if(i - mp[cur] + 1 < (r - l + 1)) {
+                l = mp[cur];
+                r = i;
+            }
+        }
+
+        mp[cur] = i + 1;
     }
 
-    if(s.empty()) {
-        pf("Empty String");
+    if(l == -1) {
+        pf(-1);
     } else {
-        string out = "";
-        while(!s.empty()) {
-            out += s.top();
-            s.pop();
-        }
-
-        reverse(all(out));
-
-        pf(out);
+        cout << (l + 1) << ' ' << (r + 1) << endl;
     }
 }
 
 int main() {
     go();
-    solve();
+    int t;
+    sc(t);
+    while(t--) {
+        solve();
+    }
     return 0;
 }

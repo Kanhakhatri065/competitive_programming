@@ -26,42 +26,45 @@ void go() {
 }
 /*----------------------------------------------------------------*/
 void solve() {
-    string str;
-    sc(str);
+    int n, x;
+    cin >> n >> x;
 
-    int n = int(str.size());
+    vector<int> a(n);
+    forIn(a, n);
 
-    stack<char> s;
-    s.push(str[0]);
-    for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
-            if(str[i] == s.top()) {
-                s.pop();
-            } else {
-                s.push(str[i]);
-            }
-        } else {
-            s.push(str[i]);
-        }
-    }
-
-    if(s.empty()) {
-        pf("Empty String");
-    } else {
-        string out = "";
-        while(!s.empty()) {
-            out += s.top();
-            s.pop();
+    int div = 0;
+    for(int i = 0;i < n;i++) {
+        div = a[i] / x;
+        if(a[i] % x) {
+            div++;
         }
 
-        reverse(all(out));
-
-        pf(out);
+        a[i] = div;
     }
+
+    vector<pair<int, int>> store(n);
+    for(int i = 0;i < n;i++) {
+        store[i].first = a[i];
+        store[i].second = i + 1;
+    }
+
+    sort(all(store));
+
+    for(auto it : store) {
+        cout << it.second << " ";
+    }
+    cout << endl;
 }
 
 int main() {
     go();
-    solve();
+    int t;
+    sc(t);
+
+    for(int tt = 1;tt <= t;tt++) {
+        cout << "Case #" << tt << ": ";
+        solve();
+    }
+
     return 0;
 }

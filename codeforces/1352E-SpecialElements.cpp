@@ -25,43 +25,48 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
+const int MAX = 8005;
+int hasher[MAX];
+int v[MAX], n;
 void solve() {
-    string str;
-    sc(str);
+    sc(n);
 
-    int n = int(str.size());
+    forIn(v, n);
 
-    stack<char> s;
-    s.push(str[0]);
-    for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
-            if(str[i] == s.top()) {
-                s.pop();
-            } else {
-                s.push(str[i]);
+    memset(hasher, 0, sizeof(hasher));
+    for(int i = 0;i < n;i++) {
+        hasher[v[i]]++;
+    }
+
+    int ans = 0;
+    int sum = 0;
+    for(int i = 0;i < n;i++) {
+        sum = 0;
+        for(int j = i;j < n;j++) {
+            sum += v[j];
+
+            if(j == i) {
+                continue;
             }
-        } else {
-            s.push(str[i]);
+
+            if(sum <= n) {
+                ans += hasher[sum];
+                hasher[sum] = 0;
+            }
         }
     }
 
-    if(s.empty()) {
-        pf("Empty String");
-    } else {
-        string out = "";
-        while(!s.empty()) {
-            out += s.top();
-            s.pop();
-        }
-
-        reverse(all(out));
-
-        pf(out);
-    }
+    pf(ans);
 }
 
 int main() {
     go();
-    solve();
+    int t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+
     return 0;
 }

@@ -25,43 +25,30 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
+const int MAX = 1e5 + 5;
+ll fac[MAX];
+void precomputation() {
+    fac[0] = 1;
+    for(int i = 1;i < MAX;i++) {
+        fac[i] = (i * fac[i - 1]) % mod;
+    }
+}
+
 void solve() {
-    string str;
-    sc(str);
+    int n;
+    sc(n);
 
-    int n = int(str.size());
-
-    stack<char> s;
-    s.push(str[0]);
-    for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
-            if(str[i] == s.top()) {
-                s.pop();
-            } else {
-                s.push(str[i]);
-            }
-        } else {
-            s.push(str[i]);
-        }
-    }
-
-    if(s.empty()) {
-        pf("Empty String");
-    } else {
-        string out = "";
-        while(!s.empty()) {
-            out += s.top();
-            s.pop();
-        }
-
-        reverse(all(out));
-
-        pf(out);
-    }
+    pf(fac[n]);
 }
 
 int main() {
     go();
-    solve();
+    int t;
+    sc(t);
+    precomputation();
+    while(t--) {
+        solve();
+    }
+
     return 0;
 }

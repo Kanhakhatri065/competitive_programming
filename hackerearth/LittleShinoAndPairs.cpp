@@ -26,38 +26,26 @@ void go() {
 }
 /*----------------------------------------------------------------*/
 void solve() {
-    string str;
-    sc(str);
+    int n;
+    sc(n);
 
-    int n = int(str.size());
-
-    stack<char> s;
-    s.push(str[0]);
-    for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
-            if(str[i] == s.top()) {
-                s.pop();
-            } else {
-                s.push(str[i]);
-            }
-        } else {
-            s.push(str[i]);
-        }
-    }
-
-    if(s.empty()) {
-        pf("Empty String");
-    } else {
-        string out = "";
-        while(!s.empty()) {
-            out += s.top();
-            s.pop();
+    int x, ans = 0;
+    stack<int> st;
+    for(int i = 0;i < n;i++) {
+        sc(x);
+        while(!st.empty() && x > st.top()) {
+            st.pop();
+            ans++;
         }
 
-        reverse(all(out));
-
-        pf(out);
+        if(!st.empty()) {
+            ans++;
+        }
+        
+        st.push(x);
     }
+
+    pf(ans);
 }
 
 int main() {

@@ -26,38 +26,34 @@ void go() {
 }
 /*----------------------------------------------------------------*/
 void solve() {
-    string str;
-    sc(str);
+    int n, a, b, k;
+    cin >> n >> a >> b >> k;
 
-    int n = int(str.size());
+    vector<int> v(n);
+    forIn(v, n);
 
-    stack<char> s;
-    s.push(str[0]);
-    for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
-            if(str[i] == s.top()) {
-                s.pop();
-            } else {
-                s.push(str[i]);
-            }
-        } else {
-            s.push(str[i]);
-        }
-    }
-
-    if(s.empty()) {
-        pf("Empty String");
-    } else {
-        string out = "";
-        while(!s.empty()) {
-            out += s.top();
-            s.pop();
+    for(int i = 0;i < n;i++) {
+        v[i] %= (a + b);
+        if(v[i] == 0) {
+            v[i] += (a + b);
         }
 
-        reverse(all(out));
-
-        pf(out);
+        v[i] = ((v[i] + a - 1) / a) - 1;
     }
+
+    sort(all(v));
+
+    int ans = 0;
+    for(int i = 0;i < n;i++) {
+        if(k - v[i] < 0) {
+            break;
+        }
+
+        ans++;
+        k -= v[i];
+    }
+
+    pf(ans);
 }
 
 int main() {

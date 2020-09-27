@@ -25,39 +25,38 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
+const int MAX = 1e6 + 5;
+int cnt[MAX];
 void solve() {
-    string str;
-    sc(str);
+    int m, q, n;
+    cin >> m >> q >> n;
 
-    int n = int(str.size());
+    vector<int> v(n);
+    forIn(v, n);
 
-    stack<char> s;
-    s.push(str[0]);
-    for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
-            if(str[i] == s.top()) {
-                s.pop();
-            } else {
-                s.push(str[i]);
-            }
-        } else {
-            s.push(str[i]);
-        }
+    memset(cnt, 0, sizeof(cnt));
+    for(int i = 0;i < n;i++) {
+        cnt[v[i]]++;
     }
 
-    if(s.empty()) {
-        pf("Empty String");
-    } else {
-        string out = "";
-        while(!s.empty()) {
-            out += s.top();
-            s.pop();
+    int mx = 0;
+    for(int i = 1;i < MAX;i++) {
+        int curr = i, now = 0, val = q;
+        while(curr >= 1 && val >= 0) {
+            now += cnt[curr];
+            curr -= m;val--;
         }
 
-        reverse(all(out));
+        curr = i, val = q;
+        while(curr < MAX && val >= 0) {
+            now += cnt[curr];
+            curr += m, val--;
+        }
 
-        pf(out);
+        mx = max(mx, now - cnt[i]);
     }
+
+    pf(mx);
 }
 
 int main() {

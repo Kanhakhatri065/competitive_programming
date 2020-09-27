@@ -26,42 +26,37 @@ void go() {
 }
 /*----------------------------------------------------------------*/
 void solve() {
-    string str;
-    sc(str);
+    int n;
+    sc(n);
 
-    int n = int(str.size());
+    vector<int> v(n), st(n);
+    for(int i = 0;i < n;i++) {
+        sc(v[i]);
+        st[i] = 1;
+    }
 
-    stack<char> s;
-    s.push(str[0]);
     for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
-            if(str[i] == s.top()) {
-                s.pop();
-            } else {
-                s.push(str[i]);
+        if(v[i - 1] <= v[i]) {
+            for(int j = i - 1;j >= 0;j--) {
+                if(v[j] > v[i]) {
+                    break;
+                }
+                st[i]++;
             }
-        } else {
-            s.push(str[i]);
         }
     }
 
-    if(s.empty()) {
-        pf("Empty String");
-    } else {
-        string out = "";
-        while(!s.empty()) {
-            out += s.top();
-            s.pop();
-        }
-
-        reverse(all(out));
-
-        pf(out);
-    }
+    vpnt(st);
 }
 
 int main() {
     go();
-    solve();
+    int t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+
     return 0;
 }

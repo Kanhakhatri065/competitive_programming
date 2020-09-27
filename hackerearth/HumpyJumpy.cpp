@@ -25,39 +25,58 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
-void solve() {
-    string str;
-    sc(str);
+int uncommon_bits(ll n, ll m) {
+    bool s, t;
+    int cnt = 0;
+    for(int i = 0;i < 64;i++) {
+        s = n | (1 << i);
+        t = m | (1 << i);
 
-    int n = int(str.size());
-
-    stack<char> s;
-    s.push(str[0]);
-    for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
-            if(str[i] == s.top()) {
-                s.pop();
-            } else {
-                s.push(str[i]);
-            }
-        } else {
-            s.push(str[i]);
+        if(s ^ t) {
+            cnt++;
         }
     }
 
-    if(s.empty()) {
-        pf("Empty String");
-    } else {
-        string out = "";
-        while(!s.empty()) {
-            out += s.top();
+    return cnt;
+}
+void solve() {
+    int n;
+    sc(n);
+
+    vector<ll> v(n);
+    forIn(v, n);
+
+    vector<ll> nxt(n, 0);
+    stack<ll> s;
+
+    s.push(0);
+    for(int i = 1;i < n;i++) {
+        while(!s.empty() && v[i] > v[s.top()]) {
+            nxt[s.top()] = i;
             s.pop();
         }
-
-        reverse(all(out));
-
-        pf(out);
+        s.push(i);
     }
+
+    while(!s.empty()) {
+        nxt[s.top()] = -1;
+        s.pop();
+    }
+
+    vector<ll> dp(n, 0);
+    ll ans = 0;
+    for(int i = n - 1;i >= 0;i--) {
+        if(nxt[i] == -1) {
+            dp[i] = v[i];
+            ans = max(ans, dp[i]);
+            continue;
+        }
+
+        dp[i] = v[i] ^ dp[nxt[i]];
+        ans = max(ans, dp[i]);
+    }
+
+    pf(ans);
 }
 
 int main() {

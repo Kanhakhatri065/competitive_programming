@@ -26,42 +26,66 @@ void go() {
 }
 /*----------------------------------------------------------------*/
 void solve() {
-    string str;
-    sc(str);
+    int n, m;
+    cin >> n >> m;
 
-    int n = int(str.size());
-
-    stack<char> s;
-    s.push(str[0]);
-    for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
-            if(str[i] == s.top()) {
-                s.pop();
-            } else {
-                s.push(str[i]);
-            }
-        } else {
-            s.push(str[i]);
+    char arr[n][m];
+    for(int i = 0;i < n;i++) {
+        for(int j = 0;j < m;j++) {
+            sc(arr[i][j]);
         }
     }
 
-    if(s.empty()) {
-        pf("Empty String");
-    } else {
-        string out = "";
-        while(!s.empty()) {
-            out += s.top();
-            s.pop();
+    string str;
+    sc(str);
+
+    int k = int(str.size());
+
+    vector<map<char, int>> v(n);
+    for(int i = 0;i < n;i++) {
+        for(int j = 0;j < m;j++) {
+            v[i][arr[i][j]]++;
+        }
+    }
+
+    bool flag = true;
+    int cnt = 0;
+    while(cnt < k) {
+        for(int i = 0;i < n;i++) {
+            if(cnt == k) {
+                break;
+            }
+
+            if(v[i][str[cnt]]) {
+                v[i][str[cnt]]--;
+                cnt++;
+            } else {
+                flag = false;
+                break;
+            }
         }
 
-        reverse(all(out));
+        if(!flag) {
+            break;
+        }
+    }
 
-        pf(out);
+    if(flag) {
+        pf("Yes");
+    } else {
+        pf("No");
     }
 }
 
 int main() {
     go();
-    solve();
+
+    int t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+
     return 0;
 }

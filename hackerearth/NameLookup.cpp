@@ -26,37 +26,24 @@ void go() {
 }
 /*----------------------------------------------------------------*/
 void solve() {
+    int n;
+    sc(n);
+
+    int x;
     string str;
-    sc(str);
 
-    int n = int(str.size());
-
-    stack<char> s;
-    s.push(str[0]);
-    for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
-            if(str[i] == s.top()) {
-                s.pop();
-            } else {
-                s.push(str[i]);
-            }
-        } else {
-            s.push(str[i]);
-        }
+    map<int, string> mp;
+    for(int i = 0;i < n;i++) {
+        cin >> x >> str;
+        mp[x] = str;
     }
 
-    if(s.empty()) {
-        pf("Empty String");
-    } else {
-        string out = "";
-        while(!s.empty()) {
-            out += s.top();
-            s.pop();
-        }
+    int q;
+    sc(q);
 
-        reverse(all(out));
-
-        pf(out);
+    while(q--) {
+        sc(x);
+        pf(mp[x]);
     }
 }
 

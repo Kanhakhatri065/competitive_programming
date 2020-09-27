@@ -26,42 +26,41 @@ void go() {
 }
 /*----------------------------------------------------------------*/
 void solve() {
-    string str;
-    sc(str);
+    int n;
+    scanf("%d", &n);
 
-    int n = int(str.size());
+    vector<int> v(n + 1);
 
-    stack<char> s;
-    s.push(str[0]);
-    for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
-            if(str[i] == s.top()) {
-                s.pop();
-            } else {
-                s.push(str[i]);
-            }
+    int x;
+    for(int i = 2;i <= n;i++) {
+        printf("? 1 %d\n", i);
+        fflush(stdout);
+        scanf("%d", &x);
+        v[i] = x;
+    }
+
+    printf("? 2 %d\n", n);
+    fflush(stdout);
+    scanf("%d", &x);
+
+    v[1] = v[n] - x;
+    for(int i = n;i >= 2;i--) {
+        v[i] -= v[i - 1];
+    }
+
+    printf("! ");
+    for(int i = 1;i <= n;i++) {
+        printf("%d", v[i]);
+        if(i < n) {
+            printf(" ");
         } else {
-            s.push(str[i]);
+            printf("\n");
         }
     }
-
-    if(s.empty()) {
-        pf("Empty String");
-    } else {
-        string out = "";
-        while(!s.empty()) {
-            out += s.top();
-            s.pop();
-        }
-
-        reverse(all(out));
-
-        pf(out);
-    }
+    fflush(stdout);
 }
 
 int main() {
-    go();
     solve();
     return 0;
 }

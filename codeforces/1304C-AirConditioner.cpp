@@ -26,42 +26,44 @@ void go() {
 }
 /*----------------------------------------------------------------*/
 void solve() {
-    string str;
-    sc(str);
+    int n, m;
+    cin >> n >> m;
 
-    int n = int(str.size());
-
-    stack<char> s;
-    s.push(str[0]);
-    for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
-            if(str[i] == s.top()) {
-                s.pop();
-            } else {
-                s.push(str[i]);
-            }
-        } else {
-            s.push(str[i]);
-        }
+    vector<pair<int, pair<int, int>>> v(n);
+    for(int i = 0;i < n;i++) {
+        cin >> v[i].first >> v[i].second.first >> v[i].second.second;
     }
 
-    if(s.empty()) {
-        pf("Empty String");
-    } else {
-        string out = "";
-        while(!s.empty()) {
-            out += s.top();
-            s.pop();
+    int prev = 0;
+    int mx = m, mn = m;
+    bool flag = true;
+
+    for(int i = 0;i < n;i++) {
+        mx += v[i].first - prev;
+        mn -= v[i].first - prev;
+
+        if(mx < v[i].second.first || mn > v[i].second.second) {
+            flag = false;
+            break;
         }
 
-        reverse(all(out));
+        mx = min(mx, v[i].second.second);
+        mn = max(mn, v[i].second.first);
 
-        pf(out);
+        prev = v[i].first;
     }
+
+    flag ? yes : no;
 }
 
 int main() {
     go();
-    solve();
+    int t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+
     return 0;
 }

@@ -31,37 +31,29 @@ void solve() {
 
     int n = int(str.size());
 
-    stack<char> s;
-    s.push(str[0]);
-    for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
-            if(str[i] == s.top()) {
-                s.pop();
-            } else {
-                s.push(str[i]);
-            }
-        } else {
-            s.push(str[i]);
-        }
+    int arr[26];
+    memset(arr, 0, sizeof(arr));
+
+    for(int i = 0;i < n;i++) {
+        arr[str[i] - 'a']++;
     }
 
-    if(s.empty()) {
-        pf("Empty String");
-    } else {
-        string out = "";
-        while(!s.empty()) {
-            out += s.top();
-            s.pop();
-        }
+    int mn = arr['r' - 'a'];
+    mn = min(mn, arr['u' - 'a']);
+    mn = min(mn, arr['b' - 'a']);
+    mn = min(mn, arr['y' - 'a']);
 
-        reverse(all(out));
-
-        pf(out);
-    }
+    pf(mn);
 }
 
 int main() {
     go();
-    solve();
+    int t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+
     return 0;
 }

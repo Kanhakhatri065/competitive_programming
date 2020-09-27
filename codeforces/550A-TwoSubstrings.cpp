@@ -26,38 +26,39 @@ void go() {
 }
 /*----------------------------------------------------------------*/
 void solve() {
-    string str;
-    sc(str);
+    string s;
+    sc(s);
 
-    int n = int(str.size());
+    int n = int(s.size());
 
-    stack<char> s;
-    s.push(str[0]);
-    for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
-            if(str[i] == s.top()) {
-                s.pop();
-            } else {
-                s.push(str[i]);
+    for(int i = 0;i < n - 1;i++) {
+        if(s[i] == 'A' && s[i + 1] == 'B') {
+            for(int j = i + 2;j < n - 1;j++) {
+                if(s[j] == 'B' && s[j + 1] == 'A') {
+                    yes;
+                    return;
+                }
             }
-        } else {
-            s.push(str[i]);
+
+            break;
+        }
+    }
+    
+    for(int i = 0;i < n - 1;i++) {
+        if(s[i] == 'B' && s[i + 1] == 'A') {
+            for(int j = i + 2;j < n - 1;j++) {
+                if(s[j] == 'A' && s[j + 1] == 'B') {
+                    yes;
+                    return;
+                }
+            }
+
+            break;
         }
     }
 
-    if(s.empty()) {
-        pf("Empty String");
-    } else {
-        string out = "";
-        while(!s.empty()) {
-            out += s.top();
-            s.pop();
-        }
-
-        reverse(all(out));
-
-        pf(out);
-    }
+    no;
+    
 }
 
 int main() {

@@ -25,53 +25,67 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
-const int MAX = 2e5 + 5;
-vector<int> adj[MAX];
+int arr[1000][1000];
+int manhattan_distance(int i, int j, int x, int y) {
+    return abs(i- (x * 2 + y % 2)) + abs(j - y);
+}
+
 void solve() {
-    int n, q;
-    cin >> n >> q;
+    int n, m;
+    cin >> n >> m;
 
-    vector<int> v(n);
-    forIn(v, n);
-
-    set<int> st;
     for(int i = 0;i < n;i++) {
-        st.insert(v[i]);
-        adj[v[i]].pb(i);
+        for(int j = 0;j < m;j++) {
+            sc(arr[i][j]);
+        }
     }
 
-    int y, z;
-    char type;
-    int cnt;
+    int q;
+    sc(q);
+
+    int type, x, y;
+    int sum = 0;
     while(q--) {
-        cin >> y >> z >> type;
-        if(y > n - 1 || st.find(z) == st.end()) {
-            pf(-1);
-        } else {
-            cnt = INT_MAX;
-            for(auto it : adj[z]) {
-                if(type == 'L') {
-                    if(it <= y) {
-                        cnt = min(cnt, abs(it - y));
-                    } else {
-                        cnt = min(cnt, n - abs(it - y));
-                    }
-                } else {
-                    if(it >= y) {
-                        cnt = min(cnt, abs(it - y));
-                    } else {
-                        cnt = min(cnt, n - abs(it - y));
+        sum = 0;
+        cin >> type >> x >> y;
+
+        if(type == 1) {
+            for(int i = 0;i < 2 * n;i++) {
+                for(int j = 0;j < m;j++) {
+                    if(manhattan_distance(i, j, x, y) == 2 && i != x * 2 + y % 2) {
+                        sum += arr[(i - j % 2) / 2][j];
                     }
                 }
             }
-
-            pf(cnt);
+        } else {
+            for(int i = 0;i < 2 * n;i++) {
+                for(int j = 0;j < m;j++) {
+                    if(i != x * 2 + y % 2) {
+                        if(manhattan_distance(i, j, x, y) == 4 && abs(j - y) <= 2) {
+                            sum += arr[(i - j % 2) / 2][j];
+                        }
+                    } else {
+                        if(manhattan_distance(i, j, x, y) == 2 && abs(j - y) <= 2) {
+                            sum += arr[(i - j % 2) / 2][j];
+                        }
+                    }
+                }
+            }
         }
+
+        pf(sum);
     }
 }
 
 int main() {
     go();
-    solve();
+
+    int t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+
     return 0;
 }

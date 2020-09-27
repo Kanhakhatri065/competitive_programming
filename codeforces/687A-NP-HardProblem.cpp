@@ -25,38 +25,58 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
-void solve() {
-    string str;
-    sc(str);
+const int MAX = 1e5 + 5;
+vector<int> vc[2];
+vector<int> g[MAX];
+int mark[MAX];
+bool dfs(int v, int color = 2) {
+    mark[v] = color;
+    vc[color - 1].push_back(v);
+    for(auto it : g[v]) {
+        if(!mark[it] && dfs(it, 3 - color)) {
+            return 1;
+        }
 
-    int n = int(str.size());
-
-    stack<char> s;
-    s.push(str[0]);
-    for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
-            if(str[i] == s.top()) {
-                s.pop();
-            } else {
-                s.push(str[i]);
-            }
-        } else {
-            s.push(str[i]);
+        if(mark[it] != 3 - color) {
+            return 1;
         }
     }
 
-    if(s.empty()) {
-        pf("Empty String");
-    } else {
-        string out = "";
-        while(!s.empty()) {
-            out += s.top();
-            s.pop();
+    return 0;
+}
+
+void solve() {
+    int n, m;
+    cin >> n >> m;
+
+    int src, dest;
+    for(int i = 0;i < m;i++) {
+        cin >> src >> dest;
+        src--, dest--;
+
+        g[src].pb(dest);
+        g[dest].pb(src);
+    }
+
+    for(int i = 0;i < n;i++) {
+        if(!mark[i]) {
+            if(g[i].empty()) {
+                continue;
+            }
+
+            if(dfs(i)) {
+                pf(-1);
+                return;
+            }
         }
+    }
 
-        reverse(all(out));
-
-        pf(out);
+    for(int i = 0;i < 2;i++) {
+        pf(int(vc[i].size()));
+        for(auto it : vc[i]) {
+            cout << (it + 1) << " ";
+        }
+        cout << endl;
     }
 }
 

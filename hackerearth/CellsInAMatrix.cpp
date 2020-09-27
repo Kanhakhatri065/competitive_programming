@@ -26,38 +26,20 @@ void go() {
 }
 /*----------------------------------------------------------------*/
 void solve() {
-    string str;
-    sc(str);
+    int n, k;
+    cin >> n >> k;
 
-    int n = int(str.size());
+    set<int> row, col;
+    for(int i = 0;i < k;i++) {
+        int l, r;
+        cin >> l >> r;
 
-    stack<char> s;
-    s.push(str[0]);
-    for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
-            if(str[i] == s.top()) {
-                s.pop();
-            } else {
-                s.push(str[i]);
-            }
-        } else {
-            s.push(str[i]);
-        }
+        row.insert(l);
+        col.insert(r);
+
+        cout << ((n - int(row.size())) * 1LL * (n - int(col.size()))) << " ";
     }
-
-    if(s.empty()) {
-        pf("Empty String");
-    } else {
-        string out = "";
-        while(!s.empty()) {
-            out += s.top();
-            s.pop();
-        }
-
-        reverse(all(out));
-
-        pf(out);
-    }
+    cout << endl;
 }
 
 int main() {

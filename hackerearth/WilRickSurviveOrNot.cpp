@@ -25,43 +25,56 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
+const int MAX = 1e5 + 5;
+int cnt[MAX];
 void solve() {
-    string str;
-    sc(str);
+    int n;
+    sc(n);
 
-    int n = int(str.size());
+    vector<int> v(n);
+    forIn(v, n);
 
-    stack<char> s;
-    s.push(str[0]);
-    for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
-            if(str[i] == s.top()) {
-                s.pop();
-            } else {
-                s.push(str[i]);
-            }
-        } else {
-            s.push(str[i]);
-        }
+    memset(cnt, 0, sizeof(cnt));
+    for(int i = 0;i < n;i++) {
+        cnt[v[i]]++;
     }
 
-    if(s.empty()) {
-        pf("Empty String");
-    } else {
-        string out = "";
-        while(!s.empty()) {
-            out += s.top();
-            s.pop();
+    bool flag = true;
+    int ans = 0, c = 0, j = 0;
+    for(int i = 1;i <= n;i++) {
+        while(cnt[j] == 0) {
+            j++;
         }
 
-        reverse(all(out));
+        cnt[j]--;
+        if(j - c <= 0) {
+            flag = false;
+            break;
+        }
 
-        pf(out);
+        if(i % 6 == 0 && i != 0) {
+            c++;
+        }
+        c++;
+        ans++;
+    }
+
+    if(flag) {
+        pf("Rick now go and save Carl and Judas");
+    } else {
+        pf("Goodbye Rick");
+        pf(ans);
     }
 }
 
 int main() {
     go();
-    solve();
+    int t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+
     return 0;
 }

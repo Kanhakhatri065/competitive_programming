@@ -26,42 +26,40 @@ void go() {
 }
 /*----------------------------------------------------------------*/
 void solve() {
-    string str;
-    sc(str);
+    int n0, n1, n2;
+    cin >> n0 >> n1 >> n2;
 
-    int n = int(str.size());
-
-    stack<char> s;
-    s.push(str[0]);
-    for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
-            if(str[i] == s.top()) {
-                s.pop();
-            } else {
-                s.push(str[i]);
-            }
+    if(n1 == 0) {
+        if(n0 != 0) {
+            cout << string(n0 + 1, '0') << endl;
         } else {
-            s.push(str[i]);
+            cout << string(n2 + 1, '1') << endl;
+        }
+
+        return;
+    }
+
+    string ans;
+    for(int i = 0;i < (n1 + 1);i++) {
+        if(i & 1) {
+            ans += '0';
+        } else {
+            ans += '1';
         }
     }
 
-    if(s.empty()) {
-        pf("Empty String");
-    } else {
-        string out = "";
-        while(!s.empty()) {
-            out += s.top();
-            s.pop();
-        }
-
-        reverse(all(out));
-
-        pf(out);
-    }
+    ans.insert(1, string(n0, '0'));
+    ans.insert(0, string(n2, '1'));
+    pf(ans);
 }
 
 int main() {
     go();
-    solve();
+    int t;
+    sc(t);
+    while(t--) {
+        solve();
+    }
+
     return 0;
 }

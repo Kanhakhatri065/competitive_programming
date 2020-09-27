@@ -26,38 +26,32 @@ void go() {
 }
 /*----------------------------------------------------------------*/
 void solve() {
-    string str;
-    sc(str);
+    int n;
+    sc(n);
 
-    int n = int(str.size());
+    vector<int> v(n);
+    forIn(v, n);
 
-    stack<char> s;
-    s.push(str[0]);
-    for(int i = 1;i < n;i++) {
-        if(!s.empty()) {
-            if(str[i] == s.top()) {
-                s.pop();
-            } else {
-                s.push(str[i]);
-            }
+    list<int> a, b;
+    for(int i = 0;i < n;i++) {
+        a.pb(v[i]);
+        b.pb(v[i]);
+    }
+
+    while((!a.empty()) && (!b.empty())) {
+        if(a.front() > b.back()) {
+            cout << "1 ";
+			b.pop_back();
+        } else if(a.front() < b.back()) {
+            cout << "2 ";
+			a.pop_front();
         } else {
-            s.push(str[i]);
+            cout << "0 ";
+			a.pop_front();
+			b.pop_back();
         }
     }
-
-    if(s.empty()) {
-        pf("Empty String");
-    } else {
-        string out = "";
-        while(!s.empty()) {
-            out += s.top();
-            s.pop();
-        }
-
-        reverse(all(out));
-
-        pf(out);
-    }
+    cout << endl;
 }
 
 int main() {
