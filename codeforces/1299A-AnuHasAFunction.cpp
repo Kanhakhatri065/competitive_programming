@@ -25,33 +25,46 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
-const int MAX = 2e5 + 15;
-int n;
-vector<int> adj[MAX];
+void solve() {
+    int n;
+    sc(n);
 
-double dfs(int v, int p = -1) {
-    double sum = 0;
-    for(auto it : adj[v]) {
-        if(it != p) {
-            sum += dfs(it, v) + 1;
+    vector<int> v(n);
+    forIn(v, n);
+
+    vector<int> pre(n), suf(n);
+
+    pre[0] = v[0];
+    for(int i = 1;i < n;i++) {
+        pre[i] = v[i] | pre[i - 1];
+    }
+
+    suf[n - 1] = v[n - 1];
+    for(int i = n - 2;i >= 0;i--) {
+        suf[i] = v[i] | suf[i + 1];
+    }
+
+    int idx = 0, ans = -1;
+    for(int i = 0;i < n;i++) {
+        int x = 0;
+
+        if(i > 0) {
+            x |= pre[i - 1];
+        }
+
+        if(i < n - 1) {
+            x |= suf[i + 1];
+        }
+
+        int cur = v[i] - (x & v[i]);
+        if(cur > ans) {
+            ans = cur;
+            idx = i;
         }
     }
 
-    return sum ? sum / (adj[v].size() - (p != -1)) : 0;
-}
-
-void solve() {
-    sc(n);
-
-    int src, dest;
-    for(int i = 1;i < n;i++) {
-        cin >> src >> dest;
-        src--, dest--;
-        adj[src].pb(dest);
-        adj[dest].pb(src);
-    }
-
-    cout << fixed << setprecision(7) << dfs(0) << endl;
+    swap(v[0], v[idx]);
+    vpnt(v);
 }
 
 int main() {

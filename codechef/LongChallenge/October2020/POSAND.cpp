@@ -25,37 +25,61 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
-const int MAX = 2e5 + 15;
-int n;
-vector<int> adj[MAX];
-
-double dfs(int v, int p = -1) {
-    double sum = 0;
-    for(auto it : adj[v]) {
-        if(it != p) {
-            sum += dfs(it, v) + 1;
-        }
+bool isPowerOf2(int n) {
+    if(n == 1) {
+        return false;
     }
 
-    return sum ? sum / (adj[v].size() - (p != -1)) : 0;
+    while(n > 1) {
+        if(n & 1) {
+            return false;
+        }
+
+        n /= 2;
+    }
+
+    return true;
 }
 
 void solve() {
+    int n;
     sc(n);
 
-    int src, dest;
-    for(int i = 1;i < n;i++) {
-        cin >> src >> dest;
-        src--, dest--;
-        adj[src].pb(dest);
-        adj[dest].pb(src);
-    }
+    if(isPowerOf2(n)) {
+        pf(-1);
+    } else {
+        if(n == 1) {
+            pf(1);
+            return;
+        }   
 
-    cout << fixed << setprecision(7) << dfs(0) << endl;
+        vector<int> ans;
+        ans.pb(2);
+        ans.pb(3);
+        ans.pb(1);
+
+        for(int i = 4;i <= n;i++) {
+            if(isPowerOf2(i)) {
+                ans.pb(i + 1);
+                ans.pb(i);
+                i++;
+            } else {
+                ans.pb(i);
+            }
+        }
+
+        vpnt(ans);
+    }
 }
 
 int main() {
     go();
-    solve();
+    int t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+    
     return 0;
 }

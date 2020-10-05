@@ -25,33 +25,46 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
-const int MAX = 2e5 + 15;
-int n;
-vector<int> adj[MAX];
-
-double dfs(int v, int p = -1) {
-    double sum = 0;
-    for(auto it : adj[v]) {
-        if(it != p) {
-            sum += dfs(it, v) + 1;
+const int MAX = 2e5;
+vector<int> graph[MAX];
+bool visited[MAX];
+int n, m; 
+void dfs(int a, ll &cnt_vertices, ll &cnt_edges) {
+    visited[a] = true;
+    cnt_vertices++;
+    cnt_edges += int(graph[a].size());
+    for(int b : graph[a]) {
+        if(!visited[b]) {
+            dfs(b, cnt_vertices, cnt_edges);
         }
     }
-
-    return sum ? sum / (adj[v].size() - (p != -1)) : 0;
 }
 
 void solve() {
-    sc(n);
+    cin >> n >> m;
 
     int src, dest;
-    for(int i = 1;i < n;i++) {
+    for(int i = 0;i < m;i++) {
         cin >> src >> dest;
-        src--, dest--;
-        adj[src].pb(dest);
-        adj[dest].pb(src);
+        graph[src].pb(dest);
+        graph[dest].pb(src);
     }
 
-    cout << fixed << setprecision(7) << dfs(0) << endl;
+    memset(visited, false, sizeof(visited));
+    for(int i = 1;i <= n;i++) {
+        if(!visited[i]) {
+            ll cnt_vertices = 0, cnt_edges = 0;
+            dfs(i, cnt_vertices, cnt_edges);
+            //cout << "vertices : " << cnt_vertices << " edges : " << cnt_edges << endl;
+            if(cnt_edges != (cnt_vertices * (cnt_vertices - 1))) {
+                //cout << "i : " << i << endl;
+                no;
+                return;
+            }
+        }
+    }
+
+    yes;
 }
 
 int main() {

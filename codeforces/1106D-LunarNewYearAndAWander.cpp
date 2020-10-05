@@ -25,33 +25,41 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
-const int MAX = 2e5 + 15;
-int n;
-vector<int> adj[MAX];
+const int MAX = 1e5 + 5;
+vector<int> graph[MAX];
+bool visited[MAX];
+vector<int> path;
+int n, m;
 
-double dfs(int v, int p = -1) {
-    double sum = 0;
-    for(auto it : adj[v]) {
-        if(it != p) {
-            sum += dfs(it, v) + 1;
+void solve() {
+    cin >> n >> m;
+    
+    int src, dest;
+    for(int i = 0;i < m;i++) {
+        cin >> src >> dest;
+        graph[src].pb(dest);
+        graph[dest].pb(src);
+    }
+
+    memset(visited, 0, sizeof(visited));
+
+    priority_queue<int, vector<int>, greater<int>> pq;
+    visited[1] = true;
+    pq.push(1);
+    while(!pq.empty()) {
+        int v = pq.top();
+        pq.pop();
+        path.pb(v);
+
+        for(int it : graph[v]) {
+            if(!visited[it]) {
+                pq.push(it);
+                visited[it] = true;
+            }
         }
     }
 
-    return sum ? sum / (adj[v].size() - (p != -1)) : 0;
-}
-
-void solve() {
-    sc(n);
-
-    int src, dest;
-    for(int i = 1;i < n;i++) {
-        cin >> src >> dest;
-        src--, dest--;
-        adj[src].pb(dest);
-        adj[dest].pb(src);
-    }
-
-    cout << fixed << setprecision(7) << dfs(0) << endl;
+    vpnt(path);
 }
 
 int main() {

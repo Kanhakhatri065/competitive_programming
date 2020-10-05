@@ -25,37 +25,59 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
-const int MAX = 2e5 + 15;
-int n;
-vector<int> adj[MAX];
-
-double dfs(int v, int p = -1) {
-    double sum = 0;
-    for(auto it : adj[v]) {
-        if(it != p) {
-            sum += dfs(it, v) + 1;
-        }
-    }
-
-    return sum ? sum / (adj[v].size() - (p != -1)) : 0;
-}
-
 void solve() {
-    sc(n);
+    int n, k;
+    cin >> n >> k;
 
-    int src, dest;
-    for(int i = 1;i < n;i++) {
-        cin >> src >> dest;
-        src--, dest--;
-        adj[src].pb(dest);
-        adj[dest].pb(src);
+    vector<int> v(n);
+    forIn(v, n);
+
+    map<int, int> mp;
+    for(int i = 0;i < n;i++) {
+        mp[v[i]]++;
     }
 
-    cout << fixed << setprecision(7) << dfs(0) << endl;
+    if(k == 1) {
+        if(int(mp.size()) > 1) {
+            pf(-1);
+        } else {
+            pf(1);
+        }
+
+        return;
+    }
+
+    if(k >= int(mp.size())) {
+        pf(1);
+    } else {
+        vector<int> store;
+        for(auto it : mp) {
+            store.pb(it.first);
+        }
+
+        set<int> check;
+        for(int i = k;i < int(store.size());i++) {
+            check.insert(store[i] - store[k - 1]);
+        }
+
+        int check_size = int(check.size());
+        int ans = check_size / (k - 1);
+        if(check_size % (k - 1)) {
+            ans++;
+        }
+
+        pf(ans + 1);
+    }
 }
 
 int main() {
     go();
-    solve();
+    int t;
+    sc(t);
+    
+    while(t--) {
+        solve();
+    }
+
     return 0;
 }

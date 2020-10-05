@@ -25,33 +25,59 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
-const int MAX = 2e5 + 15;
-int n;
-vector<int> adj[MAX];
+int dx[] = {1, -1, 0, 0};
+int dy[] = {0, 0, 1, -1};
 
-double dfs(int v, int p = -1) {
-    double sum = 0;
-    for(auto it : adj[v]) {
-        if(it != p) {
-            sum += dfs(it, v) + 1;
-        }
+const int MAX = 55;
+bool visited[MAX][MAX];
+char graph[MAX][MAX];
+int n, m;
+
+bool findCycle = false;
+
+void dfs(int x, int y, int fromX, int fromY, char needColor) {
+    if(x < 0 || x >= n || y < 0 || y >= m) {
+        return;
     }
 
-    return sum ? sum / (adj[v].size() - (p != -1)) : 0;
+    if(graph[x][y] != needColor) {
+        return;
+    }
+
+    if(visited[x][y]) {
+        findCycle = true;
+        return;
+    }
+
+    visited[x][y] = true;
+    for(int i = 0;i < 4;i++) {
+        if(x + dx[i] == fromX && y + dy[i] == fromY) {
+            continue;
+        }
+
+        dfs(x + dx[i], y + dy[i], x, y, needColor);
+    }
 }
 
 void solve() {
-    sc(n);
+    cin >> n >> m;
 
-    int src, dest;
-    for(int i = 1;i < n;i++) {
-        cin >> src >> dest;
-        src--, dest--;
-        adj[src].pb(dest);
-        adj[dest].pb(src);
+    for(int i = 0;i < n;i++) {
+        for(int j = 0;j < m;j++) {
+            sc(graph[i][j]);
+        }
     }
 
-    cout << fixed << setprecision(7) << dfs(0) << endl;
+    memset(visited, 0, sizeof(visited));
+    for(int i = 0;i < n;i++) {
+        for(int j = 0;j < m;j++) {
+            if(!visited[i][j]) {
+                dfs(i, j, -1, -1, graph[i][j]);
+            }
+        }
+    }
+
+    cout << (findCycle ? "Yes" : "No") << endl;
 }
 
 int main() {

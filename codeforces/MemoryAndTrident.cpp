@@ -25,33 +25,31 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
-const int MAX = 2e5 + 15;
-int n;
-vector<int> adj[MAX];
+void solve() {
+    string str;
+    sc(str);
 
-double dfs(int v, int p = -1) {
-    double sum = 0;
-    for(auto it : adj[v]) {
-        if(it != p) {
-            sum += dfs(it, v) + 1;
+    int n = int(str.size());
+
+    int u = 0, d = 0, l = 0, r = 0;
+    for(int i = 0;i < n;i++) {
+        if(str[i] == 'U') {
+            u++;
+        } else if(str[i] == 'L') {
+            l++;
+        } else if(str[i] == 'R') {
+            r++;
+        } else {
+            d++;
         }
     }
 
-    return sum ? sum / (adj[v].size() - (p != -1)) : 0;
-}
-
-void solve() {
-    sc(n);
-
-    int src, dest;
-    for(int i = 1;i < n;i++) {
-        cin >> src >> dest;
-        src--, dest--;
-        adj[src].pb(dest);
-        adj[dest].pb(src);
+    int total = abs(u - d) + abs(r - l);
+    if(total & 1) {
+        pf(-1);
+    } else {
+        pf(total / 2);
     }
-
-    cout << fixed << setprecision(7) << dfs(0) << endl;
 }
 
 int main() {

@@ -25,34 +25,52 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
-const int MAX = 2e5 + 15;
-int n;
-vector<int> adj[MAX];
+const ll MOD = 1e9 + 7;
+void solve() {
+    int n;
+    sc(n);
 
-double dfs(int v, int p = -1) {
-    double sum = 0;
-    for(auto it : adj[v]) {
-        if(it != p) {
-            sum += dfs(it, v) + 1;
+    string s;
+    sc(s);
+
+    vector<vector<ll>> dp(n + 1, vector<ll>(4, 0));
+    dp[0][0] = 1;
+
+    for(int i = 0;i < n;i++) {
+        dp[i + 1] = dp[i];
+
+        if(s[i] == 'a') {
+            dp[i + 1][1] += dp[i][0];
+            dp[i + 1][1] %= MOD;
+        }
+
+        if(s[i] == 'b') {
+            dp[i + 1][2] += dp[i][1];
+            dp[i + 1][2] %= MOD;
+        }
+
+        if(s[i] == 'c') {
+            dp[i + 1][3] += dp[i][2];
+            dp[i + 1][3] %= MOD;
+        }
+
+        if(s[i] == '?') {
+            dp[i + 1][0] = dp[i][0] * 3;
+            dp[i + 1][0] %= MOD;
+
+            dp[i + 1][1] = dp[i][1] * 3 + dp[i][0];
+            dp[i + 1][1] %= MOD;
+            
+            dp[i + 1][2] = dp[i][2] * 3 + dp[i][1];
+            dp[i + 1][2] %= MOD;
+            
+            dp[i + 1][3] = dp[i][3] * 3 + dp[i][2];
+            dp[i + 1][3] %= MOD;
         }
     }
 
-    return sum ? sum / (adj[v].size() - (p != -1)) : 0;
-}
-
-void solve() {
-    sc(n);
-
-    int src, dest;
-    for(int i = 1;i < n;i++) {
-        cin >> src >> dest;
-        src--, dest--;
-        adj[src].pb(dest);
-        adj[dest].pb(src);
-    }
-
-    cout << fixed << setprecision(7) << dfs(0) << endl;
-}
+    pf(dp[n][3]);
+}   
 
 int main() {
     go();

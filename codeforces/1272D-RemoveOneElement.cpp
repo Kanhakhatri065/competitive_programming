@@ -25,33 +25,38 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
-const int MAX = 2e5 + 15;
-int n;
-vector<int> adj[MAX];
+void solve() {
+    int n;
+    sc(n);
 
-double dfs(int v, int p = -1) {
-    double sum = 0;
-    for(auto it : adj[v]) {
-        if(it != p) {
-            sum += dfs(it, v) + 1;
+    vector<int> v(n);
+    forIn(v, n);
+
+    int ans = 1;
+    vector<int> dp(n, 1);
+    for(int i = n - 2;i >= 0;i--) {
+        if(v[i + 1] > v[i]) {
+            dp[i] = dp[i + 1] + 1;
+        }
+
+        ans = max(ans, dp[i]);
+    }
+
+    vector<int> lf(n, 1);
+    for(int i = 1;i < n;i++) {
+        if(v[i - 1] < v[i]) {
+            lf[i] = lf[i - 1] + 1;
+        }
+        ans = max(ans, lf[i]);
+    }
+
+    for(int i = 0;i < n - 2;i++) {
+        if(v[i] < v[i + 2]) {
+            ans = max(ans, lf[i] + dp[i + 2]);
         }
     }
 
-    return sum ? sum / (adj[v].size() - (p != -1)) : 0;
-}
-
-void solve() {
-    sc(n);
-
-    int src, dest;
-    for(int i = 1;i < n;i++) {
-        cin >> src >> dest;
-        src--, dest--;
-        adj[src].pb(dest);
-        adj[dest].pb(src);
-    }
-
-    cout << fixed << setprecision(7) << dfs(0) << endl;
+    pf(ans);
 }
 
 int main() {

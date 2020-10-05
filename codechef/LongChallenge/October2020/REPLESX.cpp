@@ -25,57 +25,69 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
-const int MAX = 305;
-int mat[MAX][MAX];
-
 void solve() {
-    int n, m;
-    cin >> n >> m;
+    int n, x, p, k;
+    cin >> n >> x >> p >> k;
 
-    bool flag = true;
-    for(int i = 0;i < n;i++) {
-        for(int j = 0;j < m;j++) {
-            sc(mat[i][j]);
-        }
-    }
+    vector<int> v(n);
+    forIn(v, n);
 
-    for(int i = 0;i < n && flag;i++) {
-        for(int j = 0;j < m;j++) {
-            if((i == 0 || i == n - 1) && (j == m - 1 || j == 0)) {
-                if(mat[i][j] > 2) {
-                    flag = false;
-                    break;
-                } else {
-                    mat[i][j] = 2;
-                }
-            } else if(i == 0 || j == 0 || i == n - 1 ||j == m - 1) {
-                if(mat[i][j] > 3) {
-                    flag = false;
-                    break;
-                } else {
-                    mat[i][j] = 3;
-                }
-            } else {
-                if(mat[i][j] > 4)  {
-                    flag = false;
-                    break;
-                } else {
-                    mat[i][j] = 4;
+    sort(all(v));
+    p--;
+    k--;
+
+    if(p < k) {
+        if(v[p] < x) {
+            pf(-1);
+        } else if(v[p] == x) {
+            pf(0);
+        } else {
+            int cnt = 0;
+            for(int i = p;i >= 0;i--) {
+                if(v[i] > x) {
+                    cnt++;
                 }
             }
-        }
-    }
 
-    if(flag) {
-        yes;
-        for(int i = 0;i < n;i++) {
-            for(int j = 0;j < m;j++) {
-                cout << mat[i][j] << " ";
+            pf(cnt);
+        }
+    } else if(p == k) {
+        if(v[p] == x) {
+            pf(0);
+        } else if(v[p] > x) {
+            int cnt = 0;
+            for(int i = p;i >= 0;i--) {
+                if(v[i] > x) {
+                    cnt++;
+                }
             }
-            cout << endl;
+
+            pf(cnt);
+        } else {
+            int cnt = 0;
+            for(int i = p;i < n;i++) {
+                if(v[i] < x) {
+                    cnt++;
+                }
+            }
+
+            pf(cnt);
         }
     } else {
-        no;
+        if(v[p] < x) {
+            int cnt = 0;
+            for(int i = p;i < n;i++) {
+                if(v[i] < x) {
+                    cnt++;
+                }
+            }
+
+            pf(cnt);
+        } else if(v[p] == x) {
+            pf(0);
+        } else {
+            pf(-1);
+        }
     }
 }
 

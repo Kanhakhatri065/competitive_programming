@@ -25,33 +25,42 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
-const int MAX = 2e5 + 15;
-int n;
-vector<int> adj[MAX];
+void solve() {
+    int n, d;
+    cin >> n >> d;
 
-double dfs(int v, int p = -1) {
-    double sum = 0;
-    for(auto it : adj[v]) {
-        if(it != p) {
-            sum += dfs(it, v) + 1;
+    vector<vector<int>> v(n, vector<int>(d));
+    for(int i = 0;i < n;i++) {
+        for(int j = 0;j < d;j++) {
+            sc(v[i][j]);
         }
     }
 
-    return sum ? sum / (adj[v].size() - (p != -1)) : 0;
-}
-
-void solve() {
-    sc(n);
-
-    int src, dest;
-    for(int i = 1;i < n;i++) {
-        cin >> src >> dest;
-        src--, dest--;
-        adj[src].pb(dest);
-        adj[dest].pb(src);
+    vector<ll> store;
+    ll sum = 0;
+    for(int i = 0;i < n - 1;i++) {
+        for(int j = i + 1;j < n;j++) {
+            sum = 0;
+            for(int k = 0;k < d;k++) {
+                sum += abs(v[i][k] - v[j][k]);
+            }
+            store.pb(sum);
+        }
     }
 
-    cout << fixed << setprecision(7) << dfs(0) << endl;
+    //vpnt(store);
+
+    if(store.empty()) {
+        pf(0);
+    } else {
+        sort(all(store), greater<ll>());
+        sum = 0;
+        for(int i = 0;i < n - 1;i++) {
+            sum += store[i];
+        }
+
+        pf(sum);
+    }
 }
 
 int main() {

@@ -25,33 +25,50 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
-const int MAX = 2e5 + 15;
-int n;
-vector<int> adj[MAX];
+void solve() {
+    int n;
+    sc(n);
 
-double dfs(int v, int p = -1) {
-    double sum = 0;
-    for(auto it : adj[v]) {
-        if(it != p) {
-            sum += dfs(it, v) + 1;
+    n *= 2;
+
+    string s, t;
+    cin >> s >> t;
+
+    int common = 0, first = 0, second = 0;
+    for(int i = 0;i < n;i++) {
+        if(s[i] == '1') {
+            if(t[i] == '1') {
+                common++;
+            } else {
+                first++;
+            }
+        }
+
+        if(t[i] == '1') {
+            if(s[i] == '0') {
+                second++;
+            }
         }
     }
 
-    return sum ? sum / (adj[v].size() - (p != -1)) : 0;
-}
-
-void solve() {
-    sc(n);
-
-    int src, dest;
-    for(int i = 1;i < n;i++) {
-        cin >> src >> dest;
-        src--, dest--;
-        adj[src].pb(dest);
-        adj[dest].pb(src);
+    bool turn = 0;
+    while(common) {
+        common--;
+        if(turn) {
+            second++;
+        } else {
+            first++;
+        }
+        turn = !turn;
     }
 
-    cout << fixed << setprecision(7) << dfs(0) << endl;
+    if(first > second) {
+        pf("First");
+    } else if(first == second) {
+        pf("Draw");
+    } else {
+        pf("Second");   
+    }
 }
 
 int main() {

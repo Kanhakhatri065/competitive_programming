@@ -29,38 +29,63 @@ void solve() {
     int n;
     sc(n);
 
-
-    vector<int> v(n, 0);
-    forIn(v, n);
-
-    int ans = n - 1;
+    vector<int> f(n), in(n), out(n);
     for(int i = 0;i < n;i++) {
-        int flag = 1;
-        map<int, int> m;
-        for(int j = 0;j < i;j++) {
-            m[v[j]]++;
-            if(m[v[j]] == 2) {
-                flag = 0;
-                break;
-            }
-        }
-
-        int count = n;
-        for(int j = n - 1;j >= i;j--) {
-            m[v[j]]++;
-            if(m[v[j]] == 1) {
-                count = j;
-            } else {
-                break;
-            }
-        }
-
-        if(flag) {
-            ans = min(count - i, ans);
+        sc(f[i]);
+        f[i]--;
+        if(f[i] != -1) {
+            out[i]++;
+            in[f[i]]++;   
         }
     }
 
-    pf(ans);
+    vector<int> loops;
+    for(int i = 0;i < n;i++) {
+        if(in[i] == 0 && out[i] == 0) {
+            loops.pb(i);
+        }
+    }
+
+    if(int(loops.size()) == 1) {
+        int idx = loops[0];
+        for(int i = 0;i < n;i++) {
+            if(in[i] == 0 && i != idx) {
+                f[idx] = i;
+                out[idx]++;
+                in[i]++;
+                break;
+            }
+        }
+    } else if(int(loops.size()) > 1) {
+        for(int i = 0;i < int(loops.size());i++) {
+            int cur = loops[i];
+            int nxt = loops[(i + 1) % int(loops.size())];
+            f[cur] = nxt;
+            out[cur]++;
+            in[nxt]++;
+        }
+    }
+
+    loops.clear();
+    vector<int> ins, outs;
+    for(int i = 0;i < n;i++) {
+        if(in[i] == 0) {
+            ins.pb(i);
+        }
+
+        if(out[i] == 0) {
+            outs.pb(i);
+        }
+    }
+
+    for(int i = 0;i < int(outs.size());i++) {
+        f[outs[i]] = ins[i];
+    }
+
+    for(int i = 0;i < n;i++) {
+        cout << (f[i] + 1) << " ";
+    }
+    cout << endl;
 }
 
 int main() {

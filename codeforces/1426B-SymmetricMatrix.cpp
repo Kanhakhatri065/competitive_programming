@@ -25,37 +25,40 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
-const int MAX = 2e5 + 15;
-int n;
-vector<int> adj[MAX];
+void solve() {
+    int n, m;
+    cin >> n >> m;
 
-double dfs(int v, int p = -1) {
-    double sum = 0;
-    for(auto it : adj[v]) {
-        if(it != p) {
-            sum += dfs(it, v) + 1;
+    bool flag1 = true;
+    if(m & 1) {
+        flag1 = false;
+    }
+
+    int arr[2][2];
+    bool flag2 = false;
+    for(int i = 0;i < n;i++) {
+        for(int j = 0;j < 2;j++) {
+            for(int k = 0;k < 2;k++) {
+                sc(arr[j][k]);
+            }
+        }
+
+        if(arr[0][1] == arr[1][0]) {
+            flag2 = 1;
         }
     }
 
-    return sum ? sum / (adj[v].size() - (p != -1)) : 0;
-}
-
-void solve() {
-    sc(n);
-
-    int src, dest;
-    for(int i = 1;i < n;i++) {
-        cin >> src >> dest;
-        src--, dest--;
-        adj[src].pb(dest);
-        adj[dest].pb(src);
-    }
-
-    cout << fixed << setprecision(7) << dfs(0) << endl;
+    (flag1 & flag2) ? yes : no;
 }
 
 int main() {
     go();
-    solve();
+    int t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+
     return 0;
 }

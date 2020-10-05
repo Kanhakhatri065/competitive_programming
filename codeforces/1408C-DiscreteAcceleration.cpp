@@ -25,37 +25,49 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
-const int MAX = 2e5 + 15;
-int n;
-vector<int> adj[MAX];
+void solve() {
+    int n, l;
+    cin >> n >> l;
 
-double dfs(int v, int p = -1) {
-    double sum = 0;
-    for(auto it : adj[v]) {
-        if(it != p) {
-            sum += dfs(it, v) + 1;
+    vector<int> v(n);
+    forIn(v, n);
+
+    double total = 0;
+    double x0 = 0; int v0 = 1;
+    double x1 = l; int v1 = 1;
+    int low = 0, high = n - 1;
+
+    while(low <= high) {
+        double t0 = (v[low] - x0) / v0;
+        double t1 = (x1 - v[high]) / v1;
+
+        if(t0 <= t1) {
+            total += t0;
+            x0 = v[low];
+            x1 -= v1 * t0;
+            low++;
+            v0++;
+        } else {
+            total += t1;
+            x1 = v[high];
+            x0 += v0 * t1;
+            high--;
+            v1++;
         }
     }
 
-    return sum ? sum / (adj[v].size() - (p != -1)) : 0;
-}
-
-void solve() {
-    sc(n);
-
-    int src, dest;
-    for(int i = 1;i < n;i++) {
-        cin >> src >> dest;
-        src--, dest--;
-        adj[src].pb(dest);
-        adj[dest].pb(src);
-    }
-
-    cout << fixed << setprecision(7) << dfs(0) << endl;
+    total += (x1 - x0) / (v0 + v1);
+    cout << fixed << setprecision(15) << total << endl;
 }
 
 int main() {
     go();
-    solve();
+    int t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+
     return 0;
 }

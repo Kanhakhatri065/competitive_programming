@@ -25,33 +25,51 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
-const int MAX = 2e5 + 15;
-int n;
-vector<int> adj[MAX];
-
-double dfs(int v, int p = -1) {
-    double sum = 0;
-    for(auto it : adj[v]) {
-        if(it != p) {
-            sum += dfs(it, v) + 1;
-        }
+int areRotations(string str1, string str2) { 
+    if (str1.length() != str2.length()) {
+        return -1; 
+    }
+  
+    string temp = str1 + str1;  
+    if(temp.find(str2) != string::npos) {
+        return temp.find(str2);
     }
 
-    return sum ? sum / (adj[v].size() - (p != -1)) : 0;
-}
+    return -1;
+} 
 
 void solve() {
+    int n;
     sc(n);
 
-    int src, dest;
-    for(int i = 1;i < n;i++) {
-        cin >> src >> dest;
-        src--, dest--;
-        adj[src].pb(dest);
-        adj[dest].pb(src);
+    vector<string> v(n);
+    for(int i = 0;i < n;i++) {
+        sc(v[i]);
+        v[i] += v[i];
     }
 
-    cout << fixed << setprecision(7) << dfs(0) << endl;
+    int ans = INT_MAX, size = int(v[0].size()) / 2;
+    for(int i = 0;i < n;i++) {
+        int cost = 0;
+        if(int(v[i].size()) != 2 * size) {
+            pf(-1);
+            return;
+        }
+
+        for(int j = 0;j < n;j++) {
+            int x = v[j].find(v[i].substr(0, size));
+            if(x == -1) {
+                pf(-1);
+                return;
+            }
+
+            cost += x;
+        }
+
+        ans = min(ans, cost);
+    }
+
+    pf(ans);
 }
 
 int main() {
