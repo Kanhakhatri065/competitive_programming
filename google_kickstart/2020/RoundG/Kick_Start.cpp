@@ -26,45 +26,50 @@ void go() {
 }
 /*----------------------------------------------------------------*/
 void solve() {
-    int n, d;
-    cin >> n >> d;
+    string s;
+    sc(s);
 
-    vector<vector<int>> v(n, vector<int>(d));
-    for(int i = 0;i < n;i++) {
-        for(int j = 0;j < d;j++) {
-            sc(v[i][j]);
+    int n = int(s.size());
+
+    string kick = "KICK";
+    vector<int> kick_store;
+    for(int i = 0;i <= (n - 4);i++) {
+        string tmp = s.substr(i, 4);
+        if(tmp == kick) {
+            kick_store.pb(i);
         }
     }
 
-    vector<ll> store;
-    ll sum = 0;
-    for(int i = 0;i < n - 1;i++) {
-        for(int j = i + 1;j < n;j++) {
-            sum = 0;
-            for(int k = 0;k < d;k++) {
-                sum += abs(v[i][k] - v[j][k]);
+    string start = "START";
+    vector<int> start_store;
+    for(int i = 0;i <= (n - 5);i++) {
+        string tmp = s.substr(i, 5);
+        if(tmp == start) {
+            start_store.pb(i);
+        }
+    }
+
+    ll cnt = 0;
+    for(int i : kick_store) {
+        for(int j : start_store) {
+            if(i < j) {
+                cnt++;
             }
-            store.pb(sum);
         }
     }
 
-    //vpnt(store);
-
-    if(store.empty()) {
-        pf(0);
-    } else {
-        sort(all(store), greater<ll>());
-        sum = 0;
-        for(int i = 0;i < n - 1;i++) {
-            sum += store[i];
-        }
-
-        pf(sum);
-    }
+    pf(cnt);
 }
 
 int main() {
     go();
-    solve();
+    int t;
+    sc(t);
+
+    for(int tt = 1;tt <= t;tt++) {
+        cout << "Case #" << tt << ": ";
+        solve();
+    }
+
     return 0;
 }
