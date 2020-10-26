@@ -25,24 +25,33 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
+void solve() {
+	int n, x, pos;
+	cin >> n >> x >> pos;
+	
+	int l = 0, r = n;
+	int L = 0, R = 0;
+	
+	while(l < r) {
+		int m = (l + r) / 2;
+		if(pos < m) {
+			r = m;
+			R++;
+		} else {
+			l = m + 1;
+			L += (m != pos);
+		}
+	}	
 
-class Solution {
-public:
-    int climbStairs(int n) {
-        
-        if(n==1)
-            return 1;
-        if(n==2)
-            return 2;
-        else
-        {
-            vector<int> dp(n+1,0);
-            dp[0]=0;
-            dp[1]=1;
-            dp[2]=2;
-            for(int i=3;i<=n;i++)
-                dp[i]=dp[i-1]+dp[i-2];
-            return dp[n];
-        }
-    }
-};
+	int ans = 1;
+	for(int i = 1;i <= L;i++) ans = int64_t(ans) * (x - i) % mod;
+	for(int i = 1;i <= R;i++) ans = int64_t(ans) * (n - x - i + 1) % mod;
+	for(int i = 1;i <= (n - L - R - 1);i++) ans = int64_t(ans) * i % mod;
+	pf(ans);
+}
+
+int32_t main() {
+    //go();
+    solve();
+    return 0;
+}

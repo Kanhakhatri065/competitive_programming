@@ -25,24 +25,52 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
+void solve() {
+    int n;
+    sc(n);
 
-class Solution {
-public:
-    int climbStairs(int n) {
-        
-        if(n==1)
-            return 1;
-        if(n==2)
-            return 2;
-        else
-        {
-            vector<int> dp(n+1,0);
-            dp[0]=0;
-            dp[1]=1;
-            dp[2]=2;
-            for(int i=3;i<=n;i++)
-                dp[i]=dp[i-1]+dp[i-2];
-            return dp[n];
+    vector<int> v(n);
+    forIn(v, n);
+
+    int mx = *max_element(all(v));
+    vector<int> pos;
+    for(int i = 0;i < n;i++) {
+        if(v[i] == mx) {
+            pos.pb(i);
         }
     }
-};
+
+    int idx = -1;
+    for(int i : pos) {
+        if(i == 0) {
+            if(v[i + 1] < v[i]) {
+                idx = i + 1;
+                break;
+            }
+        } else if(i == n - 1) {
+            if(v[i - 1] < v[i]) {
+                idx = i + 1;
+                break;
+            }
+        } else {
+            if(v[i] > v[i + 1] || v[i] > v[i - 1]) {
+                idx = i + 1;
+                break;
+            }
+        }
+    }
+
+    pf(idx);
+}
+
+int main() {
+    go();
+    int t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+
+    return 0;
+}

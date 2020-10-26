@@ -25,24 +25,56 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
-
-class Solution {
-public:
-    int climbStairs(int n) {
-        
-        if(n==1)
-            return 1;
-        if(n==2)
-            return 2;
-        else
-        {
-            vector<int> dp(n+1,0);
-            dp[0]=0;
-            dp[1]=1;
-            dp[2]=2;
-            for(int i=3;i<=n;i++)
-                dp[i]=dp[i-1]+dp[i-2];
-            return dp[n];
+bool isPrime(int n) {
+    for(int i = 2;i * i <= n;i++) {
+        if(n % i == 0) {
+            return false;
         }
     }
-};
+
+    return true;
+}
+
+void solve() {
+    int n;
+    sc(n);
+
+    int arr[n][n];
+    memset(arr, 0, sizeof(arr));
+    if(isPrime(n)) {
+        for(int i = 0;i < n;i++) {
+            for(int j = 0;j < n;j++) {
+                arr[i][j] = 1;
+            }
+        }
+    } else {
+        
+        for(int i = 0;i < n;i++) {
+            arr[i][i] = 4;
+        }
+
+        for(int i = 0;i < n;i++) {
+            arr[i][(i + 1) % n] = 1;
+        }
+    }
+
+    for(int i = 0;i < n;i++) {
+        for(int j = 0;j < n;j++) {
+            cout << arr[i][j] << " ";
+        }
+        cout << endl;
+    }
+}
+
+int main() {
+    go();
+
+    int t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+
+    return 0;
+}

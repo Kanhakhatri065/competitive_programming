@@ -25,24 +25,50 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
+#define int long long
+void solve() {
+    int n;
+    cin >> n;
 
-class Solution {
-public:
-    int climbStairs(int n) {
-        
-        if(n==1)
-            return 1;
-        if(n==2)
-            return 2;
-        else
-        {
-            vector<int> dp(n+1,0);
-            dp[0]=0;
-            dp[1]=1;
-            dp[2]=2;
-            for(int i=3;i<=n;i++)
-                dp[i]=dp[i-1]+dp[i-2];
-            return dp[n];
+    vector<int> v(n);
+    forIn(v, n);
+
+    int mx = 0, pos = 0;
+    for(int i = 0;i < n;i++) {
+        int cur = v[i], h = v[i];
+        for(int j = i - 1;j >= 0;j--) {
+            h = min(v[j], h);
+            cur += h;
+        }
+
+        h = v[i];
+        for(int j = i + 1;j < n;j++) {
+            h = min(v[j], h);
+            cur += h;
+        }
+
+        if(cur > mx) {
+            mx = cur;
+            pos = i;
         }
     }
-};
+
+    vector<int> ans(n);
+    ans[pos] = v[pos];
+
+    for(int i = pos - 1;i >= 0;i--) {
+        ans[i] = min(v[i], ans[i + 1]);
+    }
+
+    for(int i = pos + 1;i < n;i++) {
+        ans[i] = min(v[i], ans[i - 1]);
+    }
+
+    vpnt(ans);
+}
+
+int32_t main() {
+    go();
+    solve();
+    return 0;
+}

@@ -25,24 +25,51 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
+void solve() {
+    int n;
+    sc(n);
 
-class Solution {
-public:
-    int climbStairs(int n) {
-        
-        if(n==1)
-            return 1;
-        if(n==2)
-            return 2;
-        else
-        {
-            vector<int> dp(n+1,0);
-            dp[0]=0;
-            dp[1]=1;
-            dp[2]=2;
-            for(int i=3;i<=n;i++)
-                dp[i]=dp[i-1]+dp[i-2];
-            return dp[n];
+    vector<int> v(n);
+    forIn(v, n);
+
+    int x = 0, y = -1;
+    for(int i = 0;i < n;i++) {
+        if(v[i] != v[x]) {
+            y = i;
+            break;
         }
     }
-};
+
+    if(y == -1) {
+        no;
+    } else {
+        int val = v[x];
+        vector<pair<int, int>> store;
+        for(int i = 0;i < n;i++) {
+            if(v[i] == val) {
+                if(i != x) {
+                    store.pb({y + 1, i + 1});
+                }
+            } else {
+                store.pb({x + 1, i + 1});
+            }
+        }
+
+        yes;
+        for(auto it : store) {
+            cout << it.first << " " << it.second << endl;
+        }
+    }
+}
+
+int main() {
+    go();
+    int t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+
+    return 0;
+}

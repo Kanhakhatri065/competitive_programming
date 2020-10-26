@@ -25,24 +25,21 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
-
-class Solution {
+class Solution{
 public:
-    int climbStairs(int n) {
-        
-        if(n==1)
-            return 1;
-        if(n==2)
-            return 2;
-        else
-        {
-            vector<int> dp(n+1,0);
-            dp[0]=0;
-            dp[1]=1;
-            dp[2]=2;
-            for(int i=3;i<=n;i++)
-                dp[i]=dp[i-1]+dp[i-2];
-            return dp[n];
+    vector<int> shuffle(vector<int> &v, int n) {
+        vector<int> a, b;
+        for(int i = 0;i < n;i++) {
+            a.pb(v[i]);
+            b.pb(v[n + i]);
         }
+
+        vector<int> ans;
+        for(int i = 0;i < n;i++) {
+            ans.pb(a[i]);
+            ans.pb(b[i]);
+        }
+
+        return ans;
     }
 };

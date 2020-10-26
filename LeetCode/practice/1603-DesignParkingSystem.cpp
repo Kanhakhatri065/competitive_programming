@@ -25,24 +25,37 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
-
-class Solution {
+class ParkingSystem {
 public:
-    int climbStairs(int n) {
-        
-        if(n==1)
-            return 1;
-        if(n==2)
-            return 2;
-        else
-        {
-            vector<int> dp(n+1,0);
-            dp[0]=0;
-            dp[1]=1;
-            dp[2]=2;
-            for(int i=3;i<=n;i++)
-                dp[i]=dp[i-1]+dp[i-2];
-            return dp[n];
+    int b, m, s;
+    ParkingSystem(int big, int medium, int small) {
+        this->b = big;
+        this->m = medium;
+        this->s = small;
+    }
+    
+    bool addCar(int carType) {
+        if(carType == 1) {
+            if(b == 0) {
+                return false;
+            } else {
+                b--;
+                return true;
+            }
+        } else if(carType == 2) {
+            if(m == 0) {
+                return false;
+            } else {
+                m--;
+                return true;
+            }
+        } else {
+            if(s == 0) {
+                return false;
+            } else {
+                s--;
+                return true;
+            }
         }
     }
 };

@@ -25,24 +25,45 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
+#define int long long
 
-class Solution {
-public:
-    int climbStairs(int n) {
-        
-        if(n==1)
-            return 1;
-        if(n==2)
-            return 2;
-        else
-        {
-            vector<int> dp(n+1,0);
-            dp[0]=0;
-            dp[1]=1;
-            dp[2]=2;
-            for(int i=3;i<=n;i++)
-                dp[i]=dp[i-1]+dp[i-2];
-            return dp[n];
-        }
-    }
-};
+bool good(int mid, int r, int g, int b) {
+	return ((r - mid) + (b - mid) + g) >= mid;
+}
+
+int color(int n, int r, int g, int b) {
+	int left = 0;
+	int right = min({n, r, b});
+
+	int ans = 0;
+	while(left <= right) {
+		int mid = (left + right) / 2;
+
+		if(good(mid, r, g, b)) {
+			ans = mid;
+			left = mid + 1;
+		} else {
+			right = mid - 1;
+		}
+	}
+
+	return ans;
+}
+
+void solve() {
+	int n, r, g, b;
+	cin >> n >> r >> g >> b;
+
+	pf(color(n, r, g, b));
+}
+
+int32_t main() {
+	int t;
+	sc(t);
+
+	while(t--) {
+		solve();
+	}
+
+	return 0;
+}

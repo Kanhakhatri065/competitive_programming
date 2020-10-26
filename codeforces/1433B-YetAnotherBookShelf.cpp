@@ -25,24 +25,44 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
+void solve() {
+    int n;
+    sc(n);
 
-class Solution {
-public:
-    int climbStairs(int n) {
-        
-        if(n==1)
-            return 1;
-        if(n==2)
-            return 2;
-        else
-        {
-            vector<int> dp(n+1,0);
-            dp[0]=0;
-            dp[1]=1;
-            dp[2]=2;
-            for(int i=3;i<=n;i++)
-                dp[i]=dp[i-1]+dp[i-2];
-            return dp[n];
+    vector<int> v(n);
+    forIn(v, n);
+
+    int cnt = accumulate(all(v), 0);
+    if(cnt <= 1) {
+        pf(0);
+        return;
+    }
+
+    vector<int> store;
+    for(int i = 0;i < n;i++) {
+        if(v[i] == 1) {
+            store.pb(i);
         }
     }
-};
+
+    //vpnt(store);
+
+    cnt = 0;
+    for(int i = 1;i < int(store.size());i++) {
+        cnt += (store[i] - store[i - 1] - 1);
+    }
+
+    pf(cnt);
+}
+
+int main() {
+    go();
+    int t;
+    sc(t);
+    
+    while(t--) {
+        solve();
+    }
+
+    return 0;
+}

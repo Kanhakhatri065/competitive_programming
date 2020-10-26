@@ -25,24 +25,45 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
+#define int long long
+void solve() {
+    int n;
+    cin >> n;
 
-class Solution {
-public:
-    int climbStairs(int n) {
-        
-        if(n==1)
-            return 1;
-        if(n==2)
-            return 2;
-        else
-        {
-            vector<int> dp(n+1,0);
-            dp[0]=0;
-            dp[1]=1;
-            dp[2]=2;
-            for(int i=3;i<=n;i++)
-                dp[i]=dp[i-1]+dp[i-2];
-            return dp[n];
+    vector<int> v(n);
+    map<int, int> mp;
+    for(int i = 0;i < n;i++) {
+        sc(v[i]);
+        mp[v[i]]++;
+    }
+
+    vector<int> store;
+    int x = 1;
+    for(int i = 1;i <= 32;i++) {
+        x *= 2;
+        store.pb(x);
+    }
+
+    int cnt = 0;
+    for(int i = 0;i < n;i++) {
+        for(int it : store) {
+            if(v[i] < it) {
+                int  p = it - v[i];
+                if(p == v[i]) {
+                    cnt += (mp[v[i]] - 1);
+                } else {
+                    cnt += mp[p];
+                }
+            }
         }
     }
-};
+
+    cnt /= 2;
+    pf(cnt);
+}
+
+int32_t main() {
+    go();
+    solve();
+    return 0;
+}

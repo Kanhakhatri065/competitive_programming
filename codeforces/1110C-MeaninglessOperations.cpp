@@ -25,24 +25,55 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
-
-class Solution {
-public:
-    int climbStairs(int n) {
-        
-        if(n==1)
-            return 1;
-        if(n==2)
-            return 2;
-        else
-        {
-            vector<int> dp(n+1,0);
-            dp[0]=0;
-            dp[1]=1;
-            dp[2]=2;
-            for(int i=3;i<=n;i++)
-                dp[i]=dp[i-1]+dp[i-2];
-            return dp[n];
+#define int long long
+int largest_divisor(int n) {
+    int ans = 1;
+    for(int i = sqrt(n);i >= 2;i--) {
+        if(n % i == 0) {
+            ans = max({ans, i, n / i});
         }
     }
-};
+
+    return ans;
+}   
+
+void solve() {
+    int n;
+    sc(n);
+
+    int q = n;
+    bool flag = false;
+    int pos = 0, m = -1;
+    while(q > 0) {
+        m++;
+        if(!(q & 1)) {
+            flag = true;
+        } else {
+            pos = m;
+        }
+        q >>= 1;
+    }
+
+    int ans = 0;
+    if(flag) {
+        for(int i = 0;i <= pos;i++) {
+            ans += pow(2, i);
+        }
+
+        pf(ans);
+    } else {
+        pf(largest_divisor(n));
+    }
+}
+
+int32_t main() {
+    go();
+    int t;
+    sc(t);
+
+    while(t--) {
+        solve();
+    }
+
+    return 0;
+}

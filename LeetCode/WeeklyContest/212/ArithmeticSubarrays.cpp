@@ -25,24 +25,31 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
-
 class Solution {
 public:
-    int climbStairs(int n) {
-        
-        if(n==1)
-            return 1;
-        if(n==2)
-            return 2;
-        else
-        {
-            vector<int> dp(n+1,0);
-            dp[0]=0;
-            dp[1]=1;
-            dp[2]=2;
-            for(int i=3;i<=n;i++)
-                dp[i]=dp[i-1]+dp[i-2];
-            return dp[n];
+    vector<bool> checkArithmeticSubarrays(vector<int>& nums, vector<int>& l, vector<int>& r) {
+        int n = int(nums.size());
+        int m = int(l.size());
+
+        vector<bool> ans(m);
+        for(int i = 0;i < m;i++) {
+            vector<int> store;
+            for(int j = l[i];j <= r[i];j++) {
+                store.pb(nums[j]);
+            }
+
+            bool flag = true;
+            sort(all(store));
+            for(int j = 2;j < int(store.size());j++) {
+                if(store[j] - store[j - 1] != (store[1] - store[0])) {
+                    flag = false;
+                    break;
+                }
+            }
+
+            ans[i] = flag;
         }
+
+        return ans;
     }
 };

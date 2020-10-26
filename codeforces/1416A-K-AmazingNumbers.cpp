@@ -25,24 +25,47 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
+const int N = 3e5 + 5;
+int f[N], last[N], arr[N], ans[N];
+int n;
 
-class Solution {
-public:
-    int climbStairs(int n) {
-        
-        if(n==1)
-            return 1;
-        if(n==2)
-            return 2;
-        else
-        {
-            vector<int> dp(n+1,0);
-            dp[0]=0;
-            dp[1]=1;
-            dp[2]=2;
-            for(int i=3;i<=n;i++)
-                dp[i]=dp[i-1]+dp[i-2];
-            return dp[n];
-        }
-    }
-};
+void solve() {
+	sc(n);
+	for(int i = 1;i <= n;i++) {
+		f[i] = last[i] = 0;
+		ans[i] = -1;
+	}
+
+	for(int i = 1;i <= n;i++) {
+		sc(arr[i]);
+	}
+
+	for(int i = 1;i <= n;i++) {
+		int x = arr[i];
+		f[x] = max(f[x], i - last[x]);
+		last[x] = i;
+	}
+
+	for(int x = 1;x <= n;x++) {
+		f[x] = max(f[x], n - last[x] + 1);
+		for(int i = f[x];i <= n && ans[i] == -1;i++) {
+			ans[i] = x;
+		}
+	}
+
+	for(int i = 1;i <= n;i++) {
+		cout << ans[i] << " ";
+	}
+	cout << endl;
+}
+
+int main() {
+	int t;
+	sc(t);
+
+	while(t--) {
+		solve();
+	}
+
+	return 0;
+}

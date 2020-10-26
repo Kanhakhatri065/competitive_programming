@@ -25,24 +25,21 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
-
-class Solution {
+class Solution{
 public:
-    int climbStairs(int n) {
-        
-        if(n==1)
-            return 1;
-        if(n==2)
-            return 2;
-        else
-        {
-            vector<int> dp(n+1,0);
-            dp[0]=0;
-            dp[1]=1;
-            dp[2]=2;
-            for(int i=3;i<=n;i++)
-                dp[i]=dp[i-1]+dp[i-2];
-            return dp[n];
-        }
-    }
+	vector<bool> kidsWithCandies(vector<int> &candies, int extraCandies) {
+		int n = int(candies.size());
+		int mx = *max_element(all(candies));
+
+		vector<bool> ans(n);
+		for(int i = 0;i < n;i++) {
+			if(candies[i] + extraCandies >= mx) {
+				ans[i] = true;
+			} else {
+				ans[i] = false;
+			}
+		}
+
+		return ans;
+	}
 };

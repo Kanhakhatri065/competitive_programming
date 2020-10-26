@@ -25,24 +25,40 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
+#define int long long
+bool check(int k, int n) {
+	int sum = 0;
+	int cur = n;
+	while(cur > 0) {
+		int o = min(cur, k);
+		sum += o;
+		cur -= o;
+		cur -= cur / 10;
+	}
 
-class Solution {
-public:
-    int climbStairs(int n) {
-        
-        if(n==1)
-            return 1;
-        if(n==2)
-            return 2;
-        else
-        {
-            vector<int> dp(n+1,0);
-            dp[0]=0;
-            dp[1]=1;
-            dp[2]=2;
-            for(int i=3;i<=n;i++)
-                dp[i]=dp[i-1]+dp[i-2];
-            return dp[n];
-        }
-    }
-};
+	return sum * 2 >= n;
+}
+
+void solve() {
+	int n;
+	cin >> n;
+
+	int l = 1, r = n;
+	int ans = r;
+	while(l <= r) {
+		int k = (l + r) / 2;
+		if(check(k, n)) {
+			ans = k;
+			r = k - 1;
+		} else {
+			l = k + 1;
+		}
+	}
+
+	pf(ans);
+}
+
+int32_t main() {
+	solve();
+	return 0;
+}

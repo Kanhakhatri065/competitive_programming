@@ -25,24 +25,25 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
-
+const int N = 105;
+int cnt[N];
 class Solution {
 public:
-    int climbStairs(int n) {
-        
-        if(n==1)
-            return 1;
-        if(n==2)
-            return 2;
-        else
-        {
-            vector<int> dp(n+1,0);
-            dp[0]=0;
-            dp[1]=1;
-            dp[2]=2;
-            for(int i=3;i<=n;i++)
-                dp[i]=dp[i-1]+dp[i-2];
-            return dp[n];
-        }
-    }
+	int numIdenticalPairs(vector<int> &v) {
+		int n = int(v.size());
+		memset(cnt, 0, sizeof(cnt));
+
+		for(int i = 0;i < n;i++) {
+			cnt[v[i]]++;
+		}
+		
+		int ans = 0;
+		for(int i = 1;i <= 100;i++) {
+			if(cnt[i]) {
+				ans += (cnt[i] * (cnt[i] - 1)) / 2;
+			}
+		}
+
+		return ans;
+	}
 };

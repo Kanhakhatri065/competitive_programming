@@ -25,24 +25,63 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
+vector<vector<int>> adj;
+int n;
+vector<int> ans, down, num;
 
-class Solution {
-public:
-    int climbStairs(int n) {
-        
-        if(n==1)
-            return 1;
-        if(n==2)
-            return 2;
-        else
-        {
-            vector<int> dp(n+1,0);
-            dp[0]=0;
-            dp[1]=1;
-            dp[2]=2;
-            for(int i=3;i<=n;i++)
-                dp[i]=dp[i-1]+dp[i-2];
-            return dp[n];
-        }
-    }
-};
+void calc_down(int i = 0, int pr = -1) {
+	down[i] = 0;
+	num[i] = 0;
+	for(int v : adj[i]) {
+		if(v == pr) {
+			continue;
+		}
+
+		calc_down(v, i);
+		down[i] += (down[v] + num[v]);
+		num[i] += num[v];
+	}
+
+	num[i] += 1;
+}
+
+void calc_ans(int i = 0, int pr = -1) {
+	if(i == 0) {
+		ans[i] = down[i];
+	} else {
+		ans[i] = ans[pr] + n - 2 * num[i];
+	}
+	
+	for(int v : adj[i]) {
+		if(v == pr) {
+			continue;
+		}
+
+		calc_ans(v, i);
+	}
+}
+
+void solve() {
+	cin >> n;
+	adj.resize(n);
+	for(int i = 1;i < n;i++) {
+		int u, v;
+		cin >> u >> v;
+		adj[u].pb(v);
+		adj[v].pb(u);
+	}
+
+	ans.resize(n);
+	num.resize(n);
+	down.resize(n);
+	
+	calc_down();
+	calc_ans();
+
+	vpnt(ans);
+}
+
+int main() {
+	solve();
+	return 0;
+}

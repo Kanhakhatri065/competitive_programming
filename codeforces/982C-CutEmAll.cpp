@@ -25,24 +25,51 @@ void go() {
 #endif
 }
 /*----------------------------------------------------------------*/
-
-class Solution {
-public:
-    int climbStairs(int n) {
-        
-        if(n==1)
-            return 1;
-        if(n==2)
-            return 2;
-        else
-        {
-            vector<int> dp(n+1,0);
-            dp[0]=0;
-            dp[1]=1;
-            dp[2]=2;
-            for(int i=3;i<=n;i++)
-                dp[i]=dp[i-1]+dp[i-2];
-            return dp[n];
+const int N = 1e5 + 5;
+vector<int> graph[N];
+bool visited[N];
+int ans = 0;
+int dfs(int u) {
+    int k = 0;
+    visited[u] = 1;
+    for(int v : graph[u]) {
+        if(!visited[v]) {
+            k += dfs(v);
         }
     }
-};
+
+    if((k + 1) % 2 == 0 && u != 1) {
+        ans += 1;
+        return 0;
+    }
+
+    return (1 + k);
+}
+
+void solve() {
+    int n;
+    sc(n);
+
+    for(int i = 1;i < n;i++) {
+        int u, v;
+        cin >> u >> v;
+
+        graph[u].pb(v);
+        graph[v].pb(u);
+    }
+
+    memset(visited, false, sizeof(visited));
+
+    dfs(1);
+    if(n % 2 == 1) {
+        pf(-1);
+    } else {
+        pf(ans);
+    }
+}
+
+int main() {
+    go();
+    solve();
+    return 0;
+}
