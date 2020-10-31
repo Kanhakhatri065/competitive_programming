@@ -1,5 +1,5 @@
 /*
-    I love the sound you make when you shut up.
+	I love the sound you make when you shut up.
 */
 #include <bits/stdc++.h>
 using namespace std;
@@ -25,6 +25,7 @@ typedef queue<int> qi;typedef queue<pi> qpi;
 /*---useful defines------*/
 #define sz(x) (int)(x).size()
 #define pb push_back
+#define mem(a, b) memset(a,(b), sizeof(a))
 #define ff first
 #define ss second
 #define lb lower_bound
@@ -55,49 +56,70 @@ void go() {
 #define ssolve solve();
 #define msolve int t;sc(t);while(t--) {solve();}
 #define mcsolve int t;sc(t);for(int tt = 1;tt <= t;tt++) {cout << "Case #" << tt << ": ";solve();}
+/*-------- movement in a 2D array ------*/
+const int d4i[4]={-1, 0, 1, 0}, d4j[4]={0, 1, 0, -1};
+const int d8i[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8]={0, 1, 1, 1, 0, -1, -1, -1};
 /*----------------------------------------------------------------*/
 const int MOD = 1e9 + 7;
 const int INF = 1e9;
-const int N = 2e5 + 5;
+const int N = 1e5 + 5;
 const int MAX = 2e5 + 5;
 /*-------------- Push your limits here ---------------------------*/
+vector<int> graph[N];
+int color[N];
+int n;
+void dfs(int s, int &comp) {
+	color[s] = 1;
+	comp++;
+	for(int v : graph[s]) {
+		if(color[v] == 0) {
+			dfs(v, comp);
+		}
+	}
+
+	color[s] = 2;
+}
+
 void solve() {
-    int n, k;
-    sc(n);
-    sc(k);
+	cin >> n;
 
-    vl v(n);
-    forIn(v, n);
+	FOR(i, 1, n + 1) {
+		int x;
+		cin >> x;
 
-    vl ans(n);
-    int sum = 0, p = 0;
-    FOR(i, 0, n) {
-        sum += v[i];
+		graph[i].pb(x);
+	}
 
-        if(p <= k - 2 && sum % 2 != 0) {
-            ans[p] = i + 1;
-            p++;
-            sum = 0;
-        }
-    }
+	mem(color, 0);
+	
+	vector<int> ans;
+	FOR(i, 1, n + 1) {
+		if(color[i] == 0) {
+			int comp = 0;
+			dfs(i, comp);
+			ans.pb(comp);
+		}
+	}
 
-    if(sum % 2 != 0) {
-        if(p == k - 1) {
-            yes;
-            FOR(i, 0, p) {
-                cout << ans[i] << " ";
-            }
-            pf(n);
-        } else {
-            no;
-        }
-    } else {
-        no;
-    }
+	sort(all(ans));
+
+	if(ans.size() > 1) {
+		int a = ans.back();
+		ans.pop_back();
+		int b = ans.back();
+		ans.pop_back();
+		ans.pb(a + b);
+	}
+
+	ll res = 0;
+	for(int v : ans) {
+		res += (v * 1LL * v);
+	}
+
+	pf(res);
 }
 
 int main() {
-    go();
-    msolve
-    return 0;
+	ssolve
+	return 0;
 }

@@ -63,37 +63,30 @@ const int MAX = 2e5 + 5;
 /*-------------- Push your limits here ---------------------------*/
 void solve() {
     int n, k;
-    sc(n);
-    sc(k);
+    cin >> n >> k;
 
-    vl v(n);
-    forIn(v, n);
+    string s;
+    sc(s);
 
-    vl ans(n);
-    int sum = 0, p = 0;
-    FOR(i, 0, n) {
-        sum += v[i];
-
-        if(p <= k - 2 && sum % 2 != 0) {
-            ans[p] = i + 1;
-            p++;
-            sum = 0;
-        }
+    sort(all(s));
+    
+    if(s[0] != s[k - 1]) {
+        pf(s[k - 1]);
+        return;
     }
 
-    if(sum % 2 != 0) {
-        if(p == k - 1) {
-            yes;
-            FOR(i, 0, p) {
-                cout << ans[i] << " ";
-            }
-            pf(n);
-        } else {
-            no;
+    cout << s[0];
+    if(s[k] != s[n - 1]) {
+        for(int i = k;i < n;i++) {
+            cout << s[i];
         }
     } else {
-        no;
+        FOR(i, 0, (n - 1) / k) {
+            cout << s[n - 1];
+        }
     }
+
+    cout << endl;
 }
 
 int main() {

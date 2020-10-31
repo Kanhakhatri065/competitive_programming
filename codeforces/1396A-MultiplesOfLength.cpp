@@ -25,6 +25,7 @@ typedef queue<int> qi;typedef queue<pi> qpi;
 /*---useful defines------*/
 #define sz(x) (int)(x).size()
 #define pb push_back
+#define mem(a, b) memset(a,(b), sizeof(a))
 #define ff first
 #define ss second
 #define lb lower_bound
@@ -55,6 +56,9 @@ void go() {
 #define ssolve solve();
 #define msolve int t;sc(t);while(t--) {solve();}
 #define mcsolve int t;sc(t);for(int tt = 1;tt <= t;tt++) {cout << "Case #" << tt << ": ";solve();}
+/*-------- movement in a 2D array ------*/
+const int d4i[4]={-1, 0, 1, 0}, d4j[4]={0, 1, 0, -1};
+const int d8i[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8]={0, 1, 1, 1, 0, -1, -1, -1};
 /*----------------------------------------------------------------*/
 const int MOD = 1e9 + 7;
 const int INF = 1e9;
@@ -62,42 +66,38 @@ const int N = 2e5 + 5;
 const int MAX = 2e5 + 5;
 /*-------------- Push your limits here ---------------------------*/
 void solve() {
-    int n, k;
-    sc(n);
-    sc(k);
+    int n;
+    cin >> n;
 
     vl v(n);
     forIn(v, n);
 
-    vl ans(n);
-    int sum = 0, p = 0;
-    FOR(i, 0, n) {
-        sum += v[i];
-
-        if(p <= k - 2 && sum % 2 != 0) {
-            ans[p] = i + 1;
-            p++;
-            sum = 0;
-        }
-    }
-
-    if(sum % 2 != 0) {
-        if(p == k - 1) {
-            yes;
-            FOR(i, 0, p) {
-                cout << ans[i] << " ";
-            }
-            pf(n);
-        } else {
-            no;
-        }
+    if(n == 1) {
+        for(int i = 0;i < 3;i++) {
+            cout << "1 1" << endl;
+            pf((-v[0]));
+            v[0] = 0;
+        }   
     } else {
-        no;
+        cout << "1 " << n << endl;
+        for(int i = 0;i + 1 < n;i++) {
+            cout << ((-v[i]) * n) << " ";
+        }
+        pf(0);
+
+        cout << "1 " << (n - 1) << endl;
+        for(int i = 0;i + 1 < n;i++) {
+            cout << (v[i] * (n - 1)) << " ";
+        }
+        cout << endl;
+
+        cout << n << " " << n << endl;
+        pf(-v[n - 1]);
     }
 }
 
 int main() {
     go();
-    msolve
+    ssolve
     return 0;
 }

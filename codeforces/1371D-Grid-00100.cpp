@@ -25,6 +25,7 @@ typedef queue<int> qi;typedef queue<pi> qpi;
 /*---useful defines------*/
 #define sz(x) (int)(x).size()
 #define pb push_back
+#define mem(a, b) memset(a,(b), sizeof(a))
 #define ff first
 #define ss second
 #define lb lower_bound
@@ -55,44 +56,83 @@ void go() {
 #define ssolve solve();
 #define msolve int t;sc(t);while(t--) {solve();}
 #define mcsolve int t;sc(t);for(int tt = 1;tt <= t;tt++) {cout << "Case #" << tt << ": ";solve();}
+/*-------- movement in a 2D array ------*/
+const int d4i[4]={-1, 0, 1, 0}, d4j[4]={0, 1, 0, -1};
+const int d8i[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8]={0, 1, 1, 1, 0, -1, -1, -1};
 /*----------------------------------------------------------------*/
 const int MOD = 1e9 + 7;
 const int INF = 1e9;
-const int N = 2e5 + 5;
+const int N = 300 + 5;
 const int MAX = 2e5 + 5;
 /*-------------- Push your limits here ---------------------------*/
+int arr[N][N];
+int n, k;
 void solve() {
-    int n, k;
-    sc(n);
-    sc(k);
+    cin >> n >> k;
 
-    vl v(n);
-    forIn(v, n);
-
-    vl ans(n);
-    int sum = 0, p = 0;
-    FOR(i, 0, n) {
-        sum += v[i];
-
-        if(p <= k - 2 && sum % 2 != 0) {
-            ans[p] = i + 1;
-            p++;
-            sum = 0;
+    mem(arr, 0);
+    int x = -1;
+    while(k > 0) {
+        
+        x++;
+        int i = 0;
+        while(i < n && k > 0) {
+            arr[i][(i + x) % n] = 1;
+            k--;
+            i++;
         }
     }
 
-    if(sum % 2 != 0) {
-        if(p == k - 1) {
-            yes;
-            FOR(i, 0, p) {
-                cout << ans[i] << " ";
-            }
-            pf(n);
-        } else {
-            no;
+    int mx_r = -1;
+    int mn_r = -1;
+    F0R(i, n) {
+        int sum = 0;
+        F0R(j, n) {
+            sum += arr[i][j];
         }
-    } else {
-        no;
+
+        if(mx_r == -1) {
+            mx_r = sum;
+        } else {
+            mx_r = max(mx_r, sum);
+        }
+
+        if(mn_r == -1) {
+            mn_r = sum;
+        } else {
+            mn_r = min(mn_r, sum);
+        }
+    }
+
+    int mx_c = -1;
+    int mn_c = -1;
+    F0R(i, n) {
+        int sum = 0;
+        F0R(j, n) {
+            sum += arr[j][i];
+        }
+
+        if(mx_c == -1) {
+            mx_c = sum;
+        } else {
+            mx_c = max(mx_c, sum);
+        }
+
+        if(mn_c == -1) {
+            mn_c = sum;
+        } else {
+            mn_c = min(mn_c, sum);
+        }
+    }
+
+    int f = (mx_r - mn_r) * (mx_r - mn_r) + (mx_c - mn_c) * (mx_c - mn_c);
+
+    pf(f);
+    F0R(i, n) {
+        F0R(j, n) {
+            cout << arr[i][j];
+        }
+        cout << endl;
     }
 }
 

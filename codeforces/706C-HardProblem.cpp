@@ -25,6 +25,7 @@ typedef queue<int> qi;typedef queue<pi> qpi;
 /*---useful defines------*/
 #define sz(x) (int)(x).size()
 #define pb push_back
+#define mem(a, b) memset(a,(b), sizeof(a))
 #define ff first
 #define ss second
 #define lb lower_bound
@@ -55,49 +56,51 @@ void go() {
 #define ssolve solve();
 #define msolve int t;sc(t);while(t--) {solve();}
 #define mcsolve int t;sc(t);for(int tt = 1;tt <= t;tt++) {cout << "Case #" << tt << ": ";solve();}
+/*-------- movement in a 2D array ------*/
+const int d4i[4]={-1, 0, 1, 0}, d4j[4]={0, 1, 0, -1};
+const int d8i[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8]={0, 1, 1, 1, 0, -1, -1, -1};
 /*----------------------------------------------------------------*/
-const int MOD = 1e9 + 7;
-const int INF = 1e9;
+const ll MOD = 1e9 + 7;
+const ll INF = 1e15;
 const int N = 2e5 + 5;
 const int MAX = 2e5 + 5;
 /*-------------- Push your limits here ---------------------------*/
 void solve() {
-    int n, k;
-    sc(n);
-    sc(k);
+    int n;
+    cin >> n;
 
-    vl v(n);
-    forIn(v, n);
+    vl a(n);
+    forIn(a, n);
 
-    vl ans(n);
-    int sum = 0, p = 0;
-    FOR(i, 0, n) {
-        sum += v[i];
+    vector<string> s(n), rev(n);
+    forIn(s, n);
 
-        if(p <= k - 2 && sum % 2 != 0) {
-            ans[p] = i + 1;
-            p++;
-            sum = 0;
-        }
+    F0R(i, n) {
+        rev[i] = s[i];
+        reverse(all(rev[i]));
     }
 
-    if(sum % 2 != 0) {
-        if(p == k - 1) {
-            yes;
-            FOR(i, 0, p) {
-                cout << ans[i] << " ";
-            }
-            pf(n);
-        } else {
-            no;
-        }
+    vector<vl> dp(n, vl(2, INF));
+    dp[0][0] = 0, dp[0][1] = a[0];
+
+    for(int i = 1;i < n;i++) {
+        if(rev[i - 1] <= s[i]) dp[i][0] = min(dp[i][0], dp[i - 1][1]);
+        if(s[i - 1] <= s[i]) dp[i][0] = min(dp[i][0], dp[i - 1][0]);
+        if(rev[i - 1] <= rev[i]) dp[i][1] = min(dp[i][1], dp[i - 1][1] + a[i]);
+        if(s[i - 1] <= rev[i]) dp[i][1] = min(dp[i][1], dp[i - 1][0] + a[i]);
+    }
+
+    ll ret = min(dp[n - 1][0], dp[n - 1][1]);
+
+    if(ret == INF) {
+        pf(-1);
     } else {
-        no;
+        pf(ret);
     }
 }
 
 int main() {
     go();
-    msolve
+    solve();
     return 0;
 }

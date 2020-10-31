@@ -1,5 +1,5 @@
 /*
-    I love the sound you make when you shut up.
+	I love the sound you make when you shut up.
 */
 #include <bits/stdc++.h>
 using namespace std;
@@ -25,6 +25,7 @@ typedef queue<int> qi;typedef queue<pi> qpi;
 /*---useful defines------*/
 #define sz(x) (int)(x).size()
 #define pb push_back
+#define mem(a, b) memset(a,(b), sizeof(a))
 #define ff first
 #define ss second
 #define lb lower_bound
@@ -55,49 +56,64 @@ void go() {
 #define ssolve solve();
 #define msolve int t;sc(t);while(t--) {solve();}
 #define mcsolve int t;sc(t);for(int tt = 1;tt <= t;tt++) {cout << "Case #" << tt << ": ";solve();}
+/*-------- movement in a 2D array ------*/
+const int d4i[4]={-1, 0, 1, 0}, d4j[4]={0, 1, 0, -1};
+const int d8i[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8]={0, 1, 1, 1, 0, -1, -1, -1};
 /*----------------------------------------------------------------*/
 const int MOD = 1e9 + 7;
 const int INF = 1e9;
-const int N = 2e5 + 5;
+const int N = 1e5 + 5;
 const int MAX = 2e5 + 5;
 /*-------------- Push your limits here ---------------------------*/
+int color[N], pos[N];
+vector<int> graph[N], par[N];
+vector<int> ans;
+void dfs(int u) {
+	color[u] = 1;
+	for(int v : graph[u]) {
+		if(!color[v]) {
+			dfs(v);
+		} else if(color[v] == 1) {
+			pf(-1);
+			exit(0);
+		}
+	}
+	color[u] = 2;
+	ans.pb(u);
+}
+
 void solve() {
-    int n, k;
-    sc(n);
-    sc(k);
+	int n, m;
+	cin >> n >> m;
 
-    vl v(n);
-    forIn(v, n);
+	vector<int> course(m);
+	forIn(course, m);
 
-    vl ans(n);
-    int sum = 0, p = 0;
-    FOR(i, 0, n) {
-        sum += v[i];
+	FOR(i, 1, n + 1) {
+		int x;
+		cin >> x;
 
-        if(p <= k - 2 && sum % 2 != 0) {
-            ans[p] = i + 1;
-            p++;
-            sum = 0;
-        }
-    }
+		while(x--) {
+			int v;
+			cin >> v;
+			graph[i].pb(v);
+		}
+	}
 
-    if(sum % 2 != 0) {
-        if(p == k - 1) {
-            yes;
-            FOR(i, 0, p) {
-                cout << ans[i] << " ";
-            }
-            pf(n);
-        } else {
-            no;
-        }
-    } else {
-        no;
-    }
+	trav(u, course) {
+		if(!color[u]) {
+			dfs(u);
+		}
+	}
+
+	pf(sz(ans));
+	trav(it, ans) {
+		cout << it << " ";
+	}
+	cout << endl;
 }
 
 int main() {
-    go();
-    msolve
-    return 0;
+	ssolve
+	return 0;
 }

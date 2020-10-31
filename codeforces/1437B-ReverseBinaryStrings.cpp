@@ -4,13 +4,23 @@
 #include <bits/stdc++.h>
 using namespace std;
 /*----typedefs--------*/
-typedef long long ll;typedef long double ld;typedef complex<ld> cd;
-typedef pair<int, int> pi;typedef pair<ll, ll> pl;typedef pair<ld, ld> pd;
-typedef vector<int> vi;typedef vector<pi> vpi;typedef vector<ll> vl;typedef vector<ld> vd;typedef vector<pl> vpl;
-typedef vector<cd> vcd;typedef vector<vi> vvi;
-typedef map<int, int> mi;typedef map<ll, ll> ml;typedef map<int, vi> mivi;typedef map<int, pi> mipi;
-typedef set<int> si;typedef set<ll> sl;typedef set<pair<int, int>> spi;
-typedef queue<int> qi;typedef queue<pi> qpi;
+typedef long long ll;
+typedef long double ld;
+typedef complex<ld> cd;
+typedef pair<int, int> pi;
+typedef pair<ll, ll> pl;
+typedef pair<ld, ld> pd;
+typedef vector<int> vi;
+typedef vector<pi> vpi;
+typedef vector<ll> vl;
+typedef vector<ld> vd;
+typedef vector<pl> vpl;
+typedef vector<cd> vcd;
+typedef vector<vi> vvi;
+typedef map<int, int> mi;
+typedef map<ll, ll> ml;
+typedef map<int, vi> mivi;
+typedef map<int, pi> mipi;
 /*-----in and out--------*/
 #define sc(a) cin >> a
 #define pf(a) cout << a << endl
@@ -54,7 +64,6 @@ void go() {
 /*------ single or multiple testcase-----*/
 #define ssolve solve();
 #define msolve int t;sc(t);while(t--) {solve();}
-#define mcsolve int t;sc(t);for(int tt = 1;tt <= t;tt++) {cout << "Case #" << tt << ": ";solve();}
 /*----------------------------------------------------------------*/
 const int MOD = 1e9 + 7;
 const int INF = 1e9;
@@ -62,38 +71,20 @@ const int N = 2e5 + 5;
 const int MAX = 2e5 + 5;
 /*-------------- Push your limits here ---------------------------*/
 void solve() {
-    int n, k;
+    int n;
     sc(n);
-    sc(k);
 
-    vl v(n);
-    forIn(v, n);
+    string s;
+    sc(s);
 
-    vl ans(n);
-    int sum = 0, p = 0;
-    FOR(i, 0, n) {
-        sum += v[i];
-
-        if(p <= k - 2 && sum % 2 != 0) {
-            ans[p] = i + 1;
-            p++;
-            sum = 0;
+    int cnt = 0;
+    FOR(i, 1, n) {
+        if(s[i] == s[i - 1]) {
+            cnt++;
         }
     }
 
-    if(sum % 2 != 0) {
-        if(p == k - 1) {
-            yes;
-            FOR(i, 0, p) {
-                cout << ans[i] << " ";
-            }
-            pf(n);
-        } else {
-            no;
-        }
-    } else {
-        no;
-    }
+    pf((cnt + 1) / 2);
 }
 
 int main() {

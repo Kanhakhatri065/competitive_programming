@@ -25,6 +25,7 @@ typedef queue<int> qi;typedef queue<pi> qpi;
 /*---useful defines------*/
 #define sz(x) (int)(x).size()
 #define pb push_back
+#define mem(a, b) memset(a,(b), sizeof(a))
 #define ff first
 #define ss second
 #define lb lower_bound
@@ -55,45 +56,42 @@ void go() {
 #define ssolve solve();
 #define msolve int t;sc(t);while(t--) {solve();}
 #define mcsolve int t;sc(t);for(int tt = 1;tt <= t;tt++) {cout << "Case #" << tt << ": ";solve();}
+/*-------- movement in a 2D array ------*/
+const int d4i[4]={-1, 0, 1, 0}, d4j[4]={0, 1, 0, -1};
+const int d8i[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8]={0, 1, 1, 1, 0, -1, -1, -1};
 /*----------------------------------------------------------------*/
 const int MOD = 1e9 + 7;
-const int INF = 1e9;
+const ll INF = 1e18 + 42;
 const int N = 2e5 + 5;
 const int MAX = 2e5 + 5;
 /*-------------- Push your limits here ---------------------------*/
 void solve() {
-    int n, k;
-    sc(n);
-    sc(k);
+    ll l, r;
+    cin >> l >> r;
 
-    vl v(n);
-    forIn(v, n);
-
-    vl ans(n);
-    int sum = 0, p = 0;
-    FOR(i, 0, n) {
-        sum += v[i];
-
-        if(p <= k - 2 && sum % 2 != 0) {
-            ans[p] = i + 1;
-            p++;
-            sum = 0;
-        }
-    }
-
-    if(sum % 2 != 0) {
-        if(p == k - 1) {
-            yes;
-            FOR(i, 0, p) {
-                cout << ans[i] << " ";
+    ll p = r - l + 1;
+    ll up = -1;
+    ll ans = 0;
+    for(ll k = 1;k <= p;) {
+        ll x = l * k + k * (k - 1) / 2, y = x + k * (p - k);
+        ll lo = k, hi = p;
+        while(lo < hi) {
+            ll mid = (lo + hi + 1) >> 1;
+            ll val = l * mid + mid * (mid - 1) / 2;
+            if(val <= y) {
+                lo = mid;
+            } else {
+                hi = mid - 1;
             }
-            pf(n);
-        } else {
-            no;
         }
-    } else {
-        no;
+
+        ll num = l * lo + lo * (lo - 1) / 2 + lo * (p - lo) + 1;
+        ans += num - max(x, up);
+        up = num;
+        k = lo + 1;
     }
+
+    pf(ans);
 }
 
 int main() {

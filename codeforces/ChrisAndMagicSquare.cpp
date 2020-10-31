@@ -25,6 +25,7 @@ typedef queue<int> qi;typedef queue<pi> qpi;
 /*---useful defines------*/
 #define sz(x) (int)(x).size()
 #define pb push_back
+#define mem(a, b) memset(a,(b), sizeof(a))
 #define ff first
 #define ss second
 #define lb lower_bound
@@ -55,49 +56,155 @@ void go() {
 #define ssolve solve();
 #define msolve int t;sc(t);while(t--) {solve();}
 #define mcsolve int t;sc(t);for(int tt = 1;tt <= t;tt++) {cout << "Case #" << tt << ": ";solve();}
+/*-------- movement in a 2D array ------*/
+const int d4i[4]={-1, 0, 1, 0}, d4j[4]={0, 1, 0, -1};
+const int d8i[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8]={0, 1, 1, 1, 0, -1, -1, -1};
 /*----------------------------------------------------------------*/
 const int MOD = 1e9 + 7;
 const int INF = 1e9;
-const int N = 2e5 + 5;
+const int N = 1005;
 const int MAX = 2e5 + 5;
 /*-------------- Push your limits here ---------------------------*/
-void solve() {
-    int n, k;
-    sc(n);
-    sc(k);
 
-    vl v(n);
-    forIn(v, n);
+ll a[N][N];
+ll r[N], c[N];
 
-    vl ans(n);
-    int sum = 0, p = 0;
-    FOR(i, 0, n) {
-        sum += v[i];
 
-        if(p <= k - 2 && sum % 2 != 0) {
-            ans[p] = i + 1;
-            p++;
-            sum = 0;
-        }
-    }
+void noo()
+{
+	pf(-1);
+}
 
-    if(sum % 2 != 0) {
-        if(p == k - 1) {
-            yes;
-            FOR(i, 0, p) {
-                cout << ans[i] << " ";
-            }
-            pf(n);
-        } else {
-            no;
-        }
-    } else {
-        no;
-    }
+int solve() {
+    int n;
+    cin >> n;
+
+    mem(r, 0);
+    mem(c, 0);
+
+	int x, y; ll diagonal1 = 0; ll diagonal2 = 0;
+	for(int i = 0; i < n; i++)
+	{
+		for(int j = 0; j < n; j++)
+		{
+			cin >> a[i][j];
+			if(a[i][j] == 0)
+			{
+				x = i; y = j;
+			}
+			else
+			{
+				r[i] += a[i][j];
+				c[j] += a[i][j];
+				if(i == j)
+				{
+					diagonal1 += a[i][j];
+				}
+				if(i + j == n - 1)
+				{
+					diagonal2 += a[i][j];
+				}
+			}
+		}
+	}
+	if(n == 1)
+	{
+		cout << 1 << '\n';
+		return 0;
+	}
+	ll commonsum = r[0];
+	if(x == 0) commonsum = r[1];
+	//cout << commonsum << '\n';
+	ll rowsum = -1; ll colsum = -1; ll d1sum = -1; ll d2sum = -1;
+	for(int i = 0; i < n; i++)
+	{
+		if(i != x)
+		{
+			if(r[i] != commonsum)
+			{
+				noo();
+				return 0;
+			}
+		}
+		else
+		{
+			rowsum = r[i];
+		}
+	}
+	for(int i = 0; i < n; i++)
+	{
+		if(i != y)
+		{
+			if(c[i] != commonsum)
+			{
+				noo(); return 0;
+			}
+		}
+		else
+		{
+			colsum = c[i];
+		}
+	}
+	bool isdiagonal1 = false; bool isdiagonal2 = false;
+	if(x == y) isdiagonal1 = true;
+	if(x + y == n - 1) isdiagonal2 = true;
+	if(!isdiagonal1)
+	{
+		if(diagonal1 != commonsum)
+		{
+			noo();
+			return 0;
+		}
+	}
+	else
+	{
+		d1sum = diagonal1;
+	}
+	if(!isdiagonal2)
+	{
+		if(diagonal2 != commonsum)
+		{
+			noo();
+			return 0;
+		}
+	}
+	else
+	{
+		d2sum = diagonal2;
+	}
+	if(rowsum == colsum)
+	{
+		if(isdiagonal1 && d1sum != rowsum)
+		{
+			noo();
+			return 0;
+		}
+		if(isdiagonal2 && d2sum != rowsum)
+		{
+			noo();
+			return 0;
+		}
+		ll value = commonsum - rowsum;
+		if(value > 0)
+		{
+			cout << value << '\n';
+			return 0;
+		}
+		else
+		{
+			noo();
+			return 0;
+		}
+	}
+	else
+	{
+		noo();
+		return 0;
+	}
 }
 
 int main() {
     go();
-    msolve
+    ssolve
     return 0;
 }

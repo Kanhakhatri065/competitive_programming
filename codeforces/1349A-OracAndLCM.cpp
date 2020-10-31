@@ -25,6 +25,7 @@ typedef queue<int> qi;typedef queue<pi> qpi;
 /*---useful defines------*/
 #define sz(x) (int)(x).size()
 #define pb push_back
+#define mem(a, b) memset(a,(b), sizeof(a))
 #define ff first
 #define ss second
 #define lb lower_bound
@@ -55,49 +56,51 @@ void go() {
 #define ssolve solve();
 #define msolve int t;sc(t);while(t--) {solve();}
 #define mcsolve int t;sc(t);for(int tt = 1;tt <= t;tt++) {cout << "Case #" << tt << ": ";solve();}
+/*-------- movement in a 2D array ------*/
+const int d4i[4]={-1, 0, 1, 0}, d4j[4]={0, 1, 0, -1};
+const int d8i[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8]={0, 1, 1, 1, 0, -1, -1, -1};
 /*----------------------------------------------------------------*/
 const int MOD = 1e9 + 7;
 const int INF = 1e9;
-const int N = 2e5 + 5;
+const int N = 1e5 + 5;
 const int MAX = 2e5 + 5;
 /*-------------- Push your limits here ---------------------------*/
+ll a[N], pre[N], suf[N];
+ll gcd(ll x, ll y) {
+    if(y == 0) {
+        return x;
+    }
+
+    return gcd(y, x % y);
+}
+
 void solve() {
-    int n, k;
+    int n;
     sc(n);
-    sc(k);
 
-    vl v(n);
-    forIn(v, n);
+    FOR(i, 1, n + 1) sc(a[i]);
 
-    vl ans(n);
-    int sum = 0, p = 0;
+    pre[1] = a[1], suf[n] = a[n];
+
+    FOR(i, 2, n + 1) pre[i] = gcd(pre[i - 1], a[i]);
+    FORd(i, 1, n) suf[i] = gcd(suf[i + 1], a[i]);
+
+    ll ans;
     FOR(i, 0, n) {
-        sum += v[i];
-
-        if(p <= k - 2 && sum % 2 != 0) {
-            ans[p] = i + 1;
-            p++;
-            sum = 0;
-        }
-    }
-
-    if(sum % 2 != 0) {
-        if(p == k - 1) {
-            yes;
-            FOR(i, 0, p) {
-                cout << ans[i] << " ";
-            }
-            pf(n);
+        if(i == 0) {
+            ans = suf[2];
+        } else if(i == n - 1) {
+            ans = ans * pre[n - 1] / gcd(pre[n - 1], ans);
         } else {
-            no;
+            ans = ans * gcd(pre[i], suf[i + 2]) / gcd(ans, gcd(pre[i], suf[i + 2]));
         }
-    } else {
-        no;
     }
+
+    pf(ans);
 }
 
 int main() {
     go();
-    msolve
+    ssolve
     return 0;
 }

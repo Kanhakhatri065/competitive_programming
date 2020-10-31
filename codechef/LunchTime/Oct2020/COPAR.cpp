@@ -25,6 +25,7 @@ typedef queue<int> qi;typedef queue<pi> qpi;
 /*---useful defines------*/
 #define sz(x) (int)(x).size()
 #define pb push_back
+#define mem(a, b) memset(a,(b), sizeof(a))
 #define ff first
 #define ss second
 #define lb lower_bound
@@ -55,49 +56,74 @@ void go() {
 #define ssolve solve();
 #define msolve int t;sc(t);while(t--) {solve();}
 #define mcsolve int t;sc(t);for(int tt = 1;tt <= t;tt++) {cout << "Case #" << tt << ": ";solve();}
+/*-------- movement in a 2D array ------*/
+const int d4i[4]={-1, 0, 1, 0}, d4j[4]={0, 1, 0, -1};
+const int d8i[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8]={0, 1, 1, 1, 0, -1, -1, -1};
 /*----------------------------------------------------------------*/
 const int MOD = 1e9 + 7;
 const int INF = 1e9;
-const int N = 2e5 + 5;
+const int N = 1e5 + 5;
 const int MAX = 2e5 + 5;
 /*-------------- Push your limits here ---------------------------*/
+int spf[N];
+void precomputation() {
+    for(int i = 0;i < N;i++) {
+        spf[i] = i;
+    }
+
+    for(int i = 2;i < N;i++) {
+        for(int j = 2 * i;j < N;j += i) {
+            if(spf[j] == j) {
+                spf[j] = i;
+            }
+        }
+    }
+}
+
+int dp[N];
+
 void solve() {
-    int n, k;
-    sc(n);
-    sc(k);
+    mem(dp, -1);
 
-    vl v(n);
-    forIn(v, n);
+    int n;
+    cin >> n;
 
-    vl ans(n);
-    int sum = 0, p = 0;
-    FOR(i, 0, n) {
-        sum += v[i];
+    vi a[n + 1];
+    for(int i = 1;i <= n;i++) {
+        int m;
+        cin >> m;
 
-        if(p <= k - 2 && sum % 2 != 0) {
-            ans[p] = i + 1;
-            p++;
-            sum = 0;
+        while(m > 1) {
+            int tmp = spf[m];
+            while(m % tmp == 0) {
+                a[i].pb(tmp);
+                m /= tmp;
+            }
         }
     }
 
-    if(sum % 2 != 0) {
-        if(p == k - 1) {
-            yes;
-            FOR(i, 0, p) {
-                cout << ans[i] << " ";
-            }
-            pf(n);
-        } else {
-            no;
+    for(int i = 1;i <= n;i++) {
+        trav(it, a[i]) {
+            dp[it] = i;
         }
-    } else {
-        no;
+    }
+
+    int mx = -1;
+    for(int i = 1;i <= n;i++) {
+        trav(it, a[i]) {
+            mx = max(mx, dp[it]);
+        }
+
+        if(mx <= i) {
+            pf(i);
+            return;
+        }
     }
 }
 
 int main() {
     go();
+    precomputation();
     msolve
     return 0;
 }
