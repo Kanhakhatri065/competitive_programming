@@ -67,63 +67,63 @@ const int MAX = 2e5 + 5;
 /*-------------- Push your limits here ---------------------------*/
 int spf[N];
 void precomputation() {
-    for(int i = 0;i < N;i++) {
-        spf[i] = i;
-    }
+	mem(spf, -1);
 
-    for(int i = 2;i < N;i++) {
-        for(int j = 2 * i;j < N;j += i) {
-            if(spf[j] == j) {
-                spf[j] = i;
-            }
-        }
-    }
+	for(int i = 2;i < N;i++) {
+		if(spf[i] == -1) {
+			for(int j = i;j < N;j += i) {
+				if(spf[j] == -1) spf[j] = i;
+			}
+		}
+	}
 }
 
-int dp[N];
-
 void solve() {
-    mem(dp, -1);
-
     int n;
-    cin >> n;
+	cin >> n;
 
-    vi a[n + 1];
-    for(int i = 1;i <= n;i++) {
-        int m;
-        cin >> m;
+	vi marking(n, 0);
+	vpi prime_range(N, {-1, -1});
+	F0R(i, n) {
+		int x;
+		sc(x);
 
-        while(m > 1) {
-            int tmp = spf[m];
-            while(m % tmp == 0) {
-                a[i].pb(tmp);
-                m /= tmp;
-            }
-        }
-    }
+		while(x > 1) {
+			int prime  = spf[x];
+			if(prime_range[prime].first != -1) {
+				prime_range[prime].second = i;
+			} else {
+				prime_range[prime] = {i, i};
+			}
 
-    for(int i = 1;i <= n;i++) {
-        trav(it, a[i]) {
-            dp[it] = i;
-        }
-    }
+			x /= prime;
+		}
+	}
 
-    int mx = -1;
-    for(int i = 1;i <= n;i++) {
-        trav(it, a[i]) {
-            mx = max(mx, dp[it]);
-        }
+	FOR(i, 2, N) {
+		if(prime_range[i].ff == -1) continue;
 
-        if(mx <= i) {
-            pf(i);
-            return;
-        }
-    }
+		int L = prime_range[i].ff;
+		int R = prime_range[i].ss;
+
+		marking[L]++;
+		marking[R]--;
+	}
+
+	FOR(i, 1, n) {
+		marking[i] += marking[i - 1];
+	}
+
+	F0R(i, n) {
+		if(marking[i]) continue;
+		pf(i + 1);
+		return;
+	}
 }
 
 int main() {
-    go();
-    precomputation();
+    //go();
+	precomputation();   	
     msolve
     return 0;
 }

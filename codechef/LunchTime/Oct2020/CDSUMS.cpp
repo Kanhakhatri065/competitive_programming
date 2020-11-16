@@ -65,37 +65,28 @@ const ll INF = 1e18 + 42;
 const int N = 2e5 + 5;
 const int MAX = 2e5 + 5;
 /*-------------- Push your limits here ---------------------------*/
+ll l, r;
+long long f(long long x)
+{
+	return x*x+(l-r)*x+l-1;
+}
+
 void solve() {
-    ll l, r;
-    cin >> l >> r;
-
-    ll p = r - l + 1;
-    ll up = -1;
-    ll ans = 0;
-    for(ll k = 1;k <= p;) {
-        ll x = l * k + k * (k - 1) / 2, y = x + k * (p - k);
-        ll lo = k, hi = p;
-        while(lo < hi) {
-            ll mid = (lo + hi + 1) >> 1;
-            ll val = l * mid + mid * (mid - 1) / 2;
-            if(val <= y) {
-                lo = mid;
-            } else {
-                hi = mid - 1;
-            }
-        }
-
-        ll num = l * lo + lo * (lo - 1) / 2 + lo * (p - lo) + 1;
-        ans += num - max(x, up);
-        up = num;
-        k = lo + 1;
-    }
-
-    pf(ans);
+	scanf("%lld%lld",&l,&r);
+	
+	long long ans=r*(r+1)/2-l*(l-1)/2,pre=0,suf=r-l;
+	
+	while (pre<=suf && f(pre)>0)
+	ans-=f(pre++);
+	
+	while (suf>pre && f(suf)>0)
+	ans-=f(suf--);
+	
+	printf("%lld\n",ans);
 }
 
 int main() {
-    go();
+    //go();
     msolve
     return 0;
 }
