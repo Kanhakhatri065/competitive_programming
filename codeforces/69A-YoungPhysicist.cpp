@@ -44,7 +44,7 @@ void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
 void solve() {
     ll n;
-    sc(n);
+    cin >> n;
 
     vll a(n, 0);
     vll b(n, 0);

@@ -43,7 +43,7 @@ void swapll(ll *a,ll *b){ll tmp=*a;*a=*b;*b=tmp;}
 void swapc(char *a,char *b){char tmp=*a;*a=*b;*b=tmp;}
 /*----------------------------------------------------------------*/
 void solve() {
-    ll n, a, b;
+    int n, a, b;
     sc(n);
     sc(a);
     sc(b);
