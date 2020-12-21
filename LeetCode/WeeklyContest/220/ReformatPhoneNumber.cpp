@@ -41,55 +41,41 @@ const int d8i[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8]={0, 1, 1, 1, 0, -1, -1, -1}
 #define msolve int t;cin >> t;while(t--) {solve();}
 #define mcsolve int t;cin >> t;for(int tt = 1;tt <= t;tt++) {cout << "Case #" << tt << ": ";solve();}
 /*----------------------------------------------------------------*/
-const int MOD = 998244353;
+const int MOD = 1e9 + 7;
 const int N = 2e5 + 5;
 /*-------------- Push your limits here ---------------------------*/
-void add(int &a, int b) {
-    a += b;
-    if(a >= MOD) a -= MOD;
-    if(a < 0) a += MOD;
-}
+class Solution {
+public:
+    string reformatNumber(string number) {
+        string s = "";
+        for(char c : number) {
+            if(c != ' ' && c != '-') {
+                s += c;
+            }
+        }      
 
-int mul(int a, int b) {
-    return (a * (ll) b) % MOD;
-}
-
-int pw(int a, int n) {
-    int res = 1;
-
-    while(n) {
-        if(n & 1) {
-            res = mul(res, a);
-            n--;
-        } else {
-            a = mul(a, a);
-            n >>= 1;
+        string out = "";
+        int n = sz(s);
+        int idx = 0;
+        while(n > 4) {
+            out += s.substr(idx, 3);
+            out += '-';
+            idx += 3;
+            n -= 3;
         }
+
+        if(n == 3) {
+            out += s.substr(idx, 3);
+        } else if(n == 2) {
+            out += s.substr(idx, 2);
+        } else {
+            out += s.substr(idx, 2);
+            out += '-';
+            idx += 2;
+
+            out += s.substr(idx, 2);
+        }
+
+        return out;
     }
-
-    return res;
-}
-
-int inv(int x) {
-    return pw(x, MOD - 2);
-}
-
-void solve() {
-    int n;
-    cin >> n;
-
-    int ans = 0;
-
-    for(int i = 1;i <= 2 * n;i++) {
-        int x = mul(inv(i), 1 + (i > n));
-        add(ans, x);
-    }
-
-    pf(ans);
-}
-
-int main() {
-    go();
-    ssolve
-    return 0;
-}
+};

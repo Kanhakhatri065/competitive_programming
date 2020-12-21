@@ -41,55 +41,38 @@ const int d8i[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8]={0, 1, 1, 1, 0, -1, -1, -1}
 #define msolve int t;cin >> t;while(t--) {solve();}
 #define mcsolve int t;cin >> t;for(int tt = 1;tt <= t;tt++) {cout << "Case #" << tt << ": ";solve();}
 /*----------------------------------------------------------------*/
-const int MOD = 998244353;
+const int MOD = 1e9 + 7;
 const int N = 2e5 + 5;
 /*-------------- Push your limits here ---------------------------*/
-void add(int &a, int b) {
-    a += b;
-    if(a >= MOD) a -= MOD;
-    if(a < 0) a += MOD;
-}
-
-int mul(int a, int b) {
-    return (a * (ll) b) % MOD;
-}
-
-int pw(int a, int n) {
-    int res = 1;
-
-    while(n) {
-        if(n & 1) {
-            res = mul(res, a);
-            n--;
-        } else {
-            a = mul(a, a);
-            n >>= 1;
-        }
-    }
-
-    return res;
-}
-
-int inv(int x) {
-    return pw(x, MOD - 2);
+inline ll exgcd(ll a, ll b, ll &x, ll &y) {
+	if (!b) {
+		x = 1, y = 0;
+		return a;
+	}
+ 
+	ll d = exgcd(b, a % b, x, y), z;
+	z = x, x = y, y = z - y * (a / b);
+ 
+	return d;
 }
 
 void solve() {
-    int n;
-    cin >> n;
+    ll n, s, k;
+    cin >> n >> s >> k;
+    
+    ll tx, ty;
+    ll td = exgcd(n, k, tx, ty);
 
-    int ans = 0;
-
-    for(int i = 1;i <= 2 * n;i++) {
-        int x = mul(inv(i), 1 + (i > n));
-        add(ans, x);
+    if(s % td) {
+        pf(-1);
+        return;
     }
 
-    pf(ans);
+    pf(((ty%n + n) % n) * ((n - s) / td) % (n / td));
 }
 
 int main() {
     go();
-    ssolve
+    msolve
     return 0;
 }

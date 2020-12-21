@@ -41,55 +41,44 @@ const int d8i[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8]={0, 1, 1, 1, 0, -1, -1, -1}
 #define msolve int t;cin >> t;while(t--) {solve();}
 #define mcsolve int t;cin >> t;for(int tt = 1;tt <= t;tt++) {cout << "Case #" << tt << ": ";solve();}
 /*----------------------------------------------------------------*/
-const int MOD = 998244353;
+const int MOD = 1e9 + 7;
 const int N = 2e5 + 5;
 /*-------------- Push your limits here ---------------------------*/
-void add(int &a, int b) {
-    a += b;
-    if(a >= MOD) a -= MOD;
-    if(a < 0) a += MOD;
-}
-
-int mul(int a, int b) {
-    return (a * (ll) b) % MOD;
-}
-
-int pw(int a, int n) {
-    int res = 1;
-
-    while(n) {
-        if(n & 1) {
-            res = mul(res, a);
-            n--;
-        } else {
-            a = mul(a, a);
-            n >>= 1;
-        }
-    }
-
-    return res;
-}
-
-int inv(int x) {
-    return pw(x, MOD - 2);
-}
-
 void solve() {
-    int n;
-    cin >> n;
+    int n, m, t;
+    cin >> n >> m >> t;
 
-    int ans = 0;
+    vector<pi> v(m);
+    for(int i = 0;i < m;i++) cin >> v[i].ff >> v[i].ss;
 
-    for(int i = 1;i <= 2 * n;i++) {
-        int x = mul(inv(i), 1 + (i > n));
-        add(ans, x);
+    int st = 0;
+    int idx = 0;
+    int charging = n;
+    bool flag = true;
+    while(idx < m) {
+        charging = max(0, charging - (v[idx].ff - st));
+        if(charging == 0) flag = false;
+        //cout << "charging before cafe : " << charging << endl;
+        
+        charging = min(n, charging + (v[idx].ss - v[idx].ff));
+        st = v[idx].ss;
+        //cout << "charging after cafe : " << charging << endl;
+        
+        idx++;
     }
 
-    pf(ans);
+    charging = max(0, charging - (t - st));
+    if(charging == 0) flag = false;
+    //cout << "charging after reaching home : " << charging << endl;
+    if(flag) {
+        pf("Yes");
+    } else {
+        pf("No");
+    }
 }
 
 int main() {
-    go();
+    //go();
     ssolve
     return 0;
 }

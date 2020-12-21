@@ -41,48 +41,54 @@ const int d8i[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8]={0, 1, 1, 1, 0, -1, -1, -1}
 #define msolve int t;cin >> t;while(t--) {solve();}
 #define mcsolve int t;cin >> t;for(int tt = 1;tt <= t;tt++) {cout << "Case #" << tt << ": ";solve();}
 /*----------------------------------------------------------------*/
-const int MOD = 998244353;
-const int N = 2e5 + 5;
+const int MOD = 1e9 + 7;
+const ll INF = 4e9;
+const int N = 1e5 + 5;
 /*-------------- Push your limits here ---------------------------*/
-void add(int &a, int b) {
-    a += b;
-    if(a >= MOD) a -= MOD;
-    if(a < 0) a += MOD;
+bool inside(ll l, ll r, ll x) {
+    return (min(l, r) <= x) && (x <= max(l, r));
 }
 
-int mul(int a, int b) {
-    return (a * (ll) b) % MOD;
-}
+ll seg(ll x) {
+    if(x < 0) {
+        return -1;
+    } 
 
-int pw(int a, int n) {
-    int res = 1;
-
-    while(n) {
-        if(n & 1) {
-            res = mul(res, a);
-            n--;
-        } else {
-            a = mul(a, a);
-            n >>= 1;
-        }
-    }
-
-    return res;
-}
-
-int inv(int x) {
-    return pw(x, MOD - 2);
+    return (x > 0);
 }
 
 void solve() {
     int n;
     cin >> n;
 
+    vector<pair<ll, ll>> v;
+    for(int i = 0;i < n;i++) {
+        ll t, x;
+        cin >> t >> x;
+
+        v.pb({t, x});
+    }
+
+    v.pb({INF, 0});
+
     int ans = 0;
 
-    for(int i = 1;i <= 2 * n;i++) {
-        int x = mul(inv(i), 1 + (i > n));
-        add(ans, x);
+    ll pos = 0, dr = 0, lft = 0;
+
+    for(int i = 0;i < n;i++) {
+        ll t = v[i].ff, x = v[i].ss;
+        ll tn = v[i + 1].ff;
+
+        if(lft == 0) {
+            lft = abs(pos - x);
+            dr = seg(x - pos);
+        }
+
+        ll tmp = min(lft, tn - t);
+        if(inside(pos, pos + dr * tmp, x)) ans++;
+
+        pos += (dr * tmp);
+        lft -= tmp;
     }
 
     pf(ans);
@@ -90,6 +96,6 @@ void solve() {
 
 int main() {
     go();
-    ssolve
+    msolve
     return 0;
 }

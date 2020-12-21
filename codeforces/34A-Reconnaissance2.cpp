@@ -41,51 +41,38 @@ const int d8i[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8]={0, 1, 1, 1, 0, -1, -1, -1}
 #define msolve int t;cin >> t;while(t--) {solve();}
 #define mcsolve int t;cin >> t;for(int tt = 1;tt <= t;tt++) {cout << "Case #" << tt << ": ";solve();}
 /*----------------------------------------------------------------*/
-const int MOD = 998244353;
+const int MOD = 1e9 + 7;
 const int N = 2e5 + 5;
 /*-------------- Push your limits here ---------------------------*/
-void add(int &a, int b) {
-    a += b;
-    if(a >= MOD) a -= MOD;
-    if(a < 0) a += MOD;
-}
-
-int mul(int a, int b) {
-    return (a * (ll) b) % MOD;
-}
-
-int pw(int a, int n) {
-    int res = 1;
-
-    while(n) {
-        if(n & 1) {
-            res = mul(res, a);
-            n--;
-        } else {
-            a = mul(a, a);
-            n >>= 1;
-        }
-    }
-
-    return res;
-}
-
-int inv(int x) {
-    return pw(x, MOD - 2);
-}
-
 void solve() {
     int n;
     cin >> n;
 
-    int ans = 0;
-
-    for(int i = 1;i <= 2 * n;i++) {
-        int x = mul(inv(i), 1 + (i > n));
-        add(ans, x);
+    vector<pi> v(n);
+    for(int i = 0;i < n;i++) {
+        cin >> v[i].ff;
+        v[i].ss = i + 1;
     }
 
-    pf(ans);
+    sort(all(v));
+
+    int mn = -1, x = -1, y = -1;
+
+    for(int i = 1;i < n;i++) {
+        if(mn == -1) {
+            mn = v[i].ff - v[i - 1].ff;
+            x = v[i].ss;
+            y = v[i - 1].ss;
+        } else {
+            if(mn > v[i].ff - v[i - 1].ff) {
+                mn = v[i].ff - v[i - 1].ff;
+                x = v[i].ss;
+                y = v[i - 1].ss;
+            }
+        }
+    }
+
+    cout << x << " " << y << endl;
 }
 
 int main() {

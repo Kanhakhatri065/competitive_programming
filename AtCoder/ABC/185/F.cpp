@@ -41,51 +41,68 @@ const int d8i[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8]={0, 1, 1, 1, 0, -1, -1, -1}
 #define msolve int t;cin >> t;while(t--) {solve();}
 #define mcsolve int t;cin >> t;for(int tt = 1;tt <= t;tt++) {cout << "Case #" << tt << ": ";solve();}
 /*----------------------------------------------------------------*/
-const int MOD = 998244353;
-const int N = 2e5 + 5;
+const int MOD = 1e9 + 7;
+const int N = 3e5 + 5;
 /*-------------- Push your limits here ---------------------------*/
-void add(int &a, int b) {
-    a += b;
-    if(a >= MOD) a -= MOD;
-    if(a < 0) a += MOD;
-}
+struct FenwickTree {
+    //use 0-index while passing argument for range function
+    vector<int> bit_tree;
 
-int mul(int a, int b) {
-    return (a * (ll) b) % MOD;
-}
+    int get(int index) {
+        int ans = 0;
+        index++;
 
-int pw(int a, int n) {
-    int res = 1;
+        while(index > 0) {
+            ans ^= bit_tree[index];
+            index -= index & (-index);
+        }
 
-    while(n) {
-        if(n & 1) {
-            res = mul(res, a);
-            n--;
-        } else {
-            a = mul(a, a);
-            n >>= 1;
+        return ans;
+    }
+
+public:
+    void update(int index, int val) {
+        index++;
+        while(index < sz(bit_tree)) {
+            bit_tree[index] ^= val;
+            index += index & (-index);
         }
     }
 
-    return res;
-}
+    FenwickTree(vector<int> arr, int n) {
+        bit_tree.assign(n + 1, 0);
 
-int inv(int x) {
-    return pw(x, MOD - 2);
-}
-
-void solve() {
-    int n;
-    cin >> n;
-
-    int ans = 0;
-
-    for(int i = 1;i <= 2 * n;i++) {
-        int x = mul(inv(i), 1 + (i > n));
-        add(ans, x);
+        for(int i = 0;i < n;i++) {
+            update(i, arr[i]);
+        }
     }
 
-    pf(ans);
+    int range(int l, int r) {
+        return get(r) ^ get(l - 1);
+    }
+};
+
+void solve() {
+    int n, q;
+    cin >> n >> q;
+
+    vector<int> v(n);
+    forIn(v, n);
+
+    FenwickTree fenwicktree(v, n);
+
+    while(q--) {
+        int t, x, y;
+        cin >> t >> x >> y;
+
+        if(t == 1) {
+            x--;
+            fenwicktree.update(x, y);
+        } else {
+            x--, y--;
+            pf(fenwicktree.range(x, y));
+        }
+    }    
 }
 
 int main() {

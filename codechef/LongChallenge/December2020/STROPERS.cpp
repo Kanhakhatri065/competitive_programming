@@ -49,30 +49,21 @@ void solve() {
     cin >> s;
 
     int n = sz(s);
-    set<string> store;
-    for(int i = 0;i < n;i++) {
-        string a = "";
-        int cnt = 0;
-        for(int j = i;j < n;j++) {
-            cnt += (s[j] == '1');
-            a += s[j];
 
-            if(cnt % 2 == 0) {
-                string res = a;
-                reverse(all(res));
-                if(store.find(res) != store.end() || store.find(a) != store.end()) {
-                    continue;
-                } else {
-                    store.insert(a);
-                }
-            } else {
-                store.insert(a);
+    set<pair<int, pair<int, int>>> store;
+    for(int i = 0;i < n;i++) {
+        string t = s.substr(i);
+        int cnt = 0, sum = 0;
+        for(int j = 0;j < sz(t);j++) {
+            if(t[j] == '1') {
+                cnt++;
+                sum = -sum + j;
             }
+            store.insert({cnt, {sum, j}});
         }
     }
 
-    ll ans = sz(store);
-    pf(ans);
+    pf(sz(store));
 }
 
 int main() {

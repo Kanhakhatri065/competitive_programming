@@ -1,5 +1,5 @@
 /*
-    I love the sound you make when you shut up.
+	I love the sound you make when you shut up.
 */
 #include <bits/stdc++.h>
 using namespace std;
@@ -7,8 +7,11 @@ using namespace std;
 using namespace __gnu_pbds;
 /*----typedefs--------*/
 typedef tree<int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update> indexed_set;
-using ll = long long;
-using pi = pair<int, int>;
+typedef long long ll;typedef pair<int, int> pi;typedef pair<long long, long long> pl;
+typedef vector<int> vi;typedef vector<pair<int, int>> vpi;typedef vector<long long> vl;typedef vector<vector<int>> vvi;
+typedef map<int, int> mi;typedef map<long long, long long> ml;typedef map<int, vector<int>> mivi;
+typedef set<int> si;typedef set<long long> sl;typedef set<pair<int, int>> spi;
+typedef queue<int> qi;typedef queue<pair<int, int>> qpi;
 /*-----in and out--------*/
 #define pf(a) cout << a << endl
 #define forIn(arr, num) for(int i = 0; i < num; i++) cin >> arr[i];
@@ -20,6 +23,12 @@ using pi = pair<int, int>;
 #define ff first
 #define ss second
 #define all(x) x.begin(), x.end()
+/*--- bit-stuff ----*/
+#define GET_SET_BITS(a) (__builtin_popcount(a))
+#define GET_SET_BITSLL(a) ( __builtin_popcountll(a))
+#define GET_TRAIL_ZERO(a) (__builtin_ctz(a))
+#define GET_LEAD_ZERO(a) (__builtin_clz(a))
+#define GET_PARITY(a) (__builtin_parity(a))
 /*----- the binary answer of life-----*/
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
@@ -36,60 +45,45 @@ void go() {
 /*-------- movement in a 2D array ------*/
 const int d4i[4]={-1, 0, 1, 0}, d4j[4]={0, 1, 0, -1};
 const int d8i[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8]={0, 1, 1, 1, 0, -1, -1, -1};
-/*--------test-case stuff---------------*/
-#define ssolve solve();
-#define msolve int t;cin >> t;while(t--) {solve();}
-#define mcsolve int t;cin >> t;for(int tt = 1;tt <= t;tt++) {cout << "Case #" << tt << ": ";solve();}
 /*----------------------------------------------------------------*/
-const int MOD = 998244353;
-const int N = 2e5 + 5;
+const int MOD = 1e9 + 7;
+const int N = 1e3 + 5;
 /*-------------- Push your limits here ---------------------------*/
-void add(int &a, int b) {
-    a += b;
-    if(a >= MOD) a -= MOD;
-    if(a < 0) a += MOD;
+int par[1005];
+
+int find(int x) {
+	return par[x] == x ? x : par[x] = find(par[x]);
 }
 
-int mul(int a, int b) {
-    return (a * (ll) b) % MOD;
-}
-
-int pw(int a, int n) {
-    int res = 1;
-
-    while(n) {
-        if(n & 1) {
-            res = mul(res, a);
-            n--;
-        } else {
-            a = mul(a, a);
-            n >>= 1;
-        }
-    }
-
-    return res;
-}
-
-int inv(int x) {
-    return pw(x, MOD - 2);
-}
-
-void solve() {
-    int n;
-    cin >> n;
-
-    int ans = 0;
-
-    for(int i = 1;i <= 2 * n;i++) {
-        int x = mul(inv(i), 1 + (i > n));
-        add(ans, x);
-    }
-
-    pf(ans);
+void union_set(int a, int b) {
+	par[find(a)] = find(b);
 }
 
 int main() {
-    go();
-    ssolve
-    return 0;
+	int n;
+	cin >> n;
+
+	for(int i = 1;i <= n;i++) par[i] = i;
+
+	vector<pair<int, int>> p;
+	vector<int> q;
+
+	for(int i = 1;i < n;i++) {
+		int x, y;
+		cin >> x >> y;
+
+		if(find(x) == find(y)) p.pb({x, y});
+		else union_set(x, y);
+	}
+
+	for(int i = 1;i <= n;i++) {
+		if(find(i) == i) q.pb(i);
+	}
+
+	pf(sz(q) - 1);
+	for(int i = 1;i < sz(q);i++) {
+		cout << p[i - 1].ff << " " << p[i - 1].ss << ' ' << q[i - 1] << " " << q[i] << endl;
+	}
+
+	return 0;
 }

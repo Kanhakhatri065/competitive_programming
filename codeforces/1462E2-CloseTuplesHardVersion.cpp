@@ -41,48 +41,54 @@ const int d8i[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8]={0, 1, 1, 1, 0, -1, -1, -1}
 #define msolve int t;cin >> t;while(t--) {solve();}
 #define mcsolve int t;cin >> t;for(int tt = 1;tt <= t;tt++) {cout << "Case #" << tt << ": ";solve();}
 /*----------------------------------------------------------------*/
-const int MOD = 998244353;
-const int N = 2e5 + 5;
+const int MOD = 1e9 + 7;
+const int N = 300500;
 /*-------------- Push your limits here ---------------------------*/
-void add(int &a, int b) {
-    a += b;
-    if(a >= MOD) a -= MOD;
-    if(a < 0) a += MOD;
-}
+ll fact[N];
+ll invFact[N];
 
-int mul(int a, int b) {
-    return (a * (ll) b) % MOD;
-}
-
-int pw(int a, int n) {
-    int res = 1;
-
-    while(n) {
-        if(n & 1) {
-            res = mul(res, a);
-            n--;
+ll fast_pow(ll a, ll p) {
+    ll res = 1;
+    while(p) {
+        if(p & 1) {
+            res = (res * a) % MOD;
+            p--;
         } else {
-            a = mul(a, a);
-            n >>= 1;
+            a = (a * a) % MOD;
+            p /= 2;
         }
     }
 
     return res;
 }
 
-int inv(int x) {
-    return pw(x, MOD - 2);
+void initfact() {
+    fact[0] = invFact[0] = 1;
+    for(int i = 1;i < N;i++) {
+        fact[i] = (fact[i - 1] * i) % MOD;
+        invFact[i] = fast_pow(fact[i], MOD - 2);
+    }
+}
+
+ll choose(int n, int k) {
+    if(k > n) return 0; 
+    return fact[n] * invFact[k] % MOD * invFact[n - k] % MOD;
 }
 
 void solve() {
-    int n;
-    cin >> n;
+    int n, m, k;
+    cin >> n >> m >> k;
 
-    int ans = 0;
+    vector<ll> v(n);
+    forIn(v, n);
 
-    for(int i = 1;i <= 2 * n;i++) {
-        int x = mul(inv(i), 1 + (i > n));
-        add(ans, x);
+    sort(all(v));
+
+    ll ans = 0;
+    for(int i = 0;i < n;i++) {
+        int l = i + 1;
+        int r = upper_bound(all(v), v[i] + k) - v.begin();
+        ans = (ans + choose(r - l, m - 1)) % MOD;
     }
 
     pf(ans);
@@ -90,6 +96,7 @@ void solve() {
 
 int main() {
     go();
-    ssolve
+    initfact();
+    msolve
     return 0;
 }

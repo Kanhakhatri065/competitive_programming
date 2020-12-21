@@ -41,51 +41,48 @@ const int d8i[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8]={0, 1, 1, 1, 0, -1, -1, -1}
 #define msolve int t;cin >> t;while(t--) {solve();}
 #define mcsolve int t;cin >> t;for(int tt = 1;tt <= t;tt++) {cout << "Case #" << tt << ": ";solve();}
 /*----------------------------------------------------------------*/
-const int MOD = 998244353;
+const int MOD = 1e9 + 7;
 const int N = 2e5 + 5;
 /*-------------- Push your limits here ---------------------------*/
-void add(int &a, int b) {
-    a += b;
-    if(a >= MOD) a -= MOD;
-    if(a < 0) a += MOD;
-}
+void solve() {
+    int n, r, avg;
+    cin >> n >> r >> avg;
 
-int mul(int a, int b) {
-    return (a * (ll) b) % MOD;
-}
+    vector<pi> v(n), store;
+    ll sum = 0;
+    for(int i = 0;i < n;i++) {
+        cin >> v[i].ff >> v[i].ss;
+        sum += v[i].ff;
 
-int pw(int a, int n) {
-    int res = 1;
-
-    while(n) {
-        if(n & 1) {
-            res = mul(res, a);
-            n--;
-        } else {
-            a = mul(a, a);
-            n >>= 1;
+        if(v[i].ff < r) {
+            store.pb({r - v[i].ff, v[i].ss});
         }
     }
 
-    return res;
-}
 
-int inv(int x) {
-    return pw(x, MOD - 2);
-}
 
-void solve() {
-    int n;
-    cin >> n;
+    sort(all(store), [&](pi a, pi b) {
+        return a.ss < b.ss;
+    });
 
-    int ans = 0;
+    int idx = 0;
+    ll required = (1LL * n * avg) - sum;
+    ll books = 0;
 
-    for(int i = 1;i <= 2 * n;i++) {
-        int x = mul(inv(i), 1 + (i > n));
-        add(ans, x);
+    while(required > 0) {
+        int p = store[idx].ff, b = store[idx].ss;
+
+        if(p >= required) {
+            books += (1LL * required * b);
+            break;
+        } else {
+            books += (1LL * p * b);
+            required -= p;
+            idx++;
+        }
     }
 
-    pf(ans);
+    pf(books);
 }
 
 int main() {

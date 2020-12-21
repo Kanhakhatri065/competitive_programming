@@ -41,51 +41,39 @@ const int d8i[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8]={0, 1, 1, 1, 0, -1, -1, -1}
 #define msolve int t;cin >> t;while(t--) {solve();}
 #define mcsolve int t;cin >> t;for(int tt = 1;tt <= t;tt++) {cout << "Case #" << tt << ": ";solve();}
 /*----------------------------------------------------------------*/
-const int MOD = 998244353;
+const int MOD = 1e9 + 7;
 const int N = 2e5 + 5;
 /*-------------- Push your limits here ---------------------------*/
-void add(int &a, int b) {
-    a += b;
-    if(a >= MOD) a -= MOD;
-    if(a < 0) a += MOD;
-}
+void solve() {
+    int n, m;
+    cin >> n >> m;
 
-int mul(int a, int b) {
-    return (a * (ll) b) % MOD;
-}
+    vector<int> a(n);
+    forIn(a, n);
 
-int pw(int a, int n) {
-    int res = 1;
+    vector<int> b(m);
+    forIn(b, m);
 
-    while(n) {
-        if(n & 1) {
-            res = mul(res, a);
-            n--;
-        } else {
-            a = mul(a, a);
-            n >>= 1;
+    int c[m + 1];
+
+    for(int i = 0;i <= m;i++) c[i] = i;
+
+    for(int i = 1;i <= n;i++) {
+        c[0] = i;
+        int tmp2 = i - 1;
+        
+        for(int j = 1;j <= m;j++) {
+            int tmp1 = c[j];
+            if(a[i - 1] == b[j - 1]) c[j] = tmp2;
+            else {
+                c[j] = min(1 + tmp2, min(c[j] + 1, c[j - 1] + 1));
+            }
+
+            tmp2 = tmp1;
         }
     }
 
-    return res;
-}
-
-int inv(int x) {
-    return pw(x, MOD - 2);
-}
-
-void solve() {
-    int n;
-    cin >> n;
-
-    int ans = 0;
-
-    for(int i = 1;i <= 2 * n;i++) {
-        int x = mul(inv(i), 1 + (i > n));
-        add(ans, x);
-    }
-
-    pf(ans);
+    pf(c[m]);
 }
 
 int main() {

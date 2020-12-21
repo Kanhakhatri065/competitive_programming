@@ -41,55 +41,55 @@ const int d8i[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8]={0, 1, 1, 1, 0, -1, -1, -1}
 #define msolve int t;cin >> t;while(t--) {solve();}
 #define mcsolve int t;cin >> t;for(int tt = 1;tt <= t;tt++) {cout << "Case #" << tt << ": ";solve();}
 /*----------------------------------------------------------------*/
-const int MOD = 998244353;
-const int N = 2e5 + 5;
+const int MOD = 1e9 + 7;
+const int N = 1e5 + 5;
 /*-------------- Push your limits here ---------------------------*/
-void add(int &a, int b) {
-    a += b;
-    if(a >= MOD) a -= MOD;
-    if(a < 0) a += MOD;
+int par[N];
+
+int find(int x) {
+    return par[x] == x ? x : par[x] = find(par[x]);
 }
 
-int mul(int a, int b) {
-    return (a * (ll) b) % MOD;
+void merge(int x, int y) {
+    par[find(x)] = find(y);
 }
 
-int pw(int a, int n) {
-    int res = 1;
+class Solution {
+public:
+    vector<bool> distanceLimitedPathsExist(int n, vector<vector<int>>& edgeList, vector<vector<int>>& queries) {
+        for(int i = 0;i <= n;i++) par[i] = i;
+        vector<bool> res(sz(queries));
 
-    while(n) {
-        if(n & 1) {
-            res = mul(res, a);
-            n--;
-        } else {
-            a = mul(a, a);
-            n >>= 1;
+        vector<array<int, 3>> edges;
+        for(auto out : edgeList) {
+            edges.pb({out[2], out[0], out[1]});
         }
+
+        vector<array<int, 4>> qs;
+
+        for(int i = 0;i < sz(queries);i++) {
+            vector<int> &out = queries[i];
+            qs.pb({out[2], out[0], out[1], i});
+        }
+
+        sort(all(edges));
+        sort(all(qs));
+
+        int i = 0, j = 0;
+
+        while(j < sz(qs)) {
+            while(i < sz(edges) && edges[i][0] < qs[j][0]) {
+                merge(edges[i][1], edges[i][2]);
+                i++;
+            }
+
+            if(find(qs[j][1]) == find(qs[j][2])) {
+                res[qs[j][3]] = true;
+            }
+
+            j++;
+        }
+
+        return res;
     }
-
-    return res;
-}
-
-int inv(int x) {
-    return pw(x, MOD - 2);
-}
-
-void solve() {
-    int n;
-    cin >> n;
-
-    int ans = 0;
-
-    for(int i = 1;i <= 2 * n;i++) {
-        int x = mul(inv(i), 1 + (i > n));
-        add(ans, x);
-    }
-
-    pf(ans);
-}
-
-int main() {
-    go();
-    ssolve
-    return 0;
-}
+};

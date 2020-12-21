@@ -41,48 +41,47 @@ const int d8i[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8]={0, 1, 1, 1, 0, -1, -1, -1}
 #define msolve int t;cin >> t;while(t--) {solve();}
 #define mcsolve int t;cin >> t;for(int tt = 1;tt <= t;tt++) {cout << "Case #" << tt << ": ";solve();}
 /*----------------------------------------------------------------*/
-const int MOD = 998244353;
+const int MOD = 1e9 + 7;
 const int N = 2e5 + 5;
 /*-------------- Push your limits here ---------------------------*/
-void add(int &a, int b) {
-    a += b;
-    if(a >= MOD) a -= MOD;
-    if(a < 0) a += MOD;
-}
-
-int mul(int a, int b) {
-    return (a * (ll) b) % MOD;
-}
-
-int pw(int a, int n) {
-    int res = 1;
-
-    while(n) {
-        if(n & 1) {
-            res = mul(res, a);
-            n--;
-        } else {
-            a = mul(a, a);
-            n >>= 1;
-        }
-    }
-
-    return res;
-}
-
-int inv(int x) {
-    return pw(x, MOD - 2);
+inline int ceil_div(int a, int b) {
+    if(a % b == 0) return a / b;
+    return a / b + 1;
 }
 
 void solve() {
-    int n;
-    cin >> n;
+    int n, m;
+    cin >> n >> m;
 
-    int ans = 0;
+    vector<int> a;
+    a.pb(0);
 
-    for(int i = 1;i <= 2 * n;i++) {
-        int x = mul(inv(i), 1 + (i > n));
-        add(ans, x);
+    for(int i = 0;i < m;i++) {
+        int x;cin >> x;
+        a.pb(x);
+    }
+
+    a.pb(n + 1);
+    if(n == m) {
+        pf(0);
+        return;
+    }
+
+    if(m == 0) {
+        pf(1);
+        return;
+    }
+
+    sort(all(a));
+    int k = MOD - 7, ans = 0;
+    for(int i = 1;i <= m + 1;i++) {
+        if(a[i] - a[i - 1] > 1) {
+            k = min(k, a[i] - a[i - 1] - 1);
+        }
+    }
+
+    for(int i = 1;i <= m + 1;i++) {
+        ans += ceil_div(a[i] - a[i - 1] - 1, k);
     }
 
     pf(ans);

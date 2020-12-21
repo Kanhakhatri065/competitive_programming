@@ -41,55 +41,46 @@ const int d8i[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8]={0, 1, 1, 1, 0, -1, -1, -1}
 #define msolve int t;cin >> t;while(t--) {solve();}
 #define mcsolve int t;cin >> t;for(int tt = 1;tt <= t;tt++) {cout << "Case #" << tt << ": ";solve();}
 /*----------------------------------------------------------------*/
-const int MOD = 998244353;
-const int N = 2e5 + 5;
+const int MOD = 1e9 + 7;
+const int N = 1 << 17;
 /*-------------- Push your limits here ---------------------------*/
-void add(int &a, int b) {
-    a += b;
-    if(a >= MOD) a -= MOD;
-    if(a < 0) a += MOD;
+int segtree[2 * N];
+void update(int idx, int val) {
+    idx += N;
+    segtree[idx] = val;
+    while(idx > 1) {
+        idx >>= 1;
+        segtree[idx] = max(segtree[2 * idx], segtree[2 * idx + 1]);
+    }
 }
 
-int mul(int a, int b) {
-    return (a * (ll) b) % MOD;
+int qry(int lhs, int rhs) {
+    int ret = -2e9;
+    lhs += N;
+    rhs += N;
+
+    while(lhs <= rhs) {
+        if(lhs & 1) ret = max(ret, segtree[lhs++]);
+        if(rhs % 2 == 0) ret = max(ret, segtree[rhs--]);
+
+        lhs >>= 1;
+        rhs >>= 1;
+    }
+
+    return ret;
 }
 
-int pw(int a, int n) {
-    int res = 1;
+class Solution {
+public:
+    int maxResult(vector<int>& nums, int k) {
+        int n = sz(nums);
+        update(0, nums[0]);
 
-    while(n) {
-        if(n & 1) {
-            res = mul(res, a);
-            n--;
-        } else {
-            a = mul(a, a);
-            n >>= 1;
+        for(int i = 1;i < n;i++) {
+            int lhs = max(0, i - k);
+            update(i, qry(lhs, i - 1) + nums[i]);
         }
+
+        return qry(n - 1, n - 1);
     }
-
-    return res;
-}
-
-int inv(int x) {
-    return pw(x, MOD - 2);
-}
-
-void solve() {
-    int n;
-    cin >> n;
-
-    int ans = 0;
-
-    for(int i = 1;i <= 2 * n;i++) {
-        int x = mul(inv(i), 1 + (i > n));
-        add(ans, x);
-    }
-
-    pf(ans);
-}
-
-int main() {
-    go();
-    ssolve
-    return 0;
-}
+};

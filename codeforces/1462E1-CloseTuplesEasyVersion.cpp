@@ -41,48 +41,46 @@ const int d8i[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8]={0, 1, 1, 1, 0, -1, -1, -1}
 #define msolve int t;cin >> t;while(t--) {solve();}
 #define mcsolve int t;cin >> t;for(int tt = 1;tt <= t;tt++) {cout << "Case #" << tt << ": ";solve();}
 /*----------------------------------------------------------------*/
-const int MOD = 998244353;
+const int MOD = 1e9 + 7;
 const int N = 2e5 + 5;
 /*-------------- Push your limits here ---------------------------*/
-void add(int &a, int b) {
-    a += b;
-    if(a >= MOD) a -= MOD;
-    if(a < 0) a += MOD;
-}
-
-int mul(int a, int b) {
-    return (a * (ll) b) % MOD;
-}
-
-int pw(int a, int n) {
-    int res = 1;
-
-    while(n) {
-        if(n & 1) {
-            res = mul(res, a);
-            n--;
-        } else {
-            a = mul(a, a);
-            n >>= 1;
-        }
-    }
-
-    return res;
-}
-
-int inv(int x) {
-    return pw(x, MOD - 2);
-}
-
 void solve() {
     int n;
     cin >> n;
 
-    int ans = 0;
+    vector<ll> cnt(n + 1);
 
-    for(int i = 1;i <= 2 * n;i++) {
-        int x = mul(inv(i), 1 + (i > n));
-        add(ans, x);
+    for(int i = 0;i < n;i++) {
+        int x;
+        cin >> x;
+
+        cnt[x]++;
+    }
+
+    ll ans = 0;
+
+    for(int i = 2;i < n;i++) {
+        ans += cnt[i - 1] * cnt[i] * cnt[i + 1];
+    }
+
+    for(int i = 1;i < n;i++) {
+        ans += cnt[i] * (cnt[i] - 1) / 2 * cnt[i + 1];
+    }
+
+    for(int i = 2;i <= n;i++) {
+        ans += cnt[i - 1] * cnt[i] * (cnt[i] - 1) / 2;
+    }
+
+    for(int i = 2;i < n;i++) {
+        ans += cnt[i - 1] * cnt[i + 1] * (cnt[i + 1] - 1) / 2;
+    }
+
+    for(int i = 2;i < n;i++) {
+        ans += cnt[i + 1] * cnt[i - 1] * (cnt[i - 1] - 1) / 2;
+    }
+
+    for(int i = 1;i <= n;i++) {
+        ans += cnt[i] * (cnt[i] - 1) * (cnt[i] - 2) / 6;
     }
 
     pf(ans);
@@ -90,6 +88,6 @@ void solve() {
 
 int main() {
     go();
-    ssolve
+    msolve
     return 0;
 }
