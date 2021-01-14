@@ -44,12 +44,71 @@ const int d8i[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8]={0, 1, 1, 1, 0, -1, -1, -1}
 const int MOD = 1e9 + 7;
 const int N = 2e5 + 5;
 /*-------------- Push your limits here ---------------------------*/
-void solve() {
+int n, q;
+int arr[N], t[4 * N];
 
+void build(int node, int start, int end) {
+    if(start == end) {
+        t[node] = arr[start];
+        return;
+    }
+
+    int mid = (start + end) >> 1;
+    build(node << 1, start, mid);
+    build(node << 1 | 1, mid + 1, end);
+    t[node] = max(t[node << 1], t[node << 1 | 1]);
+}
+
+void update(int node, int start, int end, int idx, int val) {
+    if(start == end) {
+        arr[idx] += val;
+        t[node] += val;
+        return;
+    }
+
+    int mid = (start + end) >> 1;
+    if(idx <= mid) {
+        update(node << 1, start, mid, idx, val);
+    } else {
+        update(node << 1 | 1, mid + 1, end, idx, val);
+    }
+
+    t[node] = max(t[node << 1], t[node << 1 | 1]);
+}
+
+int query(int node, int start, int end, int val) {
+    if(start == end) {
+        return (t[node] >= val) ? start : -1;
+    }
+
+    int mid = (start + end) >> 1;
+    if(t[node << 1] >= val) {
+        return query(node << 1, start, mid, val);
+    }
+    
+    return query(node << 1 | 1, mid + 1, end, val);
+}
+
+void solve() { 
+    cin >> n >> q;
+    forIn(arr, n);
+    build(1, 0, n - 1);
+    
+    vector<int> store;
+    while(q--) {
+        int val;
+        cin >> val;
+        int idx = query(1, 0, n - 1, val);
+        store.pb(idx + 1);
+        if(idx >= 0) update(1, 0, n - 1, idx, -val);
+    }
+
+    vpnt(store);
 }
 
 int main() {
-    go();
-    msolve
+    //go();
+    ssolve
     return 0;
 }
+

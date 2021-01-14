@@ -48,26 +48,21 @@ void solve() {
     int n;
     cin >> n;
 
-    vector<pi> v(n);
+    vector<int> v(n);
+    forIn(v, n);
+
+    int x = -1, y = -1, mn = -1;
+
     for(int i = 0;i < n;i++) {
-        cin >> v[i].ff;
-        v[i].ss = i + 1;
-    }
-
-    sort(all(v));
-
-    int mn = -1, x = -1, y = -1;
-
-    for(int i = 1;i < n;i++) {
         if(mn == -1) {
-            mn = v[i].ff - v[i - 1].ff;
-            x = v[i].ss;
-            y = v[i - 1].ss;
+            mn = abs(v[i] - v[(i + 1) % n]);
+            x = i + 1;
+            y = (i + 1) % n + 1;
         } else {
-            if(mn > v[i].ff - v[i - 1].ff) {
-                mn = v[i].ff - v[i - 1].ff;
-                x = v[i].ss;
-                y = v[i - 1].ss;
+            if(mn > abs(v[i] - v[(i + 1) % n])) {
+                mn = abs(v[i] - v[(i + 1) % n]);
+            x = i + 1;
+            y = (i + 1) % n + 1;
             }
         }
     }

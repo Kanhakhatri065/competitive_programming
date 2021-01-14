@@ -95,7 +95,7 @@ Mint fact[MAX], finv[MAX], invs[MAX];
 void initfact(){
     fact[0]=1;
 
-    FOR(i, 1, MAX){
+    for(int i = 1;i < MAX;i++){
         fact[i] = fact[i - 1] * i;
     }
 

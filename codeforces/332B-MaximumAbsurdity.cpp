@@ -6,7 +6,6 @@ using namespace std;
 #include <ext/pb_ds/assoc_container.hpp>
 using namespace __gnu_pbds;
 /*----typedefs--------*/
-typedef tree<int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update> indexed_set;
 using ll = long long;
 using pi = pair<int, int>;
 /*-----in and out--------*/
@@ -33,75 +32,47 @@ void go() {
     freopen("input.txt", "r", stdin);freopen("output.txt", "w", stdout);
 #endif
 }
+/*--------test-stuff--------------------*/
+#define ssolve solve();
+#define msolve int T;cin >> T;while(T--) {solve();}
+#define mcsolve int T;cin >> T;for(int tt = 1;tt <= T;tt++) {cout << "Case #" << tt << ": ";solve();}
 /*-------- movement in a 2D array ------*/
 const int d4i[4]={-1, 0, 1, 0}, d4j[4]={0, 1, 0, -1};
 const int d8i[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8]={0, 1, 1, 1, 0, -1, -1, -1};
-/*--------test-case stuff---------------*/
-#define ssolve solve();
-#define msolve int t;cin >> t;while(t--) {solve();}
-#define mcsolve int t;cin >> t;for(int tt = 1;tt <= t;tt++) {cout << "Case #" << tt << ": ";solve();}
 /*----------------------------------------------------------------*/
 const int MOD = 1e9 + 7;
 const int N = 2e5 + 5;
 /*-------------- Push your limits here ---------------------------*/
-int n, m, k;
-int cnt[N];
-void add(int x)
-{
-	for(int i=x;i<=m;i+=(i&(-i))){
-		++cnt[i];
-	}
-}
-int ask(int x)
-{
-	int ret=0;
-	for(int i=x;i>0;i-=(i&(-i))){
-		ret+=cnt[i];
-	}
-	return ret;
+ll get_sum(vector<ll> &sum, int l, int r) {
+    return (l == 0) ? sum[r] : (sum[r] - sum[l - 1]);
 }
 
 void solve() {
-    cin>>n>>m>>k;
-	vector<int> a(n+1),b(m+1);
-	for(int i = 1;i <= n;i++) a[i]=m;
-	for(int i = 1;i <= m;i++) b[i]=n;
-	
-    if(!k){
-		cout<<1ll*n*m<<endl;
-		return;
-	}
+    int n, k;
+    cin >> n >> k;
 
-	for(int i = 0;i < k;i++) {
-		int x,y;
-		cin>>x>>y;
-		a[x]=min(a[x],y-1);
-		b[y]=min(b[y],x-1);
-	}
+    ll a[n + 2];
 
-	ll ans=0;
-	for(int i = 1;i <= b[1];i++) ans+=a[i];
-	
-    vector<int> pos(a[1]+1);
-	for(int i = 1;i <= a[1];i++) pos[i]=i;
-	
-    sort(pos.begin()+1,pos.end(),[&](int x,int y){
-		return b[x]<b[y];
-	});
-	
-    for(int i = 1;i <= a[1];i++) {
-		int r=pos[i],l=pos[i-1];
-		for(int j=b[l]+1;j<=b[r]&&j<=b[1];j++){
-			add(a[j]);
-		}
-		ans+=b[r]+ask(r-1)-ask(m);
-	}
+    a[0] = 0;
+    for(int i = 1;i <= n;i++) {
+        cin >> a[i];
+        a[i] += a[i - 1];
+    }
 
-	pf(ans);
+    vector<ll> v;
+    for(int i = k;i <= n;i++) v.pb(a[i] - a[i - k]);
+
+    ll ans = 0, mx = 0, l, r, z;
+    for(int i = k, j = 0;i < sz(v);i++,j++) {
+        if(v[j] > mx) mx = v[j], z = j;
+        if(ans < mx + v[i]) ans = mx + v[i], l = z, r = i;
+    }
+
+    cout << (l + 1) << " " << (r + 1) << endl;
 }
 
 int main() {
-    //go();
+    go();
     ssolve
     return 0;
 }

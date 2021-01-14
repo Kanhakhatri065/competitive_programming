@@ -6,7 +6,7 @@ using namespace std;
 #include <ext/pb_ds/assoc_container.hpp>
 using namespace __gnu_pbds;
 /*----typedefs--------*/
-typedef tree<int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update> indexed_set;
+typedef tree<int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
 using ll = long long;
 using pi = pair<int, int>;
 /*-----in and out--------*/
@@ -33,75 +33,57 @@ void go() {
     freopen("input.txt", "r", stdin);freopen("output.txt", "w", stdout);
 #endif
 }
+/*-------- test-case stuff--------------*/
+#define ssolve solve();
+#define msolve int T;cin >> T;while(T--) {solve();}
+#define mcsolve int T;cin >> T;for(int tt = 1;tt <= T;tt++) {cout << "Case #" << tt << ": ";solve();}
 /*-------- movement in a 2D array ------*/
 const int d4i[4]={-1, 0, 1, 0}, d4j[4]={0, 1, 0, -1};
 const int d8i[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8]={0, 1, 1, 1, 0, -1, -1, -1};
-/*--------test-case stuff---------------*/
-#define ssolve solve();
-#define msolve int t;cin >> t;while(t--) {solve();}
-#define mcsolve int t;cin >> t;for(int tt = 1;tt <= t;tt++) {cout << "Case #" << tt << ": ";solve();}
 /*----------------------------------------------------------------*/
 const int MOD = 1e9 + 7;
-const int N = 2e5 + 5;
+const int N = 3e5 + 5;
 /*-------------- Push your limits here ---------------------------*/
-int n, m, k;
-int cnt[N];
-void add(int x)
-{
-	for(int i=x;i<=m;i+=(i&(-i))){
-		++cnt[i];
-	}
-}
-int ask(int x)
-{
-	int ret=0;
-	for(int i=x;i>0;i-=(i&(-i))){
-		ret+=cnt[i];
-	}
-	return ret;
-}
-
+ll cnt[N];
 void solve() {
-    cin>>n>>m>>k;
-	vector<int> a(n+1),b(m+1);
-	for(int i = 1;i <= n;i++) a[i]=m;
-	for(int i = 1;i <= m;i++) b[i]=n;
-	
-    if(!k){
-		cout<<1ll*n*m<<endl;
-		return;
-	}
+    int n, m;
+    cin >> n >> m;
 
-	for(int i = 0;i < k;i++) {
-		int x,y;
-		cin>>x>>y;
-		a[x]=min(a[x],y-1);
-		b[y]=min(b[y],x-1);
-	}
+    vector<int> k(n);
+    forIn(k, n);
 
-	ll ans=0;
-	for(int i = 1;i <= b[1];i++) ans+=a[i];
-	
-    vector<int> pos(a[1]+1);
-	for(int i = 1;i <= a[1];i++) pos[i]=i;
-	
-    sort(pos.begin()+1,pos.end(),[&](int x,int y){
-		return b[x]<b[y];
-	});
-	
-    for(int i = 1;i <= a[1];i++) {
-		int r=pos[i],l=pos[i-1];
-		for(int j=b[l]+1;j<=b[r]&&j<=b[1];j++){
-			add(a[j]);
-		}
-		ans+=b[r]+ask(r-1)-ask(m);
-	}
+    for(int i = 0;i < m;i++) cnt[i] = 0;
+    for(int i = 0;i < n;i++) {
+        k[i]--;
+        cnt[k[i]]++;
+    }
 
-	pf(ans);
+    vector<ll> c(m);
+    forIn(c, m);
+
+    int idx = 0;
+    ll ans = 0;
+    for(int i = m;i >= 0;i--) {
+        while(cnt[i] > 0) {
+            if(idx < m) {
+                if(c[idx] <= c[i]) {
+                    ans += c[idx];
+                    idx++;
+                } else {
+                    ans += c[i];
+                }
+            } else {
+                ans += c[i];
+            }
+            cnt[i]--;
+        }
+    }
+
+    pf(ans);    
 }
 
 int main() {
-    //go();
-    ssolve
+    go();
+    msolve
     return 0;
 }

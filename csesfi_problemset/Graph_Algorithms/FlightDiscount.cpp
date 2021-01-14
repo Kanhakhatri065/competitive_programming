@@ -42,14 +42,72 @@ const int d4i[4]={-1, 0, 1, 0}, d4j[4]={0, 1, 0, -1};
 const int d8i[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8]={0, 1, 1, 1, 0, -1, -1, -1};
 /*----------------------------------------------------------------*/
 const int MOD = 1e9 + 7;
-const int N = 2e5 + 5;
+const int N = 1e5 + 5;
 /*-------------- Push your limits here ---------------------------*/
-void solve() {
+struct Item {
+    int node;
+    ll cost;
+    bool discount;
 
+    Item(int _node, ll _cost, bool _discount) {
+        node = _node;
+        cost = _cost;
+        discount = _discount;
+    }
+
+    inline bool operator <(const Item& other) const {
+        if(discount == other.discount) {
+            return cost > other.cost;
+        }
+        return discount > other.discount;
+    }
+};
+
+int n, m;
+vector<pair<ll, ll>> adj[N];
+ll dist[N][2];
+void solve() {
+    cin >> n >> m;
+    for(int i = 0;i < m;i++) {
+        ll u, v, c;
+        cin >> u >> v >> c;
+        adj[u].emplace_back(v, c);
+    }
+
+    for(int i = 1;i <= n;i++) {
+        dist[i][0] = dist[i][1] = 1e18;
+    }
+
+    priority_queue<Item> pq;
+    pq.emplace(1, 0, false);
+    while(sz(pq) > 0) {
+        Item cur = pq.top();
+        pq.pop();
+
+        if(cur.node == n && cur.discount) {
+            pf(cur.cost);
+            break;
+        }
+
+        for(auto it : adj[cur.node]) {
+            if(dist[it.ff][cur.discount] > cur.cost + it.ss) {
+                dist[it.ff][cur.discount] = cur.cost + it.ss;
+                pq.emplace(it.ff, dist[it.ff][cur.discount], cur.discount);
+            }
+
+            if(cur.discount == false) {
+                if(dist[it.ff][true] > cur.cost + (it.ss / 2)) {
+                    dist[it.ff][true] = cur.cost + (it.ss / 2);
+                    pq.emplace(it.ff, dist[it.ff][true], true);
+                }
+            }
+        }
+    }
 }
 
 int main() {
-    go();
-    msolve
+    //go();
+    ssolve
     return 0;
 }
+
