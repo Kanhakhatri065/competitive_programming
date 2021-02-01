@@ -1,13 +1,12 @@
 /*
-	I love the sound you make when you shut up.
+    I love the sound you make when you shut up.
 */
 #include <bits/stdc++.h>
 using namespace std;
-#include <ext/pb_ds/assoc_container.hpp> // Common file
-#include <ext/pb_ds/tree_policy.hpp> // Including tree_order_statistics_node_update
+#include <ext/pb_ds/assoc_container.hpp>
 using namespace __gnu_pbds;
-/*-------typedefs------*/
-template<class T> using ordered_set = tree<T, null_type , less<T> , rb_tree_tag , tree_order_statistics_node_update> ;
+/*----typedefs--------*/
+typedef tree<int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
 using ll = long long;
 using pi = pair<int, int>;
 /*-----in and out--------*/
@@ -43,14 +42,46 @@ const int d4i[4]={-1, 0, 1, 0}, d4j[4]={0, 1, 0, -1};
 const int d8i[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8]={0, 1, 1, 1, 0, -1, -1, -1};
 /*----------------------------------------------------------------*/
 const int MOD = 1e9 + 7;
-const int N = 2e5 + 5;
+const int N = 15;
 /*-------------- Push your limits here ---------------------------*/
 void solve() {
+    int v;
+    cin >> v;
 
+    int a[9];
+    int mn = 1000001;
+    for(int i = 0;i < 9;i++) {
+        cin >> a[i];
+        mn = min(mn, a[i]);
+    }
+
+    int mx = 0;
+    for(int i = 0;i < 9;i++) {
+        mx = max(mx, v / a[i]);
+    }
+
+    if(mx == 0) {
+        pf(-1);
+        return;
+    }
+
+    string res = "";
+    int sum = v;
+    for(int i = 0;i < mx;i++) {
+        for(int j = 8;j >= 0;j--) {
+            if((sum - a[j]) >= (mx - i - 1) * mn) {
+                res += to_string(j + 1);
+                sum -= a[j];
+                break;
+            }
+        }
+    }
+
+    pf(res);
 }
 
 int main() {
     go();
-    msolve
+    ssolve
     return 0;
 }

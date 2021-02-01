@@ -1,13 +1,12 @@
 /*
-	I love the sound you make when you shut up.
+    I love the sound you make when you shut up.
 */
 #include <bits/stdc++.h>
 using namespace std;
-#include <ext/pb_ds/assoc_container.hpp> // Common file
-#include <ext/pb_ds/tree_policy.hpp> // Including tree_order_statistics_node_update
+#include <ext/pb_ds/assoc_container.hpp>
 using namespace __gnu_pbds;
-/*-------typedefs------*/
-template<class T> using ordered_set = tree<T, null_type , less<T> , rb_tree_tag , tree_order_statistics_node_update> ;
+/*----typedefs--------*/
+typedef tree<int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
 using ll = long long;
 using pi = pair<int, int>;
 /*-----in and out--------*/
@@ -43,14 +42,30 @@ const int d4i[4]={-1, 0, 1, 0}, d4j[4]={0, 1, 0, -1};
 const int d8i[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8]={0, 1, 1, 1, 0, -1, -1, -1};
 /*----------------------------------------------------------------*/
 const int MOD = 1e9 + 7;
-const int N = 2e5 + 5;
+const int N = 1e5 + 5;
 /*-------------- Push your limits here ---------------------------*/
 void solve() {
+    int n;
+    cin >> n;
 
+    vector<int> a(n + 1);
+    for(int i = 1;i < n;i++) {
+        int u, v;
+        cin >> u >> v;
+        a[u]++;
+        a[v]++;
+    }    
+
+    bool flag = true;
+    for(int i = 1;i <= n;i++) {
+        if(a[i] == 2) flag = false;
+    }
+
+    flag ? yes : no;
 }
 
 int main() {
     go();
-    msolve
+    ssolve
     return 0;
 }

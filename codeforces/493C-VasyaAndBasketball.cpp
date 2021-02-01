@@ -1,13 +1,12 @@
 /*
-	I love the sound you make when you shut up.
+    I love the sound you make when you shut up.
 */
 #include <bits/stdc++.h>
 using namespace std;
-#include <ext/pb_ds/assoc_container.hpp> // Common file
-#include <ext/pb_ds/tree_policy.hpp> // Including tree_order_statistics_node_update
+#include <ext/pb_ds/assoc_container.hpp>
 using namespace __gnu_pbds;
-/*-------typedefs------*/
-template<class T> using ordered_set = tree<T, null_type , less<T> , rb_tree_tag , tree_order_statistics_node_update> ;
+/*----typedefs--------*/
+typedef tree<int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
 using ll = long long;
 using pi = pair<int, int>;
 /*-----in and out--------*/
@@ -43,14 +42,36 @@ const int d4i[4]={-1, 0, 1, 0}, d4j[4]={0, 1, 0, -1};
 const int d8i[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8]={0, 1, 1, 1, 0, -1, -1, -1};
 /*----------------------------------------------------------------*/
 const int MOD = 1e9 + 7;
-const int N = 2e5 + 5;
+const int N = 2e3 + 5;
 /*-------------- Push your limits here ---------------------------*/
 void solve() {
+    int n;
+    cin >> n;
 
+    vector<int> a(n);
+    forIn(a, n);
+
+    int m;
+    cin >> m;
+    vector<int> b(m);
+    forIn(b, m);
+
+    sort(all(a));
+    sort(all(b));
+
+    int x = 2 * n, a1 = 2 * n;
+    int y = 2 * m, b1 = 2 * m;
+    for(int i = n - 1, j = m - 1;i >= 0;i--) {
+        a1++;
+        for(;j >= 0 && b[j] >= a[i];j--) b1++;
+        if(a1 - b1 >= x - y) x = a1, y = b1;
+    }
+
+    cout << x << ":" << y << endl;
 }
 
 int main() {
     go();
-    msolve
+    ssolve
     return 0;
 }

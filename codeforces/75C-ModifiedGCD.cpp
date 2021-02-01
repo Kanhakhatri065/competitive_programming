@@ -1,13 +1,12 @@
 /*
-	I love the sound you make when you shut up.
+    I love the sound you make when you shut up.
 */
 #include <bits/stdc++.h>
 using namespace std;
-#include <ext/pb_ds/assoc_container.hpp> // Common file
-#include <ext/pb_ds/tree_policy.hpp> // Including tree_order_statistics_node_update
+#include <ext/pb_ds/assoc_container.hpp>
 using namespace __gnu_pbds;
-/*-------typedefs------*/
-template<class T> using ordered_set = tree<T, null_type , less<T> , rb_tree_tag , tree_order_statistics_node_update> ;
+/*----typedefs--------*/
+typedef tree<int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
 using ll = long long;
 using pi = pair<int, int>;
 /*-----in and out--------*/
@@ -46,11 +45,51 @@ const int MOD = 1e9 + 7;
 const int N = 2e5 + 5;
 /*-------------- Push your limits here ---------------------------*/
 void solve() {
+    ll a, b;
+    cin >> a >> b;
 
+    ll g = __gcd(a, b);
+
+    set<ll> divisors;
+    for(ll i = 1;i * i <= g;i++) {
+        if(g % i == 0) {
+            divisors.insert(i);
+            divisors.insert(g / i);
+        }
+    }
+
+    vector<int> store;
+    for(int x : divisors) store.pb(x);
+
+    int q;
+    cin >> q;
+
+    while(q--) {
+        int l, r;
+        cin >> l >> r;
+
+        int low = 0, high = sz(store) - 1;
+        int ans = -1;
+        while(low <= high) {
+            int mid = (low + high) >> 1;
+            if(store[mid] > r) {
+                high = mid - 1;
+            } else if(store[mid] < l) {
+                low = mid + 1;
+            } else if(store[mid] >= l) {
+                if(store[mid] <= r) {
+                    ans = store[mid];
+                }
+                low = mid + 1;
+            }
+        }
+
+        pf(ans);
+    }
 }
 
 int main() {
     go();
-    msolve
+    ssolve
     return 0;
 }

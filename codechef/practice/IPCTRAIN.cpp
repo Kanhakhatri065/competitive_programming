@@ -3,11 +3,10 @@
 */
 #include <bits/stdc++.h>
 using namespace std;
-#include <ext/pb_ds/assoc_container.hpp> // Common file
-#include <ext/pb_ds/tree_policy.hpp> // Including tree_order_statistics_node_update
+#include <ext/pb_ds/assoc_container.hpp>
 using namespace __gnu_pbds;
-/*-------typedefs------*/
-template<class T> using ordered_set = tree<T, null_type , less<T> , rb_tree_tag , tree_order_statistics_node_update> ;
+/*----typedefs--------*/
+typedef tree<int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
 using ll = long long;
 using pi = pair<int, int>;
 /*-----in and out--------*/
@@ -46,11 +45,53 @@ const int MOD = 1e9 + 7;
 const int N = 2e5 + 5;
 /*-------------- Push your limits here ---------------------------*/
 void solve() {
+    int n, d;
+    cin >> n >> d;
 
+    vector<int> sadness(n), lectures(n), startDays(n);
+    for(int i = 0;i < n;i++) {
+        cin >> startDays[i] >> lectures[i] >> sadness[i];
+        startDays[i]--;
+    }
+
+    vector<pair<int, int>> persons;
+    for(int i = 0;i < n;i++) {
+        persons.push_back({sadness[i], i});
+    }
+
+    sort(all(persons), greater<>());
+
+    vector<int> lecturesTaken(n);
+
+    set<int> daySet;
+    for(int i = 0;i < d;i++) {
+        daySet.insert(i);
+    }
+
+    for(auto it : persons) {
+        int lec = lectures[it.ss];
+        for(int i = 0;i < lec;i++) {
+            auto iter = daySet.lower_bound(startDays[it.ss]);
+            if(iter != daySet.end()) {
+                lecturesTaken[it.second]++;
+                daySet.erase(iter);
+            } else {
+                break;
+            }
+        }
+    }
+
+    ll ans = 0;
+    for(int i = 0;i < n;i++) {
+        ans += (1LL * (lectures[i] - lecturesTaken[i]) * sadness[i]);
+    }
+
+    pf(ans);
 }
 
 int main() {
-    go();
+    //go();
     msolve
     return 0;
 }
+

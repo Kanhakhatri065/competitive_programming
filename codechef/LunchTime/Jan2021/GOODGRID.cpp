@@ -1,13 +1,12 @@
 /*
-	I love the sound you make when you shut up.
+    I love the sound you make when you shut up.
 */
 #include <bits/stdc++.h>
 using namespace std;
-#include <ext/pb_ds/assoc_container.hpp> // Common file
-#include <ext/pb_ds/tree_policy.hpp> // Including tree_order_statistics_node_update
+#include <ext/pb_ds/assoc_container.hpp>
 using namespace __gnu_pbds;
-/*-------typedefs------*/
-template<class T> using ordered_set = tree<T, null_type , less<T> , rb_tree_tag , tree_order_statistics_node_update> ;
+/*----typedefs--------*/
+typedef tree<int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
 using ll = long long;
 using pi = pair<int, int>;
 /*-----in and out--------*/
@@ -22,8 +21,8 @@ using pi = pair<int, int>;
 #define ss second
 #define all(x) x.begin(), x.end()
 /*----- the binary answer of life-----*/
-#define no cout << "NO" << endl
-#define yes cout << "YES" << endl
+#define no cout << "No" << endl
+#define yes cout << "Yes" << endl
 /*---checking and pushing-----*/
 template<class T> bool ckmin(T& a, const T& b) { return b < a ? a = b, 1 : 0; }
 template<class T> bool ckmax(T& a, const T& b) { return a < b ? a = b, 1 : 0; }
@@ -46,7 +45,20 @@ const int MOD = 1e9 + 7;
 const int N = 2e5 + 5;
 /*-------------- Push your limits here ---------------------------*/
 void solve() {
+    ll n, x;
+    cin >> n >> x;
 
+    bool flag = false;
+    for(ll i = 1;i * i <= x;i++) {
+        if(x % i == 0) {
+            if(i <= n && (x / i) <= n) {
+                flag = true;
+                break;
+            }
+        }
+    }
+
+    flag ? yes : no;
 }
 
 int main() {

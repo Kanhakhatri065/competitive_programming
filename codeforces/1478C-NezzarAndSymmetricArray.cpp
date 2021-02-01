@@ -3,11 +3,10 @@
 */
 #include <bits/stdc++.h>
 using namespace std;
-#include <ext/pb_ds/assoc_container.hpp> // Common file
-#include <ext/pb_ds/tree_policy.hpp> // Including tree_order_statistics_node_update
+#include <ext/pb_ds/assoc_container.hpp>
 using namespace __gnu_pbds;
-/*-------typedefs------*/
-template<class T> using ordered_set = tree<T, null_type , less<T> , rb_tree_tag , tree_order_statistics_node_update> ;
+/*----typedefs--------*/
+typedef tree<int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
 using ll = long long;
 using pi = pair<int, int>;
 /*-----in and out--------*/
@@ -46,7 +45,38 @@ const int MOD = 1e9 + 7;
 const int N = 2e5 + 5;
 /*-------------- Push your limits here ---------------------------*/
 void solve() {
+    int n;
+    cin >> n;
 
+    map<ll, ll> mp;
+    for(int i = 0;i < 2 * n;i++) {
+        ll x;
+        cin >> x;
+        mp[x]++;
+    }
+
+    ll sum = 0;
+    n *= 2;
+    for(auto it = mp.rbegin();it != mp.rend();it++) {
+        if(it->ss != 2) {
+            no;
+            return;
+        }
+
+        ll a = it->ff;
+        a -= 2 * sum;
+
+        if(a <= 0 || a % n != 0) {
+            no;
+            return;
+        }
+
+        ll tmp = a / n;
+        sum += tmp;
+        n -= 2;
+    }
+
+    yes;
 }
 
 int main() {
@@ -54,3 +84,4 @@ int main() {
     msolve
     return 0;
 }
+

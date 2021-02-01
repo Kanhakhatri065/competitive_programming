@@ -1,13 +1,12 @@
 /*
-	I love the sound you make when you shut up.
+    I love the sound you make when you shut up.
 */
 #include <bits/stdc++.h>
 using namespace std;
-#include <ext/pb_ds/assoc_container.hpp> // Common file
-#include <ext/pb_ds/tree_policy.hpp> // Including tree_order_statistics_node_update
+#include <ext/pb_ds/assoc_container.hpp>
 using namespace __gnu_pbds;
-/*-------typedefs------*/
-template<class T> using ordered_set = tree<T, null_type , less<T> , rb_tree_tag , tree_order_statistics_node_update> ;
+/*----typedefs--------*/
+typedef tree<int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
 using ll = long long;
 using pi = pair<int, int>;
 /*-----in and out--------*/
@@ -30,9 +29,7 @@ template<class T> bool ckmax(T& a, const T& b) { return a < b ? a = b, 1 : 0; }
 /*---- FAST I/O and file read ---*/
 void go() {
     ios_base::sync_with_stdio(0);cin.tie(0); cout.tie(0);
-#ifndef ONLINE_JUDGE
     freopen("input.txt", "r", stdin);freopen("output.txt", "w", stdout);
-#endif
 }
 /*-------- test-case stuff--------------*/
 #define ssolve solve();
@@ -43,14 +40,35 @@ const int d4i[4]={-1, 0, 1, 0}, d4j[4]={0, 1, 0, -1};
 const int d8i[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8]={0, 1, 1, 1, 0, -1, -1, -1};
 /*----------------------------------------------------------------*/
 const int MOD = 1e9 + 7;
-const int N = 2e5 + 5;
+const int N = 5e3 + 5;
 /*-------------- Push your limits here ---------------------------*/
+int cnt[N];
 void solve() {
+    int n;
+    cin >> n;
 
+    mem(cnt, 0);
+    for(int i = 0;i < n;i++) {
+        int x;
+        cin >> x;
+        cnt[x]++;
+    }
+
+    int ans = n;
+    for(int i = 1;i <= 5e3;i++) {
+        int p = 0;
+        for(int j = i;j <= min(2 * i, 5000);j++) {
+            p += cnt[j];
+        }
+
+        ans = min(ans, n - p);
+    }
+
+    pf(ans);
 }
 
 int main() {
     go();
-    msolve
+    ssolve
     return 0;
 }

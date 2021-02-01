@@ -3,11 +3,10 @@
 */
 #include <bits/stdc++.h>
 using namespace std;
-#include <ext/pb_ds/assoc_container.hpp> // Common file
-#include <ext/pb_ds/tree_policy.hpp> // Including tree_order_statistics_node_update
+#include <ext/pb_ds/assoc_container.hpp>
 using namespace __gnu_pbds;
-/*-------typedefs------*/
-template<class T> using ordered_set = tree<T, null_type , less<T> , rb_tree_tag , tree_order_statistics_node_update> ;
+/*----typedefs--------*/
+typedef tree<int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
 using ll = long long;
 using pi = pair<int, int>;
 /*-----in and out--------*/
@@ -45,12 +44,58 @@ const int d8i[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8]={0, 1, 1, 1, 0, -1, -1, -1}
 const int MOD = 1e9 + 7;
 const int N = 2e5 + 5;
 /*-------------- Push your limits here ---------------------------*/
-void solve() {
+bool checker(int x, int d) {
+    char p = d + '0';
+    string s = to_string(x);
+    for(char c : s) {
+        if(c == p) {
+            return true;
+        }
+    }
 
+    return false;
+}
+void solve() {
+    int n;
+    cin >> n;
+
+    int d;
+    cin >> d;
+    
+    while(n--) {
+        int x;
+        cin >> x;
+
+        if(x % d == 0) {
+            yes;
+            continue;
+        }
+
+        if(x >= 100) {
+            yes;
+        } else {
+            bool flag = false;
+            while(x > 0) {
+                if(checker(x, d)) {
+                    flag = true;
+                    break;
+                }
+
+                x -= d;
+            }
+
+            if(flag) {
+                yes;
+            } else {
+                no;
+            }
+        }
+    }
 }
 
 int main() {
-    go();
+    //go();
     msolve
     return 0;
 }
+

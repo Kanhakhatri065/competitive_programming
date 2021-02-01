@@ -1,13 +1,12 @@
 /*
-	I love the sound you make when you shut up.
+    I love the sound you make when you shut up.
 */
 #include <bits/stdc++.h>
 using namespace std;
-#include <ext/pb_ds/assoc_container.hpp> // Common file
-#include <ext/pb_ds/tree_policy.hpp> // Including tree_order_statistics_node_update
+#include <ext/pb_ds/assoc_container.hpp>
 using namespace __gnu_pbds;
-/*-------typedefs------*/
-template<class T> using ordered_set = tree<T, null_type , less<T> , rb_tree_tag , tree_order_statistics_node_update> ;
+/*----typedefs--------*/
+typedef tree<int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
 using ll = long long;
 using pi = pair<int, int>;
 /*-----in and out--------*/
@@ -46,7 +45,29 @@ const int MOD = 1e9 + 7;
 const int N = 2e5 + 5;
 /*-------------- Push your limits here ---------------------------*/
 void solve() {
+    int n, k;
+    cin >> n >> k;
 
+    vector<ll> v(n);
+    forIn(v, n);
+
+    int cnt = 0;
+    for(int i = 0;i < n;i++) {
+        if(v[i] % k) {
+            bool flag = true;
+            for(int j=1;j<=25;j++)
+            {
+                v[i] += v[i];
+                if((v[i]) % k == 0) {
+                    flag = false;
+                    break;
+                }
+            }
+            if(flag) cnt++;
+        }
+    }
+
+    cnt > 0 ? no : yes;
 }
 
 int main() {

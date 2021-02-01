@@ -1,5 +1,5 @@
 /*
-	I love the sound you make when you shut up.
+    I love the sound you make when you shut up.
 */
 #include <bits/stdc++.h>
 using namespace std;
@@ -43,14 +43,30 @@ const int d4i[4]={-1, 0, 1, 0}, d4j[4]={0, 1, 0, -1};
 const int d8i[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8]={0, 1, 1, 1, 0, -1, -1, -1};
 /*----------------------------------------------------------------*/
 const int MOD = 1e9 + 7;
-const int N = 2e5 + 5;
+const int N = 3e5 + 5;
 /*-------------- Push your limits here ---------------------------*/
+int n, arr[N];
 void solve() {
+    cin >> n;
+    forIn(arr, n);
 
+    ordered_set<int> s;
+    ll ans = 0;
+    for(int i = 0;i < n;i++) {
+        ans += (sz(s) - s.order_of_key(arr[i]));
+        s.insert(arr[i]);
+    }
+
+    pf(ans);
+    for(int i = 0;i + 1 < n;i++) {
+        ans -= arr[i];
+        ans += n - 1 - arr[i];
+        pf(ans);
+    }
 }
 
 int main() {
     go();
-    msolve
+    ssolve
     return 0;
 }

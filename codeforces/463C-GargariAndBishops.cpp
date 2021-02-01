@@ -1,13 +1,12 @@
 /*
-	I love the sound you make when you shut up.
+    I love the sound you make when you shut up.
 */
 #include <bits/stdc++.h>
 using namespace std;
-#include <ext/pb_ds/assoc_container.hpp> // Common file
-#include <ext/pb_ds/tree_policy.hpp> // Including tree_order_statistics_node_update
+#include <ext/pb_ds/assoc_container.hpp>
 using namespace __gnu_pbds;
-/*-------typedefs------*/
-template<class T> using ordered_set = tree<T, null_type , less<T> , rb_tree_tag , tree_order_statistics_node_update> ;
+/*----typedefs--------*/
+typedef tree<int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
 using ll = long long;
 using pi = pair<int, int>;
 /*-----in and out--------*/
@@ -43,14 +42,59 @@ const int d4i[4]={-1, 0, 1, 0}, d4j[4]={0, 1, 0, -1};
 const int d8i[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8]={0, 1, 1, 1, 0, -1, -1, -1};
 /*----------------------------------------------------------------*/
 const int MOD = 1e9 + 7;
-const int N = 2e5 + 5;
+const int N = 2e3 + 5;
 /*-------------- Push your limits here ---------------------------*/
-void solve() {
+int n;
+int a[N][N];
+ll sum[3 * N], sum2[3 * N];
+ll get_sum(int x, int y) {
+    return sum[x + y] + sum2[(n - x + 1) + y];
+}
 
+void solve() {
+    cin >> n;
+
+    for(int i = 1;i <= n;i++) {
+        for(int j = 1;j <= n;j++) {
+            cin >> a[i][j];
+        }
+    }
+
+    mem(sum, 0);
+    mem(sum2, 0);
+
+    for(int i = 1;i <= n;i++) {
+        for(int j = 1;j <= n;j++) {
+            sum[i + j] += a[i][j];
+            sum2[(n - i + 1) + j] += a[i][j];
+        }
+    }
+
+    pair<int, int> res1, res2;
+    ll mx1 = 0, mx2 = 0;
+
+    for(int i = 1;i <= n;i++) {
+        for(int j = 1;j <= n;j++) {
+            if((i + j) % 2 == 0) {
+                if(get_sum(i, j) - a[i][j] >= mx1) {
+                    mx1 = get_sum(i, j) - a[i][j];
+                    res1 = {i, j};
+                }
+            } else {
+                if(get_sum(i, j) - a[i][j] >= mx2) {
+                    mx2 = get_sum(i, j) - a[i][j];
+                    res2 = {i, j};
+                }
+            }
+        }
+    }
+
+    pf(mx1 + mx2);
+    cout << res1.ff << " " << res1.ss << " " << res2.ff << " " << res2.ss << endl;
 }
 
 int main() {
     go();
-    msolve
+    ssolve
     return 0;
 }
