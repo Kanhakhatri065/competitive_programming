@@ -3,10 +3,11 @@
 */
 #include <bits/stdc++.h>
 using namespace std;
-#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/assoc_container.hpp> // Common file
+#include <ext/pb_ds/tree_policy.hpp> // Including tree_order_statistics_node_update
 using namespace __gnu_pbds;
-/*----typedefs--------*/
-typedef tree<int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
+/*-------typedefs------*/
+template<class T> using ordered_set = tree<T, null_type , less<T> , rb_tree_tag , tree_order_statistics_node_update> ;
 using ll = long long;
 using pi = pair<int, int>;
 /*-----in and out--------*/
@@ -42,29 +43,56 @@ const int d4i[4]={-1, 0, 1, 0}, d4j[4]={0, 1, 0, -1};
 const int d8i[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8]={0, 1, 1, 1, 0, -1, -1, -1};
 /*----------------------------------------------------------------*/
 const int MOD = 1e9 + 7;
-const int N = 3e5 + 5;
-const int MAX = (1 << 20) + 3;
+const int N = 2e5 + 5;
 /*-------------- Push your limits here ---------------------------*/
-int n;
-int a[N];
-int cnt[2][MAX];
 void solve() {
-    cin >> n;
+    int n, m;
+    cin >> n >> m;
 
-    forIn(a, n);
+    int arr[n][m];
+    for(int i = 0;i < n;i++) for(int j = 0;j < m;j++) cin >> arr[i][j];
 
-    mem(cnt, 0);
-    cnt[1][0] = 1;
-    int x = 0;
-    ll res = 0;
-    for(int i  = 0;i < n;i++) {
-        x ^= a[i];
-        res += cnt[i & 1][x];
-        cnt[i & 1][x]++;
+    int ul[n][m];
+    mem(ul, 0);
+    for(int i = 0;i < n;i++) {
+        for(int j = 0;j < m;j++) {
+            ul[i][j] = max(i - 1 >= 0 ? ul[i - 1][j] : 0, j - 1 >= 0 ? ul[i][j - 1] : 0) + arr[i][j];
+        }
     }
 
-    pf(res);
-}   
+    int dl[n][m];
+    mem(dl, 0);
+    for(int i = n - 1;i >= 0;i--) {
+        for(int j = 0;j < m;j++) {
+            dl[i][j] = max(i + 1 < n ? dl[i + 1][j] : 0, j - 1 >= 0 ? dl[i][j - 1] : 0) + arr[i][j];
+        }
+    }
+
+    int ur[n][m];
+    for(int i = 0;i < n;i++) {
+        for(int j = m - 1;j >= 0;j--) {
+            ur[i][j] = max(i - 1 >= 0 ? ur[i - 1][j] : 0, j + 1 < m ? ur[i][j + 1] : 0) + arr[i][j];
+        }
+    }
+
+    int dr[n][m];
+    mem(dr, 0);
+    for(int i = n - 1;i >= 0;i--) {
+        for(int j = m - 1;j >= 0;j--) {
+            dr[i][j] = max(i + 1 < n ? dr[i + 1][j] : 0, j + 1 < m ? dr[i][j + 1] : 0) + arr[i][j];
+        }
+    }
+
+    int ans = 0;
+    for(int i = 1;i + 1 < n;i++) {
+        for(int j = 1;j + 1 < m;j++) {
+            ans = max(ans, ul[i][j - 1] + dr[i][j + 1] + dl[i + 1][j] + ur[i - 1][j]);
+            ans = max(ans, ul[i - 1][j] + dr[i + 1][j] + dl[i][j - 1] + ur[i][j + 1]);
+        }
+    }
+
+    pf(ans);
+}
 
 int main() {
     go();

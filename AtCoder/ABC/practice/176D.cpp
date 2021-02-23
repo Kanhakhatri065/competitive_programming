@@ -3,10 +3,11 @@
 */
 #include <bits/stdc++.h>
 using namespace std;
-#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/assoc_container.hpp> // Common file
+#include <ext/pb_ds/tree_policy.hpp> // Including tree_order_statistics_node_update
 using namespace __gnu_pbds;
-/*----typedefs--------*/
-typedef tree<int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
+/*-------typedefs------*/
+template<class T> using ordered_set = tree<T, null_type , less<T> , rb_tree_tag , tree_order_statistics_node_update> ;
 using ll = long long;
 using pi = pair<int, int>;
 /*-----in and out--------*/
@@ -42,32 +43,57 @@ const int d4i[4]={-1, 0, 1, 0}, d4j[4]={0, 1, 0, -1};
 const int d8i[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8]={0, 1, 1, 1, 0, -1, -1, -1};
 /*----------------------------------------------------------------*/
 const int MOD = 1e9 + 7;
-const int N = 3e5 + 5;
-const int MAX = (1 << 20) + 3;
+const int N = 2e5 + 5;
 /*-------------- Push your limits here ---------------------------*/
-int n;
-int a[N];
-int cnt[2][MAX];
 void solve() {
-    cin >> n;
+    int n, m;
+    cin >> n >> m;
 
-    forIn(a, n);
+    int sx, sy;
+    cin >> sx >> sy;
+    sx--, sy--;
 
-    mem(cnt, 0);
-    cnt[1][0] = 1;
-    int x = 0;
-    ll res = 0;
-    for(int i  = 0;i < n;i++) {
-        x ^= a[i];
-        res += cnt[i & 1][x];
-        cnt[i & 1][x]++;
+    int dx, dy;
+    cin >> dx >> dy;
+    dx--, dy--;
+
+    char arr[n][m];
+    for(int i = 0;i < n;i++) for(int j = 0;j < m;j++) cin >> arr[i][j];
+
+    int dist[n][m];
+    mem(dist, -1);
+
+    deque<pair<pi, int>> dq;
+    dq.push_back({{sx, sy}, 0});
+
+    while(!dq.empty()) {
+        int x = dq.front().ff.ff, y = dq.front().ff.ss, d = dq.front().ss;
+        dq.pop_front();
+
+        if(x < 0 || x >= n || y < 0 || y >= m) continue;
+        if(arr[x][y] == '#') continue;
+        if(dist[x][y] >= 0) continue;
+
+        dist[x][y] = d;
+
+        for(int i = -2;i <= 2;i++) {
+            for(int j = -2;j <= 2;j++) {
+                if(i * i + j * j == 1) {
+                    dq.push_front({{x + i, y + j}, d});
+                }
+
+                if(i * i + j * j > 1) {
+                    dq.push_back({{x + i, y + j}, d + 1});
+                }
+            }
+        }
     }
 
-    pf(res);
-}   
+    pf(dist[dx][dy]);
+}
 
 int main() {
-    go();
+    //go();
     ssolve
     return 0;
 }

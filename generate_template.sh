@@ -3,7 +3,6 @@
 # filename
 filename=$1
 
-cp -n /home/kabir/competitive_programming/template.cpp ./$filename;
+cp -n /home/kabir/competitive_programming/boilerplate_code/template.cpp ./$filename;
 
-echo "cpp file created, now conquer this problem"
 

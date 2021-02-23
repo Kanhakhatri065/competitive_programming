@@ -3,10 +3,11 @@
 */
 #include <bits/stdc++.h>
 using namespace std;
-#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/assoc_container.hpp> // Common file
+#include <ext/pb_ds/tree_policy.hpp> // Including tree_order_statistics_node_update
 using namespace __gnu_pbds;
-/*----typedefs--------*/
-typedef tree<int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
+/*-------typedefs------*/
+template<class T> using ordered_set = tree<T, null_type , less<T> , rb_tree_tag , tree_order_statistics_node_update> ;
 using ll = long long;
 using pi = pair<int, int>;
 /*-----in and out--------*/
@@ -42,32 +43,72 @@ const int d4i[4]={-1, 0, 1, 0}, d4j[4]={0, 1, 0, -1};
 const int d8i[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8]={0, 1, 1, 1, 0, -1, -1, -1};
 /*----------------------------------------------------------------*/
 const int MOD = 1e9 + 7;
-const int N = 3e5 + 5;
-const int MAX = (1 << 20) + 3;
+const int N = 2e5 + 5;
 /*-------------- Push your limits here ---------------------------*/
-int n;
-int a[N];
-int cnt[2][MAX];
 void solve() {
+    int n;
     cin >> n;
 
-    forIn(a, n);
-
-    mem(cnt, 0);
-    cnt[1][0] = 1;
-    int x = 0;
-    ll res = 0;
-    for(int i  = 0;i < n;i++) {
-        x ^= a[i];
-        res += cnt[i & 1][x];
-        cnt[i & 1][x]++;
+    vector<int> v(n);
+    map<int, int> jump;
+    map<int, vector<int>> pos;
+    for(int i= 0;i < n;i++) {
+        cin >> v[i];
+        pos[i].pb(v[i]);
     }
 
-    pf(res);
-}   
+    for(int i = 0;i < n;i++) {
+        int x;cin >> x;
+        jump[v[i]] = x;
+    }
+
+    int cnt = 0;
+    while(true) {
+        bool flag = true;
+        int val = 0;
+        int idx = -1;
+        vector<pi> store;
+        for(auto it : pos) {
+            for(auto itr : it.ss) {
+                store.pb({it.ff, itr});
+            }
+        }
+
+        for(int i = 0;i + 1 < n;i++) {
+            if(store[i].ss > store[i + 1].ss) {
+                flag = false;
+                val = store[i].ss;
+                idx = store[i].ff;
+                break;
+            } else {
+                if(store[i].ff == store[i + 1].ff) {
+                    flag = false;
+                    val = store[i + 1].ss;
+                    idx = store[i + 1].ff;
+                    break;
+                }
+            }
+        }
+
+        if(flag) break;
+
+        if(find(all(pos[idx]), val) != pos[idx].end()) {
+            pos[idx].erase(find(all(pos[idx]), val));
+        }
+
+        if(pos[idx].empty()) {
+            pos.erase(idx);
+        }
+
+        pos[idx + jump[val]].pb(val);
+        cnt++;
+    }
+
+    pf(cnt);
+}
 
 int main() {
     go();
-    ssolve
+    msolve
     return 0;
 }

@@ -3,10 +3,11 @@
 */
 #include <bits/stdc++.h>
 using namespace std;
-#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/assoc_container.hpp> // Common file
+#include <ext/pb_ds/tree_policy.hpp> // Including tree_order_statistics_node_update
 using namespace __gnu_pbds;
-/*----typedefs--------*/
-typedef tree<int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
+/*-------typedefs------*/
+template<class T> using ordered_set = tree<T, null_type , less<T> , rb_tree_tag , tree_order_statistics_node_update> ;
 using ll = long long;
 using pi = pair<int, int>;
 /*-----in and out--------*/
@@ -42,29 +43,66 @@ const int d4i[4]={-1, 0, 1, 0}, d4j[4]={0, 1, 0, -1};
 const int d8i[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8]={0, 1, 1, 1, 0, -1, -1, -1};
 /*----------------------------------------------------------------*/
 const int MOD = 1e9 + 7;
-const int N = 3e5 + 5;
-const int MAX = (1 << 20) + 3;
+const int N = 2e5 + 5;
 /*-------------- Push your limits here ---------------------------*/
-int n;
-int a[N];
-int cnt[2][MAX];
-void solve() {
-    cin >> n;
-
-    forIn(a, n);
-
-    mem(cnt, 0);
-    cnt[1][0] = 1;
-    int x = 0;
-    ll res = 0;
-    for(int i  = 0;i < n;i++) {
-        x ^= a[i];
-        res += cnt[i & 1][x];
-        cnt[i & 1][x]++;
+vector<int> adj[N];
+int child[N], pos[N];
+vector<int> store;
+int n, quer;
+void num_child(int s) {
+    if(sz(adj[s]) == 0) {
+        child[s] = 0;
+        return;
     }
 
-    pf(res);
-}   
+    int cnt = 0;
+    for(int v : adj[s]) {
+        num_child(v);
+        cnt += child[v];
+    }
+
+    child[s] = cnt + sz(adj[s]);
+}
+
+void generate_list(int s) {
+    store.pb(s);
+    for(int u : adj[s]) {
+        generate_list(u);
+    }
+}
+
+void fill_pos() {
+    for(int i = 0;i < sz(store);i++) {
+        pos[store[i]] = i;
+    }
+}
+
+void solve() {
+    cin >> n >> quer;
+
+    for(int i = 2;i <= n;i++) {
+        int x;
+        cin >> x;
+        adj[x].pb(i);
+    }
+
+    num_child(1);
+    generate_list(1);
+    fill_pos();
+
+    while(quer--) {
+        int u, k;
+        cin >> u >> k;
+
+        if(k > child[u] + 1) {
+            pf(-1);
+        } else {
+            k--;
+            int ans = store[pos[u] + k];
+            pf(ans);
+        }
+    }
+}
 
 int main() {
     go();

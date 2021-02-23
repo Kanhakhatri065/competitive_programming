@@ -3,10 +3,11 @@
 */
 #include <bits/stdc++.h>
 using namespace std;
-#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/assoc_container.hpp> // Common file
+#include <ext/pb_ds/tree_policy.hpp> // Including tree_order_statistics_node_update
 using namespace __gnu_pbds;
-/*----typedefs--------*/
-typedef tree<int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
+/*-------typedefs------*/
+template<class T> using ordered_set = tree<T, null_type , less<T> , rb_tree_tag , tree_order_statistics_node_update> ;
 using ll = long long;
 using pi = pair<int, int>;
 /*-----in and out--------*/
@@ -42,32 +43,58 @@ const int d4i[4]={-1, 0, 1, 0}, d4j[4]={0, 1, 0, -1};
 const int d8i[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8]={0, 1, 1, 1, 0, -1, -1, -1};
 /*----------------------------------------------------------------*/
 const int MOD = 1e9 + 7;
-const int N = 3e5 + 5;
-const int MAX = (1 << 20) + 3;
+const int N = 1e5 + 5;
 /*-------------- Push your limits here ---------------------------*/
-int n;
-int a[N];
-int cnt[2][MAX];
+vector<pair<int, pi>> adj[N];
+int n, m, x, y;
+ll dest[N];
+void dijkstra(int s) {
+    mem(dest, -1);
+    dest[s] = 0;
+    set<pair<ll, ll>> store;
+    store.insert({0, s});
+    while(!store.empty()) {
+        ll v = store.begin()->ss;
+        store.erase(store.begin());
+        for(auto edge : adj[v]) {
+            int to = edge.ff;
+            int t = edge.ss.ff;
+            int k = edge.ss.ss;
+
+            ll len = t;
+            if(dest[v] % k > 0) {
+                len += (k - (dest[v] % k));
+            }
+            if(dest[to] == -1) {
+                dest[to] = dest[v] + len;
+                store.insert({dest[to], to});
+                continue;
+            }
+
+            if(dest[v] + len < dest[to]) {
+                store.erase({dest[to], to});
+                dest[to] = dest[v] + len;
+                store.insert({dest[to], to});
+            }
+        }
+    }   
+}
+
 void solve() {
-    cin >> n;
-
-    forIn(a, n);
-
-    mem(cnt, 0);
-    cnt[1][0] = 1;
-    int x = 0;
-    ll res = 0;
-    for(int i  = 0;i < n;i++) {
-        x ^= a[i];
-        res += cnt[i & 1][x];
-        cnt[i & 1][x]++;
+    cin >> n >> m >> x >> y;
+    for(int i = 0;i < m;i++) {
+        int a, b, t, k;
+        cin >> a >> b >> t >> k;
+        adj[a].pb({b, {t, k}});
+        adj[b].pb({a, {t, k}});
     }
 
-    pf(res);
-}   
+    dijkstra(x);
+    pf(dest[y]);
+}
 
 int main() {
-    go();
+    //go();
     ssolve
     return 0;
 }

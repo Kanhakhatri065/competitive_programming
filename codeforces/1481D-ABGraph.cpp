@@ -3,10 +3,11 @@
 */
 #include <bits/stdc++.h>
 using namespace std;
-#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/assoc_container.hpp> // Common file
+#include <ext/pb_ds/tree_policy.hpp> // Including tree_order_statistics_node_update
 using namespace __gnu_pbds;
-/*----typedefs--------*/
-typedef tree<int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
+/*-------typedefs------*/
+template<class T> using ordered_set = tree<T, null_type , less<T> , rb_tree_tag , tree_order_statistics_node_update> ;
 using ll = long long;
 using pi = pair<int, int>;
 /*-----in and out--------*/
@@ -42,32 +43,45 @@ const int d4i[4]={-1, 0, 1, 0}, d4j[4]={0, 1, 0, -1};
 const int d8i[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8]={0, 1, 1, 1, 0, -1, -1, -1};
 /*----------------------------------------------------------------*/
 const int MOD = 1e9 + 7;
-const int N = 3e5 + 5;
-const int MAX = (1 << 20) + 3;
+const int N = 1005;
 /*-------------- Push your limits here ---------------------------*/
-int n;
-int a[N];
-int cnt[2][MAX];
+int n, m;
+char grid[N][N];
 void solve() {
-    cin >> n;
+    cin >> n >> m;
+    for(int i = 0;i < n;i++) cin >> grid[i];
+    if(m & 1) {
+        yes;
+        for(int i = 0;i <= m;i++) {
+            cout << (i & 1) + 1 << " ";
+        }
+        cout << endl;
+    } else if(n == 2) {
+        if(grid[0][1] == grid[1][0]) {
+            yes;
+            for(int i = 0;i <= m;i++) {
+                cout << (i & 1) + 1 << " ";
+            }
+            cout << endl;
+        } else {
+            no;
+        }
+    } else {
+        yes;
+        int f;
+        if(grid[0][1] == grid[1][2]) f = 1;
+        else if(grid[2][0] == grid[0][1]) f = 0;
+        else f = 2;
 
-    forIn(a, n);
-
-    mem(cnt, 0);
-    cnt[1][0] = 1;
-    int x = 0;
-    ll res = 0;
-    for(int i  = 0;i < n;i++) {
-        x ^= a[i];
-        res += cnt[i & 1][x];
-        cnt[i & 1][x]++;
+        for(int i = 0;i <= m;i++) {
+            cout << (f + m + i) % 3 + 1 << " ";
+        }
+        cout << endl;
     }
-
-    pf(res);
-}   
+}
 
 int main() {
     go();
-    ssolve
+    msolve
     return 0;
 }

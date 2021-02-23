@@ -3,10 +3,11 @@
 */
 #include <bits/stdc++.h>
 using namespace std;
-#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/assoc_container.hpp> // Common file
+#include <ext/pb_ds/tree_policy.hpp> // Including tree_order_statistics_node_update
 using namespace __gnu_pbds;
-/*----typedefs--------*/
-typedef tree<int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
+/*-------typedefs------*/
+template<class T> using ordered_set = tree<T, null_type , less<T> , rb_tree_tag , tree_order_statistics_node_update> ;
 using ll = long long;
 using pi = pair<int, int>;
 /*-----in and out--------*/
@@ -42,32 +43,40 @@ const int d4i[4]={-1, 0, 1, 0}, d4j[4]={0, 1, 0, -1};
 const int d8i[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8]={0, 1, 1, 1, 0, -1, -1, -1};
 /*----------------------------------------------------------------*/
 const int MOD = 1e9 + 7;
-const int N = 3e5 + 5;
-const int MAX = (1 << 20) + 3;
+const int N = 2e5 + 5;
 /*-------------- Push your limits here ---------------------------*/
-int n;
-int a[N];
-int cnt[2][MAX];
 void solve() {
+    int n;
     cin >> n;
 
-    forIn(a, n);
+    string s;
+    cin >> s;
 
-    mem(cnt, 0);
-    cnt[1][0] = 1;
-    int x = 0;
-    ll res = 0;
-    for(int i  = 0;i < n;i++) {
-        x ^= a[i];
-        res += cnt[i & 1][x];
-        cnt[i & 1][x]++;
+    int white = count(all(s), 'W');
+
+    if(white == 0) {
+        pf(0);
+        return;
+    }
+    
+    int ans = 0;
+    int cnt1 = 0, cnt2 = 0;
+    int idx = n - 1;
+    while(idx >= 0) {
+        cnt1 += (s[idx] == 'W');
+        cnt2++;
+        idx--;
+        if(cnt2 == white) {
+            ans = white - cnt1;
+            break;
+        }
     }
 
-    pf(res);
-}   
+    pf(ans);
+}
 
 int main() {
-    go();
+    //go();
     ssolve
     return 0;
 }

@@ -1,12 +1,13 @@
 /*
-    I love the sound you make when you shut up.
+	I love the sound you make when you shut up.
 */
 #include <bits/stdc++.h>
 using namespace std;
-#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/assoc_container.hpp> // Common file
+#include <ext/pb_ds/tree_policy.hpp> // Including tree_order_statistics_node_update
 using namespace __gnu_pbds;
-/*----typedefs--------*/
-typedef tree<int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
+/*-------typedefs------*/
+template<class T> using ordered_set = tree<T, null_type , less<T> , rb_tree_tag , tree_order_statistics_node_update> ;
 using ll = long long;
 using pi = pair<int, int>;
 /*-----in and out--------*/
@@ -41,33 +42,46 @@ void go() {
 const int d4i[4]={-1, 0, 1, 0}, d4j[4]={0, 1, 0, -1};
 const int d8i[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8]={0, 1, 1, 1, 0, -1, -1, -1};
 /*----------------------------------------------------------------*/
-const int MOD = 1e9 + 7;
-const int N = 3e5 + 5;
-const int MAX = (1 << 20) + 3;
+const int INF = 1e9 + 7;
+const int N = 2e5 + 5;
 /*-------------- Push your limits here ---------------------------*/
-int n;
-int a[N];
-int cnt[2][MAX];
 void solve() {
-    cin >> n;
+    int n, m;
+    cin >> n >> m;
 
-    forIn(a, n);
+    int x[n][n];
+    for(int i = 0;i < n;i++) for(int j = 0;j < n;j++) x[i][j] = INF;
 
-    mem(cnt, 0);
-    cnt[1][0] = 1;
-    int x = 0;
-    ll res = 0;
-    for(int i  = 0;i < n;i++) {
-        x ^= a[i];
-        res += cnt[i & 1][x];
-        cnt[i & 1][x]++;
+    for(int i = 0;i < m;i++) {
+        int a, b, c;
+        cin >> a >> b >> c;
+        a--, b--;
+
+        x[a][b] = min(x[a][b], c);
     }
 
-    pf(res);
-}   
+    for(int i = 0;i < n;i++) {
+        for(int j = 0;j < n;j++) {
+            if(x[j][i] == INF) continue;
+
+            for(int k = 0;k < n;k++) {
+                x[j][k] = min(x[j][k], x[j][i] + x[i][k]);
+            }
+        }
+    }
+
+    for(int i = 0;i < n;i++) {
+        if(x[i][i] == INF) {
+            pf(-1);
+        } else {
+            pf(x[i][i]);
+        }
+    }
+}
 
 int main() {
-    go();
+    //go();
     ssolve
     return 0;
 }
+

@@ -3,10 +3,11 @@
 */
 #include <bits/stdc++.h>
 using namespace std;
-#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/assoc_container.hpp> // Common file
+#include <ext/pb_ds/tree_policy.hpp> // Including tree_order_statistics_node_update
 using namespace __gnu_pbds;
-/*----typedefs--------*/
-typedef tree<int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
+/*-------typedefs------*/
+template<class T> using ordered_set = tree<T, null_type , less<T> , rb_tree_tag , tree_order_statistics_node_update> ;
 using ll = long long;
 using pi = pair<int, int>;
 /*-----in and out--------*/
@@ -42,32 +43,67 @@ const int d4i[4]={-1, 0, 1, 0}, d4j[4]={0, 1, 0, -1};
 const int d8i[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8]={0, 1, 1, 1, 0, -1, -1, -1};
 /*----------------------------------------------------------------*/
 const int MOD = 1e9 + 7;
-const int N = 3e5 + 5;
-const int MAX = (1 << 20) + 3;
+const int N = 1e5 + 5;
 /*-------------- Push your limits here ---------------------------*/
-int n;
-int a[N];
-int cnt[2][MAX];
+int n, m;
+int a[N], b[N], c[N], ans[N];
+vector<int> g[N];
 void solve() {
-    cin >> n;
+    cin >> n >> m;
 
+    for(int i = 1;i <= n;i++) g[i].clear();
     forIn(a, n);
-
-    mem(cnt, 0);
-    cnt[1][0] = 1;
-    int x = 0;
-    ll res = 0;
-    for(int i  = 0;i < n;i++) {
-        x ^= a[i];
-        res += cnt[i & 1][x];
-        cnt[i & 1][x]++;
+    for(int i = 0;i < n;i++) {
+        cin >> b[i];
+        if(b[i] != a[i]) {
+            g[b[i]].pb(i);
+        }
     }
 
-    pf(res);
-}   
+    forIn(c, m);
+
+    int lst = -1;
+    if(sz(g[c[m - 1]]) > 0) {
+        lst = g[c[m - 1]].back();
+        g[c[m - 1]].pop_back();
+    } else {
+        for(int i = 0;i < n;i++) {
+            if(b[i] == c[m - 1]) {
+                lst = i;
+                break;
+            }
+        }
+    }
+
+    if(lst == -1) {
+        no;
+        return;
+    }
+
+    ans[m - 1] = lst;
+    for(int i = 0;i + 1 < m;i++) {
+        if(sz(g[c[i]]) == 0) {
+            ans[i] = lst;
+        } else {
+            ans[i] = g[c[i]].back();
+            g[c[i]].pop_back();
+        }
+    }
+
+    for(int i = 1;i <= n;i++) {
+        if(sz(g[i]) > 0) {
+            no;
+            return;
+        }
+    }
+
+    yes;
+    for(int i = 0;i < m;i++) cout << ans[i] + 1 << ' ';
+    cout << endl;
+}
 
 int main() {
     go();
-    ssolve
+    msolve
     return 0;
 }

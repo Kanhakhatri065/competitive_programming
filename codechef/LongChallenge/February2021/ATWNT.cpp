@@ -3,10 +3,11 @@
 */
 #include <bits/stdc++.h>
 using namespace std;
-#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/assoc_container.hpp> // Common file
+#include <ext/pb_ds/tree_policy.hpp> // Including tree_order_statistics_node_update
 using namespace __gnu_pbds;
-/*----typedefs--------*/
-typedef tree<int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
+/*-------typedefs------*/
+template<class T> using ordered_set = tree<T, null_type , less<T> , rb_tree_tag , tree_order_statistics_node_update> ;
 using ll = long long;
 using pi = pair<int, int>;
 /*-----in and out--------*/
@@ -42,29 +43,67 @@ const int d4i[4]={-1, 0, 1, 0}, d4j[4]={0, 1, 0, -1};
 const int d8i[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8]={0, 1, 1, 1, 0, -1, -1, -1};
 /*----------------------------------------------------------------*/
 const int MOD = 1e9 + 7;
-const int N = 3e5 + 5;
-const int MAX = (1 << 20) + 3;
+const int N = 1e5 + 5;
 /*-------------- Push your limits here ---------------------------*/
-int n;
-int a[N];
-int cnt[2][MAX];
-void solve() {
-    cin >> n;
+int n, q;
+vector<int> adj[N];
+map<int, vector<int>> store[N];
+int children[N];
+void find_no_of_children(int s) {
+    children[s] = sz(adj[s]);
+    for(int v : adj[s]) {
+        find_no_of_children(v);
+    }
+}
 
-    forIn(a, n);
-
-    mem(cnt, 0);
-    cnt[1][0] = 1;
-    int x = 0;
-    ll res = 0;
-    for(int i  = 0;i < n;i++) {
-        x ^= a[i];
-        res += cnt[i & 1][x];
-        cnt[i & 1][x]++;
+void fill_storage(int s) {
+    for(int v : adj[s]) {
+        if(children[v] > 0) store[s][children[v]].pb(v);
     }
 
-    pf(res);
-}   
+    for(int v : adj[s]) {
+        fill_storage(v);
+    }
+}
+
+ll ans;
+void not_executed_tasks(int v, int w) {
+    if(children[v] == 0) return;
+    if(w % children[v] > 0) {
+        ans += w;
+    } else {
+        for(auto it : store[v]) {
+            if((w / children[v]) % it.ff == 0) {
+                for(auto itr : it.ss) {
+                    not_executed_tasks(itr, w / children[v]);
+                }
+            } else {
+                ans += 1LL * (w / children[v]) * sz(it.ss);
+            }
+        }
+    }
+}
+
+void solve() {
+    cin >> n;
+    for(int i = 2;i <= n;i++) {
+        int x;cin >> x;
+        adj[x].pb(i);
+    }
+
+    find_no_of_children(1);
+    fill_storage(1);
+
+    cin >> q;
+    while(q--) {
+        int v, w;
+        cin >> v >> w;
+
+        ans = 0;
+        not_executed_tasks(v, w);
+        pf(ans);
+    }
+} 
 
 int main() {
     go();
