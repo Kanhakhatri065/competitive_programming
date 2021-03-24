@@ -1,15 +1,18 @@
-#include <iostream>
-#include <vector>
+#include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
-
+ 
 using namespace std;
 using namespace __gnu_pbds;
-
+ 
 typedef long long ll;
 typedef vector<int> vi;
 typedef tree<int, null_type, less_equal<int>, rb_tree_tag, tree_order_statistics_node_update> indexed_set;
-
+ 
 int main() {
+    #ifndef ONLINE_JUDGE
+        freopen("input.txt", "r", stdin);
+        freopen("output.txt", "w", stdout);
+    #endif
     int n, k;
     cin >> n >> k;
     vi a(n);
