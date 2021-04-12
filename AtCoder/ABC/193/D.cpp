@@ -56,7 +56,7 @@ void solve() {
 
     vector<ll> cnt(10, k);
     for(char c : S + T) cnt[c - '0']--;
-    ll win = 0;
+    ll win = 0; 
     for(ll x = 1;x < 10;x++) for(ll y = 1;y < 10;y++) {
         S.back() = '0' + x;
         T.back() = '0' + y;

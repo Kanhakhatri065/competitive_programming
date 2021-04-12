@@ -1,70 +1,71 @@
-/*** I came, I saw, I conquered. ***/
+/*
+    I love the sound you make when you shut up.
+*/
 #include <bits/stdc++.h>
 using namespace std;
-#define FAST_IO ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
-typedef long long ll;typedef unsigned long long ull;
-/*** Input Output ***/
-#define sc(a) cin >> a
+#include <ext/pb_ds/assoc_container.hpp> // Common file
+#include <ext/pb_ds/tree_policy.hpp> // Including tree_order_statistics_node_update
+using namespace __gnu_pbds;
+/*-------typedefs------*/
+template<class T> using ordered_set = tree<T, null_type , less<T> , rb_tree_tag , tree_order_statistics_node_update> ;
+using ll = long long;
+using pi = pair<int, int>;
+/*-----in and out--------*/
 #define pf(a) cout << a << endl
-/*** Loops ***/
-#define f(i, p, num) for(ll i = p; i < num; i++)
-#define forIn(arr, num) for(ll i = 0; i < num; i++) cin >> arr[i];
-#define vpnt(ans) for(ll i = 0; i < ans.size(); i++) cout << ans[i] << (i + 1 < ans.size() ? ' ' : '\n');
-/*** Define Values ***/
-#define mod1 1000000007
-#define mod2 998244353
-#define eps 1e-7
-/*** Abbrevations **/
+#define forIn(arr, num) for(int i = 0; i < num; i++) cin >> arr[i];
+#define vpnt(ans) for(int i = 0; i < int(ans.size()); i++) cout << ans[i] << (i + 1 < int(ans.size()) ? ' ' : '\n');
+/*---useful defines------*/
+#define sz(x) (int)(x).size()
 #define pb push_back
+#define mem(a, b) memset(a,(b), sizeof(a))
 #define ff first
 #define ss second
-#define mp make_pair
-#define mem(name, value) memset(name, value, sizeof(name))
-#define pp pair
-/*** STLs ***/
-typedef vector<ll>vll;typedef set<ll>sll;typedef multiset<ll>msll;
-typedef queue<ll>qll;typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
-typedef vector<pair<ll,ll>>vpll;
-/*** Sorts ***/
-#define all(v) (v).begin(), (v).end()
-#define srt(v) sort(all(v))
-#define srtGreat(v) sort(all(v), greater<ll>())
-/*** Bit-Stuff ***/
-#define GET_SET_BITS(a) (__builtin_popcount(a))
-#define GET_SET_BITSLL(a) ( __builtin_popcountll(a))
-#define GET_TRAIL_ZERO(a) (__builtin_ctz(a))
-#define GET_LEAD_ZERO(a) (__builtin_clz(a))
-#define GET_PARITY(a) (__builtin_parity(a))
-/*** Some Prints ***/
+#define all(x) x.begin(), x.end()
+/*----- the binary answer of life-----*/
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
+/*---checking and pushing-----*/
+template<class T> bool ckmin(T& a, const T& b) { return b < a ? a = b, 1 : 0; }
+template<class T> bool ckmax(T& a, const T& b) { return a < b ? a = b, 1 : 0; }
+/*---- FAST I/O and file read ---*/
+void go() {
+    ios_base::sync_with_stdio(0);cin.tie(0); cout.tie(0);
+#ifndef ONLINE_JUDGE
+    freopen("input.txt", "r", stdin);freopen("output.txt", "w", stdout);
+#endif
+}
+/*-------- test-case stuff--------------*/
+#define ssolve solve();
+#define msolve int T;cin >> T;while(T--) {solve();}
+#define mcsolve int T;cin >> T;for(int tt = 1;tt <= T;tt++) {cout << "Case #" << tt << ": ";solve();}
+/*-------- movement in a 2D array ------*/
+const int d4i[4]={-1, 0, 1, 0}, d4j[4]={0, 1, 0, -1};
+const int d8i[8]={-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8]={0, 1, 1, 1, 0, -1, -1, -1};
 /*----------------------------------------------------------------*/
+const int MOD = 1e9 + 7;
+const int N = 2e5 + 5;
+/*-------------- Push your limits here ---------------------------*/
 void solve() {
-    int n;
-    sc(n);
+    int n, x;
+    cin >> n >> x;
 
-    ll x;
-    sc(x);
-
-    vll v(n);
+    vector<int> v(n);
     forIn(v, n);
-
-    vll d(x + 1);
-    d[0] = 1;
-
-    f(i, 1, x + 1) {
-        for(ll c : v) {
-            if(c <= i) {
-                d[i] = (d[i] + d[i - c]) % mod1;
-            }  
+    vector<ll> dp(x + 1);
+    dp[0] = 1;
+    for(int i = 1;i <= x;i++) {
+        for(int p : v) {
+            if(i >= p) {
+                dp[i] = (dp[i] + dp[i - p]) % MOD;
+            } 
         }
     }
 
-    pf(d[x]);
+    pf(dp[x]);
 }
 
 int main() {
-    FAST_IO
-    solve();
+    go();
+    ssolve
     return 0;
 }
