@@ -1,152 +1,120 @@
-/*** I came, I saw, I conquered. ***/
 #include <bits/stdc++.h>
 using namespace std;
-#define FAST_IO ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
-typedef long long ll;typedef unsigned long long ull;
-/*** Input Output ***/
-#define sc(a) cin >> a
+using ll = long long;
 #define pf(a) cout << a << endl
-/*** Loops ***/
-#define f(i, p, num) for(ll i = p; i < num; i++)
-#define forIn(arr, num) for(ll i = 0; i < num; i++) cin >> arr[i];
-#define vpnt(ans) for(ll i = 0; i < ans.size(); i++) cout << ans[i] << (i + 1 < ans.size() ? ' ' : '\n');
-/*** Define Values ***/
-#define mod1 1000000007
-#define mod2 998244353
-#define eps 1e-7
-/*** Abbrevations **/
+#define forIn(arr, num) for(int i = 0; i < num; i++) cin >> arr[i];
+#define vpnt(ans) for(auto it : ans) {cout << it << " ";}cout << endl;
+#define sz(x) (int)(x).size()
 #define pb push_back
+#define mem(a, b) memset(a,(b), sizeof(a))
 #define ff first
 #define ss second
-#define mp make_pair
-#define mem(name, value) memset(name, value, sizeof(name))
-#define pp pair
-/*** STLs ***/
-typedef vector<ll>vll;typedef set<ll>sll;typedef multiset<ll>msll;
-typedef queue<ll>qll;typedef map<ll,ll>mll;typedef pair<ll,ll>pll;
-typedef vector<pair<ll,ll>>vpll;
-/*** Sorts ***/
-#define all(v) (v).begin(), (v).end()
-#define srt(v) sort(all(v))
-#define srtGreat(v) sort(all(v), greater<ll>())
-/*** Bit-Stuff ***/
-#define GET_SET_BITS(a) (__builtin_popcount(a))
-#define GET_SET_BITSLL(a) ( __builtin_popcountll(a))
-#define GET_TRAIL_ZERO(a) (__builtin_ctz(a))
-#define GET_LEAD_ZERO(a) (__builtin_clz(a))
-#define GET_PARITY(a) (__builtin_parity(a))
-/*** Some Prints ***/
+#define all(x) x.begin(), x.end()
 #define no cout << "NO" << endl
 #define yes cout << "YES" << endl
-/*----------------------------------------------------------------*/
-const int inf = 1e9 + 8;
-int N;
-int a[100010];
-int Min[100010][18];
-int Max[100010][18];
-
-int two(int n) {
-    return 1 << n;
+template<class T> bool ckmin(T& a, const T& b) { return b < a ? a = b, 1 : 0; }
+template<class T> bool ckmax(T& a, const T& b) { return a < b ? a = b, 1 : 0; }
+void go() {
+    ios_base::sync_with_stdio(0);cin.tie(0); cout.tie(0);
 }
+#define ssolve solve();
+#define msolve int T;cin >> T;while(T--) {solve();}
+#define mcsolve int T;cin >> T;for(int tt = 1;tt <= T;tt++) {cout << "Case #" << tt << ": ";solve();}
+string to_string(string s) {
+  return '"' + s + '"';
+}
+string to_string(const char* s) {
+  return to_string((string) s);
+}
+string to_string(bool b) {
+  return (b ? "true" : "false");
+}
+template <typename A, typename B>
+string to_string(pair<A, B> p) {
+  return "(" + to_string(p.first) + ", " + to_string(p.second) + ")";
+}
+template <typename A>
+string to_string(A v) {
+  bool first = true;
+  string res = "{";
+  for (const auto &x : v) {
+    if (!first) {
+      res += ", ";
+    }
+    first = false;
+    res += to_string(x);
+  }
+  res += "}";
+  return res;
+}
+void debug_out() { cerr << endl; }
+template <typename Head, typename... Tail>
+void debug_out(Head H, Tail... T) {
+  cerr << " " << to_string(H);
+  debug_out(T...);
+}
+#ifdef LOCAL
+#define debug(...) cerr << "[" << #__VA_ARGS__ << "]:", debug_out(__VA_ARGS__)
+#else
+#define debug(...) 42
+#endif
 
-int log(int n) {
-    int i = 0;
-    while(two(i) <= n) {
-        i++;
+const int MOD = 1e9 + 7;
+const int N = 1e5 + 5;
+const int K = 25;
+int log_of_2[N + 1];
+int max_st[N][K + 1];
+int min_st[N][K + 1];
+int n, q;
+void precomputation(vector<int> arr) {
+    log_of_2[1] = 0;
+    for(int i = 2;i <= N;i++) log_of_2[i] = log_of_2[i / 2] + 1;
+
+    for(int i = 0;i < n;i++) {
+        max_st[i][0] = arr[i];
+        min_st[i][0] = arr[i];
     }
 
-    return i - 1;
+    for (int j = 1; j <= K; j++)
+        for (int i = 0; i + (1 << j) <= N; i++)
+            min_st[i][j] = min(min_st[i][j-1], min_st[i + (1 << (j - 1))][j - 1]); 
+
+    for (int j = 1; j <= K; j++)
+        for (int i = 0; i + (1 << j) <= N; i++)
+            max_st[i][j] = max(max_st[i][j-1], max_st[i + (1 << (j - 1))][j - 1]);
+}
+
+int min_query(int l, int r) {
+    int j = log_of_2[r - l + 1];
+    return min(min_st[l][j], min_st[r - (1 << j) + 1][j]);
+}
+
+int max_query(int l, int r) {
+    int j = log_of_2[r - l + 1];
+    return max(max_st[l][j], max_st[r - (1 << j) + 1][j]);
 }
 
 void solve() {
-    sc(N);
+    cin >> n;
+    vector<int> v(n);
+    forIn(v, n);
+    precomputation(v);
+    cin >> q;
 
-    f(i, 0, N) {
-        sc(a[i]);
-        Min[i][0] = Max[i][0] = i;
-    }
+    while(q--) {
+        int l, r;
+        cin >> l >> r;
 
-    //preprocess for finding minimum, O(N * logN)
-    for(int j = 1;two(j) <= N;j++) {
-        for(int i = 0;i + two(j) -1 < N;i++) {
-            if(a[Min[i][j - 1]] < a[Min[i + two(j - 1)][j - 1]]) {
-                Min[i][j] = Min[i][j - 1]; 
-            } else {
-                Min[i][j] = Min[i + two(j - 1)][j - 1];
-            }
-        }
-    }
+        int mn_in = min_query(l, r), mx_in = max_query(l, r);
+        int mx_out = max((l - 1) >= 0 ? max_query(0, l - 1) : 0, (r + 1) < n ? max_query(r + 1, n - 1) : 0);
 
-    //preprocess for finding maximum, O(N * logN)
-    for(int j = 1;two(j) <= N;j++) {
-        for(int i = 0;i +two(j) - 1 < N;i++) {
-            if(a[Max[i][j - 1]] > a[Max[i + two(j - 1)][j - 1]]) {
-                Max[i][j] = Max[i][j - 1];
-            } else {
-                Max[i][j] = Max[i + two(j - 1)][j - 1];
-            }
-        }
-    }
-
-    int Q;
-    sc(Q);
-    
-    int L, R;
-    while(Q--) {
-        //Answering each query in O(1), although intended solution should be able to answer in O(logN).
-        sc(L);
-        sc(R); 
-        //finding min and max required-time in asked range
-        int k = (int)log(R - L + 1);
-
-        //finding min between [L, R]
-        int _min = 0;
-        _min = min(a[Min[L][k]], a[Min[R - two(k) + 1][k]]);
-
-        //findig max between [L, R]
-        int _max = 0;
-        _max = max(a[Max[L][k]], a[Max[R - two(k) + 1][k]]);
-        
-        //the time in which all matchsticks between [L, R] will burn down.
-        //notice (_max - _min) / 2.0 , since both ends are lighted.
-        double time1 = _min + (_max - _min) / 2.0;
-
-        //Find maximum in remaining time.
-        int tmp_max = INT_MIN;
-        if(L > 0) {
-            //max in range[0, L - 1] if L - 1 is non-negative
-            int tmpR = L - 1;
-            L = 0;
-            k = (int) log(tmpR - L + 1);
-
-            tmp_max = max(a[Max[L][k]], a[Max[tmpR - two(k) + 1][k]]);
-        }
-
-        if(R < N - 1) {
-            //max in range [R + 1, N -1] if R is less than N - 1
-            L = R + 1;
-            R = N - 1;
-            k = (int) log(R - L + 1);
-            if(a[Max[L][k]] >= a[Max[R - two(k) + 1][k]]) {
-                if(a[Max[L][k]] >= tmp_max) {
-                    tmp_max = a[Max[L][k]];
-                }
-            } else {
-                if(a[Max[R - two(k) + 1][k]] >= tmp_max) {
-                    tmp_max = a[Max[R - two(k) + 1][k]];
-                }
-            }
-        }
-
-        //the time in which all matchsticks in remaining range will be burned down.
-        double time2 = 1.0 * tmp_max + _min;
-
-        printf("%.1f\n", max(time1, time2));
+        double ans = max(1.0 * mx_out + mn_in, 1.0 * mn_in + (1.0 * (mx_in - mn_in) / 2));
+        cout << fixed << setprecision(1) << ans << endl;
     }
 }
 
 int main() {
-    FAST_IO
-    solve();
+    go();
+    ssolve
     return 0;
 }
